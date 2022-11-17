@@ -20,6 +20,7 @@ Imports:
     phangorn (>=2.0.0)
     castor (>=1.7.0)
 Suggests:
+    ggtree,
     covr,
     knitr,
     rmarkdown,
