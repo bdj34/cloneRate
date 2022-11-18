@@ -10,8 +10,8 @@
 #' @return A named vector including the net growth rate estimate and the sum of
 #' internal lengths
 #' @examples
-#' data(exampleTree)
-#' output_vec <- internalLengths(exampleTree)
+#' data(exampleTrees)
+#' output_vec <- internalLengths(exampleTrees[[1]])
 #' @export
 #' @importFrom phangorn "allDescendants"
 #' @importFrom ape "dist.nodes"
