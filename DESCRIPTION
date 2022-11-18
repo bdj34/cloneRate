@@ -11,7 +11,7 @@ Description: Various methods to quickly estimate net growth rates of clones
     et al. 2023. Uses coalescent theory to infer early growth trajectory of 
     clones assuming that reconstructed trees are time-based (or mutation-based
     if a mutation rate is known/estimated).
-License: What license is it under?
+License: MIT + file LICENSE
 URL: https://github.com/bdj34/coalRate
 BugReports: https://github.com/bdj34/coalRate/issues
 Depends:
