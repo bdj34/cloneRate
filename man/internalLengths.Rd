@@ -21,6 +21,6 @@ Provides an estimate for the net growth rate of the clone as
     well as the sum of internal lengths
 }
 \examples{
-data(exampleTree)
-output_vec <- internalLengths(exampleTree)
+data(exampleTrees)
+output_vec <- internalLengths(exampleTrees[[1]])
 }
