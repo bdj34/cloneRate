@@ -1,7 +1,7 @@
 #' @title internalLengths
 #'
-#' @description Provides an estimate for the net growth rate of the clone as
-#'     well as the sum of internal lengths
+#' @description Provides an estimate for the net growth rate of the clone with
+#'     confidence bounds, as well as the sum of internal lengths
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param withZeroes Boolean indicating whether the subtree includes a zeroes
