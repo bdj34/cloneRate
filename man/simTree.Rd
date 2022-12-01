@@ -15,7 +15,7 @@ simTree(a, b, cloneAge, n, precision = 10000)
 
 \item{n}{Number of samples (number of tips of the tree to be returned)}
 
-\item{precision}{}
+\item{precision}{Rmpfr param for handling high precision numbers}
 }
 \value{
 An ape tree object

@@ -17,9 +17,10 @@ BugReports: https://github.com/bdj34/coalRate/issues
 Depends:
     R (>= 3.5.0)
 Imports:
-    ape (>= 5.0), 
+    ape (>= 5.0),
     phangorn (>= 2.0.0),
-    castor (>= 1.7.0)
+    castor (>= 1.7.0),
+    Rmpfr (>= 0.8)
 Suggests:
     ggtree,
     covr,

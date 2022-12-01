@@ -9,7 +9,7 @@
 #' @param b Death rate
 #' @param cloneAge Clone age
 #' @param n Number of samples (number of tips of the tree to be returned)
-#' @param precision
+#' @param precision Rmpfr param for handling high precision numbers
 #'
 #' @return An ape tree object
 #' @examples
@@ -21,6 +21,11 @@
 #' @importFrom ape "branching.times"
 simTree <- function(a, b, cloneAge, n, precision = 10000){
 
+  # Check that we have reasonable inputs
+  if (! a > b){
+    stop("This function generates trees for supercritical birth-death branching
+         processes. Birth rate (a) must be greater than death rate (b).")
+  }
   # Convert params to high precision mpfr
   cloneAge_mpfr <- mpfr(cloneAge, precision)
   a_mpfr <- mpfr(a, precision)
@@ -28,6 +33,8 @@ simTree <- function(a, b, cloneAge, n, precision = 10000){
   net_mpfr <- a_mpfr - b_mpfr
   n_mpfr <- mpfr(n, precision)
   one <- mpfr(1, precision)
+
+
 
   #Define alpha
   alpha_mpfr <- (a_mpfr*(exp(net_mpfr*cloneAge_mpfr)-one))/(a_mpfr*exp(net_mpfr*cloneAge_mpfr)-b_mpfr)
