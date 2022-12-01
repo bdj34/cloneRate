@@ -18,6 +18,7 @@
 #' @importFrom Rmpfr "mpfr"
 #' @importFrom Rmpfr "asNumeric"
 #' @importFrom ape "rcoal"
+#' @importFrom ape "branching.times"
 simTree <- function(a, b, cloneAge, n, precision = 10000){
 
   # Convert params to high precision mpfr
