@@ -23,9 +23,27 @@ simTree <- function(a, b, cloneAge, n, precision = 10000){
 
   # Check that we have reasonable inputs
   if (! a > b){
-    stop("This function generates trees for supercritical birth-death branching
+    stop("simTree function generates trees for supercritical birth-death branching
          processes. Birth rate (a) must be greater than death rate (b).")
   }
+  if (! a > 0){
+    stop("simTree function generates trees for supercritical birth-death branching
+         processes. Birth rate (a) must be greater than 0.")
+  }
+  if (b < 0){
+    stop("negative death rate (b) doesn't make sense.")
+  }
+  if (n > exp((a-b)*cloneAge)){
+    warning("Number of samples (n) is greater than expected population size at given
+         net growth rate (a-b) and clone age (cloneAge). This more closely resembles
+         a critical rather than the supercritical branching process we model.
+         Increase net growth rate or cloneAge, or decrease number of samples (n).")
+  }
+  if (round(n) != n | n < 2){
+    stop("Number of samples must be a positive whole number greater than 1")
+  }
+
+
   # Convert params to high precision mpfr
   cloneAge_mpfr <- mpfr(cloneAge, precision)
   a_mpfr <- mpfr(a, precision)
@@ -34,10 +52,12 @@ simTree <- function(a, b, cloneAge, n, precision = 10000){
   n_mpfr <- mpfr(n, precision)
   one <- mpfr(1, precision)
 
-
-
-  #Define alpha
+  #Define alpha and ensure it doesn't map to 1 at given precision
   alpha_mpfr <- (a_mpfr*(exp(net_mpfr*cloneAge_mpfr)-one))/(a_mpfr*exp(net_mpfr*cloneAge_mpfr)-b_mpfr)
+  if(alpha_mpfr == one){
+    stop("alpha value is equal to 1 due to insufficient machine precision. This
+          will lead to NaN coalescence times. Increase Rmpfr precision.")
+  }
 
   #Define inverse CDF for the coalescence times
   inv_cdf_coal_times <- function(y, net. = net_mpfr, a. = a_mpfr, alpha. = alpha_mpfr){
