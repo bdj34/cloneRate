@@ -17,8 +17,8 @@ A named vector including the net growth rate estimate and the sum of
 internal lengths
 }
 \description{
-Provides an estimate for the net growth rate of the clone as
-    well as the sum of internal lengths
+Provides an estimate for the net growth rate of the clone with
+    confidence bounds, as well as the sum of internal lengths
 }
 \examples{
 data(exampleTrees)
