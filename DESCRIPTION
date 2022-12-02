@@ -20,7 +20,8 @@ Imports:
     ape (>= 5.0),
     phangorn (>= 2.0.0),
     castor (>= 1.7.0),
-    Rmpfr (>= 0.8)
+    Rmpfr (>= 0.8),
+    adephylo (>= 1.1)
 Suggests:
     ggtree,
     covr,

@@ -7,9 +7,10 @@
 #'
 #' @param a Birth rate
 #' @param b Death rate
-#' @param cloneAge Clone age
+#' @param cloneAge Clone age (make sure it's same time units as birth and death rates)
 #' @param n Number of samples (number of tips of the tree to be returned)
 #' @param precision Rmpfr param for handling high precision numbers
+#' @param addStem Boolean indicating whether to add stem to tree preceding first split
 #'
 #' @return An ape tree object
 #' @examples
@@ -19,7 +20,8 @@
 #' @importFrom Rmpfr "asNumeric"
 #' @importFrom ape "rcoal"
 #' @importFrom ape "branching.times"
-simTree <- function(a, b, cloneAge, n, precision = 10000){
+#' @importFrom adephylo "distRoot"
+simTree <- function(a, b, cloneAge, n, precision = 10000, addStem = T){
 
   # Check that we have reasonable inputs
   if (! a > b){
@@ -43,7 +45,6 @@ simTree <- function(a, b, cloneAge, n, precision = 10000){
     stop("Number of samples must be a positive whole number greater than 1")
   }
 
-
   # Convert params to high precision mpfr
   cloneAge_mpfr <- mpfr(cloneAge, precision)
   a_mpfr <- mpfr(a, precision)
@@ -59,13 +60,6 @@ simTree <- function(a, b, cloneAge, n, precision = 10000){
           will lead to NaN coalescence times. Increase Rmpfr precision.")
   }
 
-  #Define inverse CDF for the coalescence times
-  inv_cdf_coal_times <- function(y, net. = net_mpfr, a. = a_mpfr, alpha. = alpha_mpfr){
-    rv <- mpfr(runif(1), precision)
-    phi <- (alpha.*rv)/(a.*(one-alpha.*(one-y)))
-    return((-one/net.)*log((one-y*a.*phi)/(one+(net.-y*a.)*phi)))
-  }
-
   #Draw Y = y from the inverse CDF
   uniform_rv <- mpfr(runif(1), precision)
   y_mpfr <- ((one-alpha_mpfr)*(uniform_rv**(one/n_mpfr)))/(one-alpha_mpfr*uniform_rv**(one/n_mpfr))
@@ -73,7 +67,7 @@ simTree <- function(a, b, cloneAge, n, precision = 10000){
   # Generate the coalesence times
   coal_times_mpfr <- vector(length = n-1)
   for (j in 1:(n-1)){
-    coal_times_mpfr[j] <- inv_cdf_coal_times(y_mpfr)
+    coal_times_mpfr[j] <- inv_cdf_coal_times(y_mpfr, net_mpfr, a_mpfr, alpha_mpfr, precision)
   }
 
   # Convert back to normal numeric (no longer need high precision)
@@ -93,22 +87,33 @@ simTree <- function(a, b, cloneAge, n, precision = 10000){
   # Make tree with ape function
   tree <- rcoal(asNumeric(n_mpfr), rooted = T, br = coal_intervals)
 
-  # Sanity checks
-  stopifnot(all(round(coal_times,4) %in% round(branching.times(tree),4)))
+  # Sanity checks (coal times must match and be less than cloneAge)
   stopifnot(all(coal_times <= cloneAge))
-  #if (! all(round(coal_times,4) %in% round(branching.times(tree),4))) {
-  #  print("Unexpected error: coal. times not matching!")
-  #  return(NULL)
-  #}
+  if (! all(round(coal_times,4) %in% round(branching.times(tree),4))) {
+    stop("Unexpected error: coal. times not matching!")
+  }
 
-  # Add outgroup starting the tree from zero then remove, rooting the tree
-  #tree <- add_outgroup(tree, num.shared.var = cloneAge-max(coal_times))
-  #tree <- drop.tip(tree, "zeros", collapse.singles = F)
+  # Add stem starting the tree from zero, rooting the tree appropriately
+  tree$edge[tree$edge > n] <- tree$edge[tree$edge > n] + 1
+  tree$edge <- rbind(c(n+1, n+2), tree$edge)
+  tree$edge.length <- c(cloneAge - max(coal_times), tree$edge.length)
+  tree$Nnode <- tree$Nnode+1
 
-  # Sanity check
-  #suppressWarnings(stopifnot(distRoot(tree) == cloneAge))
+  # Sanity check on tree
+  if (addStem){
+    # Suppress warnings because we know there's a singleton node (we added our "stem")
+    suppressWarnings(stopifnot(all(distRoot(tree) == cloneAge)))
+  }
 
   # Return the tree created from the coalescence times drawn from Lambert distribution
   return(tree)
 
+}
+
+#Draw from quantile function for the coalescence times (with high precision mpfr)
+inv_cdf_coal_times <- function(y, net, a, alpha, precision){
+  one <- mpfr(1, precision)
+  rv <- mpfr(runif(1), precision)
+  phi <- (alpha*rv)/(a*(one-alpha*(one-y)))
+  return((-one/net)*log((one-y*a*phi)/(one+(net-y*a)*phi)))
 }
