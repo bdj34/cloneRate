@@ -4,13 +4,16 @@
 \alias{internalLengths}
 \title{internalLengths}
 \usage{
-internalLengths(subtree, withZeroes = F)
+internalLengths(subtree, includeStem = F, alpha = 0.05)
 }
 \arguments{
 \item{subtree}{An ape tree subset to include only the clone of interest}
 
-\item{withZeroes}{Boolean indicating whether the subtree includes a zeroes
-outgroup as a tip}
+\item{includeStem}{Boolean indicating whether we should count the stem of the
+tree as contributing to the internal lengths summation}
+
+\item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence
+intervals used with default of alpha = 0.05 (95% confidence intervals)}
 }
 \value{
 A named vector including the net growth rate estimate and the sum of

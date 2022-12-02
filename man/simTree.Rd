@@ -4,18 +4,20 @@
 \alias{simTree}
 \title{simTree}
 \usage{
-simTree(a, b, cloneAge, n, precision = 10000)
+simTree(a, b, cloneAge, n, precision = 10000, addStem = T)
 }
 \arguments{
 \item{a}{Birth rate}
 
 \item{b}{Death rate}
 
-\item{cloneAge}{Clone age}
+\item{cloneAge}{Clone age (make sure it's same time units as birth and death rates)}
 
 \item{n}{Number of samples (number of tips of the tree to be returned)}
 
 \item{precision}{Rmpfr param for handling high precision numbers}
+
+\item{addStem}{Boolean indicating whether to add stem to tree preceding first split}
 }
 \value{
 An ape tree object
