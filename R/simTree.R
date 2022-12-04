@@ -94,14 +94,12 @@ simTree <- function(a, b, cloneAge, n, precision = 10000, addStem = T){
   }
 
   # Add stem starting the tree from zero, rooting the tree appropriately
-  tree$edge[tree$edge > n] <- tree$edge[tree$edge > n] + 1
-  tree$edge <- rbind(c(n+1, n+2), tree$edge)
-  tree$edge.length <- c(cloneAge - max(coal_times), tree$edge.length)
-  tree$Nnode <- tree$Nnode+1
-
-  # Sanity check on tree
   if (addStem){
-    # Suppress warnings because we know there's a singleton node (we added our "stem")
+    tree$edge[tree$edge > n] <- tree$edge[tree$edge > n] + 1
+    tree$edge <- rbind(c(n+1, n+2), tree$edge)
+    tree$edge.length <- c(cloneAge - max(coal_times), tree$edge.length)
+    tree$Nnode <- tree$Nnode+1
+    # Sanity check: suppress warnings because we know there's a singleton node
     suppressWarnings(stopifnot(all(distRoot(tree) == cloneAge)))
   }
 
