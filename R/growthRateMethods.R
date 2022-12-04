@@ -15,13 +15,16 @@
 #' data(exampleTrees)
 #' df <- internalLengths(exampleTrees[[1]])
 #' @export
-#' @importFrom phangorn "allDescendants"
 #' @importFrom ape "is.ultrametric"
 internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
 
   # Perform basic checks on the input tree
   inputCheck(subtree, alpha)
+
+  if (includeStem) {
+    message("You have set includeStem = T. Note that we do not include the stem as part of the internal lengths calculation in our work (Johnson et al. 2022)")
+  }
 
   # Check if tree has stem
   n <- length(subtree$tip.label)
@@ -39,15 +42,16 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   }
 
   # Get list of descendants from each internal node
-  descendant_list <- allDescendants(subtree)
   descendant_df <- data.frame(
     "Node" = (length(subtree$tip.label) + 2):max(subtree$edge), "Parent" = NA,
     "Edge_length" = NA, "n_cells" = NA
   )
 
+
   # Find parent, edge length, and number of descendant cells for each internal node
   for (k in descendant_df$Node) {
-    descendant_df$n_cells[descendant_df$Node == k] <- sum(descendant_list[[k]] <= length(subtree$tip.label))
+    descendants <- subtree$edge[subtree$edge[,1] == k,2]
+    descendant_df$n_cells[descendant_df$Node == k] <- length(descendants)
     descendant_df$Edge_length[descendant_df$Node == k] <- subtree$edge.length[which(subtree$edge[, 2] == k)]
     descendant_df$Parent[descendant_df$Node == k] <- subtree$edge[which(subtree$edge[, 2] == k), 1]
   }
@@ -102,7 +106,6 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' and other important details (runtime, n, etc.)
 #'
 #' @export
-#' @importFrom phangorn "allDescendants"
 #' @importFrom ape "branching.times"
 #' @examples
 #' data(exampleTrees)
@@ -114,14 +117,22 @@ moments <- function(subtree, alpha = 0.05) {
   inputCheck(subtree, alpha)
 
   # Calculate the growth rate
-  growthRate <- (pi / sqrt(3)) * 1 / (sd(branching.times(t1)))
-  growthRate_lb <- moments_growth_rate * sqrt(1 + 4 * qnorm(alpha / 2) / sqrt(5 * n))
-  growthRate_ub <- moments_growth_rate * sqrt(1 - 4 * qnorm(alpha / 2) / sqrt(5 * n))
+  growthRate <- (pi / sqrt(3)) * 1 / (stats::sd(ape::branching.times(t1)))
+  growthRate_lb <- moments_growth_rate * sqrt(1 + 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
+  growthRate_ub <- moments_growth_rate * sqrt(1 - 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
 
-  # Calculate total internal and external lengths
+  # Get other tree info (lengths)
   extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
-  intLen <- internalLengths(subtree, includeStem=F)#$sumInternalLengths
+  intLen <- coalRate::internalLengths(subtree, includeStem=F)$sumInternalLengths
+  n <- length(subtree$tip.label)
+  nodes <- subtree$edge[subtree$edge > n]
+  if (1 %in% table(nodes)) {hasStem <- T} else {hasStem <- F}
 
+  # Check ratio of external to internal lengths
+  if (extLen / intLen <= 3) {
+    warning("External to internal lengths ratio is less than or equal to 3,
+            which means internal lengths method may not be applicable.")
+  }
 
   runtime <- proc.time() - ptm
 
@@ -130,7 +141,7 @@ moments <- function(subtree, alpha = 0.05) {
     "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
     "sumExternalLengths" = extLen,
     "n" = n, "alpha" = alpha, "hasStem" = hasStem,
-    "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
+    "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
     "method" = "moments"
   ))
 
@@ -145,6 +156,7 @@ moments <- function(subtree, alpha = 0.05) {
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
 #'    intervals used with default of alpha = 0.05 (95% confidence intervals)
 #'
+#' @importFrom ape "is.ultrametric"
 #' @return NULL
 #'
 inputCheck <- function(subtree, alpha){
@@ -156,7 +168,7 @@ inputCheck <- function(subtree, alpha){
   }
 
   # Only works for ultrametric trees
-  if (!is.ultrametric(subtree)) {
+  if (!ape::is.ultrametric(subtree)) {
     stop("Tree is not ultrametric. intenralLengths, moments, and maxLike fns.
         should only be used with ultrametric trees. For usage with mutation trees,
         use sharedMuts fn.")
@@ -174,5 +186,6 @@ inputCheck <- function(subtree, alpha){
 
   return(NULL)
 }
+
 
 

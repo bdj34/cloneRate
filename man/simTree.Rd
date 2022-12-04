@@ -29,5 +29,5 @@ Generates a sampled tree from a supercritial (birth rate >
     binary branching process. (2018)."
 }
 \examples{
-tree <- simTree(a=1, b=0.5, cloneAge = 20, n = 50)
+tree <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50)
 }
