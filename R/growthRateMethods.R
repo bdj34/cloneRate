@@ -162,8 +162,8 @@ moments <- function(subtree, alpha = 0.05) {
 #'
 #' @examples
 #' data(exampleTrees)
-#' df <- maxLike(exampleTrees[[1]])
-maxLike <- function(subtree,  alpha = 0.05){
+#' df <- maxLikelihood(exampleTrees[[1]])
+maxLikelihood <- function(subtree,  alpha = 0.05){
   ptm <- proc.time()
 
   # Basic check on input formatting and alpha value
@@ -202,7 +202,6 @@ maxLike <- function(subtree,  alpha = 0.05){
   c <- 3/sqrt(3+pi^2)
   growthRate_lb <- growthRate*(1+c*stats::qnorm(alpha/2)/sqrt(n))
   growthRate_ub <- growthRate*(1-c*stats::qnorm(alpha/2)/sqrt(n))
-
 
   runtime <- proc.time() - ptm
 
