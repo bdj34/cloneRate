@@ -13,14 +13,15 @@
 #' @param addStem Boolean indicating whether to add stem to tree preceding first split
 #'
 #' @return An ape tree object
-#' @examples
-#' tree <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50)
 #' @export
 #' @importFrom Rmpfr "mpfr"
 #' @importFrom Rmpfr "asNumeric"
 #' @importFrom ape "rcoal"
 #' @importFrom ape "branching.times"
 #' @importFrom adephylo "distRoot"
+#' @examples
+#' tree <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50)
+#'
 simTree <- function(a, b, cloneAge, n, precision = 10000, addStem = T) {
   # Check that we have reasonable inputs
   if (!a > b) {

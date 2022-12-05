@@ -30,4 +30,5 @@ Generates a sampled tree from a supercritial (birth rate >
 }
 \examples{
 tree <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50)
+
 }

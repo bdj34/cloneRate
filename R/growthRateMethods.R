@@ -85,7 +85,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   return(data.frame(
     "lowerBound" = growthRate_lb, "estimate" = growthRate,
     "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
-    "sumExternalLengths" = extLen,
+    "sumExternalLengths" = extLen, extIntRatio = extLen/intLen,
     "n" = n, "alpha" = alpha, "hasStem" = hasStem,
     "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
     "method" = "lengths"
@@ -139,12 +139,81 @@ moments <- function(subtree, alpha = 0.05) {
   return(data.frame(
     "lowerBound" = growthRate_lb, "estimate" = growthRate,
     "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
-    "sumExternalLengths" = extLen,
+    "sumExternalLengths" = extLen, extIntRatio = extLen/intLen,
     "n" = n, "alpha" = alpha, "hasStem" = hasStem,
     "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
     "method" = "moments"
   ))
 
+}
+
+
+#' maxLike
+#'
+#' @param subtree An ape tree subset to include only the clone of interest
+#' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
+#'    intervals used with default of alpha = 0.05 (95% confidence intervals)
+#'
+#' @return A dataframe including the net growth rate estimate, confidence intervals,
+#' and other important details (runtime, n, etc.)
+#' @export
+#' @importFrom maxLik "maxLik"
+#' @importFrom ape "branching.times"
+#'
+#' @examples
+#' data(exampleTrees)
+#' df <- maxLike(exampleTrees[[1]])
+maxLike <- function(subtree,  alpha = 0.05){
+  ptm <- proc.time()
+
+  # Basic check on input formatting and alpha value
+  inputCheck(subtree, alpha)
+
+  # Get coalescence times
+  coal_times <- branching.times(subtree)
+
+  # Log-likelihood function using the approximation for T large
+  # params[1]=a, params[2]=r=1/b
+  LL <- function(params){
+    a<- params[1]
+    r<-  params[2]
+    U <- (coal_times - a )*r  #U_i = (H_i-a)*r
+    sigmoid <- 1/(1+exp(-U))
+    ll <- sum(log(sigmoid))+sum(log(1-sigmoid))+log(r)*length(U)
+  }
+
+  # Calculate growth rate by maximizing log likelihood (using maxLik package)
+  growthRate <- maxLik::maxLik(LL,start=c(mean(coal_times), .1), )$estimate[2]
+
+  # Get other tree info (lengths)
+  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
+  intLen <- coalRate::internalLengths(subtree, includeStem=F)$sumInternalLengths
+  n <- length(subtree$tip.label)
+  nodes <- subtree$edge[subtree$edge > n]
+  if (1 %in% table(nodes)) {hasStem <- T} else {hasStem <- F}
+
+  # Check ratio of external to internal lengths
+  if (extLen / intLen <= 3) {
+    warning("External to internal lengths ratio is less than or equal to 3,
+            which means internal lengths method may not be applicable.")
+  }
+
+  # Calculate 1-alpha confidence intervals
+  c <- 3/sqrt(3+pi^2)
+  growthRate_lb <- growthRate*(1+c*stats::qnorm(alpha/2)/sqrt(n))
+  growthRate_ub <- growthRate*(1-c*stats::qnorm(alpha/2)/sqrt(n))
+
+
+  runtime <- proc.time() - ptm
+
+  return(data.frame(
+    "lowerBound" = growthRate_lb, "estimate" = growthRate,
+    "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
+    "sumExternalLengths" = extLen, extIntRatio = extLen/intLen,
+    "n" = n, "alpha" = alpha, "hasStem" = hasStem,
+    "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
+    "method" = "maxLike"
+  ))
 }
 
 
@@ -186,6 +255,8 @@ inputCheck <- function(subtree, alpha){
 
   return(NULL)
 }
+
+
 
 
 
