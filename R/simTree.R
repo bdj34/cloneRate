@@ -1,18 +1,21 @@
-#' @title simTree
+#' Simulate birth and death branching trees
 #'
-#' @description Generates a sampled tree from a supercritial (birth rate >
-#'     death rate) birth and death branching process according to the coalescent
-#'     point process described in "Lambert, A. The coalescent of a sample from a
-#'     binary branching process. (2018)."
+#' @description Generates a sampled tree from a supercritial (birth rate > death
+#'   rate) birth and death branching process according to the coalescent point
+#'   process described in "Lambert, A. The coalescent of a sample from a binary
+#'   branching process. (2018)."
 #'
 #' @param a Birth rate
 #' @param b Death rate
-#' @param cloneAge Clone age (make sure it's same time units as birth and death rates)
+#' @param cloneAge Clone age (make sure it's same time units as birth and death
+#'   rates)
 #' @param n Number of samples (number of tips of the tree to be returned)
 #' @param precision Rmpfr param for handling high precision numbers
-#' @param addStem Boolean indicating whether to add stem to tree preceding first split
+#' @param addStem Boolean indicating whether to add stem to tree preceding first
+#'   split
 #'
-#' @return An ape tree object
+#' @return An ape object of class "phylo" representing the ultrametric
+#'   phylogenetic tree
 #' @export
 #' @importFrom Rmpfr "mpfr"
 #' @importFrom Rmpfr "asNumeric"

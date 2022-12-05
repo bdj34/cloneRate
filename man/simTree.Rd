@@ -2,7 +2,7 @@
 % Please edit documentation in R/simTree.R
 \name{simTree}
 \alias{simTree}
-\title{simTree}
+\title{Simulate birth and death branching trees}
 \usage{
 simTree(a, b, cloneAge, n, precision = 10000, addStem = T)
 }
@@ -11,22 +11,25 @@ simTree(a, b, cloneAge, n, precision = 10000, addStem = T)
 
 \item{b}{Death rate}
 
-\item{cloneAge}{Clone age (make sure it's same time units as birth and death rates)}
+\item{cloneAge}{Clone age (make sure it's same time units as birth and death
+rates)}
 
 \item{n}{Number of samples (number of tips of the tree to be returned)}
 
 \item{precision}{Rmpfr param for handling high precision numbers}
 
-\item{addStem}{Boolean indicating whether to add stem to tree preceding first split}
+\item{addStem}{Boolean indicating whether to add stem to tree preceding first
+split}
 }
 \value{
-An ape tree object
+An ape object of class "phylo" representing the ultrametric
+phylogenetic tree
 }
 \description{
-Generates a sampled tree from a supercritial (birth rate >
-    death rate) birth and death branching process according to the coalescent
-    point process described in "Lambert, A. The coalescent of a sample from a
-    binary branching process. (2018)."
+Generates a sampled tree from a supercritial (birth rate > death
+rate) birth and death branching process according to the coalescent point
+process described in "Lambert, A. The coalescent of a sample from a binary
+branching process. (2018)."
 }
 \examples{
 tree <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/growthRateMethods.R
 \name{inputCheck}
 \alias{inputCheck}
-\title{inputCheck}
+\title{Check the inputs to growth rate functions}
 \usage{
 inputCheck(subtree, alpha)
 }
@@ -10,8 +10,9 @@ inputCheck(subtree, alpha)
 \item{subtree}{An ape tree subset to include only the clone of interest}
 
 \item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence
-intervals used with default of alpha = 0.05 (95% confidence intervals)}
+intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
 }
 \description{
-Check the validity of inputs to growth rate fns
+Check the validity of inputs to growth rate fns, making sure the tree is an
+ultrametric ape phylo object with reasonable alpha
 }

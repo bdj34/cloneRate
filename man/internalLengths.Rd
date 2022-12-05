@@ -3,27 +3,26 @@
 \name{internalLengths}
 \alias{internalLengths}
 \title{Growth rate estimate using the sum of internal lengths}
-\description{
-`internalLengths()` provides an estimate for the net growth rate of the clone
-with confidence bounds, using the internal lengths method.
-}
 \usage{
 internalLengths(subtree, includeStem = F, alpha = 0.05)
 }
 \arguments{
 \item{subtree}{An ape tree subset to include only the clone of interest}
 
-\item{includeStem}{Boolean indicating whether we should count the stem of the
-tree as contributing to the internal lengths summation}
+\item{includeStem}{Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation}
 
-\item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence
-intervals used with default of alpha = 0.05 (95% confidence intervals)}
+\item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
 }
 \value{
-A dataframe including the net growth rate estimate, the sum of
-  internal lengths and other important details (runtime, n, etc.)
+A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
+}
+\description{
+\code{internalLengths()} provides an estimate for the net growth rate of the clone with confidence bounds, using the internal lengths method.
 }
 \examples{
-df <- internalLengths(coalRate::exampleTrees[[1]])
+internalLengths(coalRate::exampleTrees[[1]])
 
+}
+\seealso{
+\code{\link[=moments]{moments()}}, \code{\link[=maxLikelihood]{maxLikelihood()}}
 }

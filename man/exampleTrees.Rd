@@ -7,16 +7,16 @@
 \format{
 A \code{list} of objects of class \code{phylo}
 \describe{
- \item{edge}{A matrix of edge connections which reconstruct the tree.}
- \item{edge.length}{A numeric vector of the branch lengths of the connections
- in \code{edge} matrix.}
- \item{tip.label}{A character vector containing the  (arbitrary in this case)
-  labels for the 100 tips/samples of the tree.}
- \item{Nnode}{Integer number of internal nodes of the tree}
- See ape package for details on class \code{phylo} objects.
- Names of each \code{phylo} object (tree) in the list provides information
- about the net growth rate (r), birth rate (a), death rate (b), number of
- tips (n), and clone age (T).
+\item{edge}{A matrix of edge connections which reconstruct the tree.}
+\item{edge.length}{A numeric vector of the branch lengths of the connections
+in \code{edge} matrix.}
+\item{tip.label}{A character vector containing the  (arbitrary in this case)
+labels for the 100 tips/samples of the tree.}
+\item{Nnode}{Integer number of internal nodes of the tree}
+See ape package for details on class \code{phylo} objects.
+Names of each \code{phylo} object (tree) in the list provides information
+about the net growth rate (r), birth rate (a), death rate (b), number of
+tips (n), and clone age (T).
 }
 }
 \usage{

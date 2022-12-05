@@ -1,23 +1,17 @@
 #' Growth rate estimate using the sum of internal lengths
 #'
-#' `internalLengths()` provides an estimate for the net growth rate of the clone
-#' with confidence bounds, using the internal lengths method.
+#' @description `internalLengths()` provides an estimate for the net growth rate of the clone with confidence bounds, using the internal lengths method.
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
-#' @param includeStem Boolean indicating whether we should count the stem of the
-#'   tree as contributing to the internal lengths summation
-#' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'   intervals used with default of alpha = 0.05 (95% confidence intervals)
+#' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
+#' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
-#' @return A dataframe including the net growth rate estimate, the sum of
-#'   internal lengths and other important details (runtime, n, etc.)
-#'
+#' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
+#' @seealso [coalRate::moments()], [coalRate::maxLikelihood()]
 #' @export
-#'
-#' @examples
-#' df <- internalLengths(coalRate::exampleTrees[[1]])
-#'
 #' @importFrom ape "is.ultrametric"
+#' @examples
+#' internalLengths(coalRate::exampleTrees[[1]])
 #'
 internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
@@ -98,16 +92,16 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 
 #' Growth rate estimate using Method of Moments
 #'
-#' Provides an estimate for the net growth rate of the clone with confidence
-#' bounds using the method of moments.
+#' @description Provides an estimate for the net growth rate of the clone with confidence
+#'     bounds using the method of moments.
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'   intervals used with default of alpha = 0.05 (95% confidence intervals)
+#'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
-#' @return A dataframe including the net growth rate estimate, confidence
-#'   intervals, and other important details (runtime, n, etc.)
-#'
+#' @returns A dataframe including the net growth rate estimate, confidence
+#'     intervals, and other important details (runtime, n, etc.)
+#' @seealso [coalRate::internalLengths()], [coalRate::maxLikelihood()]
 #' @export
 #' @importFrom ape "branching.times"
 #' @examples
@@ -155,21 +149,23 @@ moments <- function(subtree, alpha = 0.05) {
 
 #' Growth rate estimate using Maximum Likelihood
 #'
-#' Uses the approximation that coalescence times H_i are equal to a+b*U_i to
-#' find a and b. b is equal to 1/r, where r is the net growth rate
+#' @description Uses the approximation that coalescence times H_i are equal to a+b*U_i to
+#'     find a and b. b is equal to 1/r, where r is the net growth rate
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'   intervals used with default of alpha = 0.05 (95% confidence intervals)
+#'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @return A dataframe including the net growth rate estimate, confidence
-#'   intervals, and other important details (runtime, n, etc.)
+#'     intervals, and other important details (runtime, n, etc.)
+#' @seealso [coalRate::internalLengths], [coalRate::moments()]
 #' @export
 #' @importFrom maxLik "maxLik"
 #' @importFrom ape "branching.times"
 #'
 #' @examples
 #' df <- maxLikelihood(coalRate::exampleTrees[[1]])
+#'
 maxLikelihood <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
@@ -227,13 +223,14 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
 }
 
 
-#' @title inputCheck
+#' Check the inputs to growth rate functions
 #'
-#' @description Check the validity of inputs to growth rate fns
+#' @description Check the validity of inputs to growth rate fns, making sure the tree is an
+#'     ultrametric ape phylo object with reasonable alpha
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'    intervals used with default of alpha = 0.05 (95% confidence intervals)
+#'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @importFrom ape "is.ultrametric"
 #' @return NULL

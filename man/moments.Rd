@@ -10,11 +10,11 @@ moments(subtree, alpha = 0.05)
 \item{subtree}{An ape tree subset to include only the clone of interest}
 
 \item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence
-intervals used with default of alpha = 0.05 (95% confidence intervals)}
+intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
 }
 \value{
 A dataframe including the net growth rate estimate, confidence
-  intervals, and other important details (runtime, n, etc.)
+intervals, and other important details (runtime, n, etc.)
 }
 \description{
 Provides an estimate for the net growth rate of the clone with confidence
@@ -22,4 +22,7 @@ bounds using the method of moments.
 }
 \examples{
 df <- moments(coalRate::exampleTrees[[1]])
+}
+\seealso{
+\code{\link[=internalLengths]{internalLengths()}}, \code{\link[=maxLikelihood]{maxLikelihood()}}
 }

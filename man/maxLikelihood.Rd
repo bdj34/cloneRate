@@ -10,11 +10,11 @@ maxLikelihood(subtree, alpha = 0.05)
 \item{subtree}{An ape tree subset to include only the clone of interest}
 
 \item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence
-intervals used with default of alpha = 0.05 (95% confidence intervals)}
+intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
 }
 \value{
 A dataframe including the net growth rate estimate, confidence
-  intervals, and other important details (runtime, n, etc.)
+intervals, and other important details (runtime, n, etc.)
 }
 \description{
 Uses the approximation that coalescence times H_i are equal to a+b*U_i to
@@ -22,4 +22,8 @@ find a and b. b is equal to 1/r, where r is the net growth rate
 }
 \examples{
 df <- maxLikelihood(coalRate::exampleTrees[[1]])
+
+}
+\seealso{
+\link{internalLengths}, \code{\link[=moments]{moments()}}
 }
