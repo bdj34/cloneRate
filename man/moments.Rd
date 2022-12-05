@@ -2,7 +2,7 @@
 % Please edit documentation in R/growthRateMethods.R
 \name{moments}
 \alias{moments}
-\title{moments}
+\title{Growth rate estimate using Method of Moments}
 \usage{
 moments(subtree, alpha = 0.05)
 }
@@ -13,12 +13,12 @@ moments(subtree, alpha = 0.05)
 intervals used with default of alpha = 0.05 (95% confidence intervals)}
 }
 \value{
-A dataframe including the net growth rate estimate, confidence intervals,
-and other important details (runtime, n, etc.)
+A dataframe including the net growth rate estimate, confidence
+  intervals, and other important details (runtime, n, etc.)
 }
 \description{
-Provides an estimate for the net growth rate of the clone with
-    confidence bounds using the method of moments.
+Provides an estimate for the net growth rate of the clone with confidence
+bounds using the method of moments.
 }
 \examples{
 df <- moments(coalRate::exampleTrees[[1]])

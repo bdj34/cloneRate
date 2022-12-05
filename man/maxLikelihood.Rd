@@ -2,7 +2,7 @@
 % Please edit documentation in R/growthRateMethods.R
 \name{maxLikelihood}
 \alias{maxLikelihood}
-\title{maxLike}
+\title{Growth rate estimate using Maximum Likelihood}
 \usage{
 maxLikelihood(subtree, alpha = 0.05)
 }
@@ -13,11 +13,12 @@ maxLikelihood(subtree, alpha = 0.05)
 intervals used with default of alpha = 0.05 (95% confidence intervals)}
 }
 \value{
-A dataframe including the net growth rate estimate, confidence intervals,
-and other important details (runtime, n, etc.)
+A dataframe including the net growth rate estimate, confidence
+  intervals, and other important details (runtime, n, etc.)
 }
 \description{
-maxLike
+Uses the approximation that coalescence times H_i are equal to a+b*U_i to
+find a and b. b is equal to 1/r, where r is the net growth rate
 }
 \examples{
 df <- maxLikelihood(coalRate::exampleTrees[[1]])

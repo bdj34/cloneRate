@@ -11,10 +11,14 @@
 #'
 #' @return A dataframe including the net growth rate estimate, the sum of
 #'   internal lengths and other important details (runtime, n, etc.)
+#'
+#' @export
+#'
 #' @examples
 #' df <- internalLengths(coalRate::exampleTrees[[1]])
-#' @export
+#'
 #' @importFrom ape "is.ultrametric"
+#'
 internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
 
@@ -92,17 +96,17 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 }
 
 
-#' @title moments
+#' Growth rate estimate using Method of Moments
 #'
-#' @description Provides an estimate for the net growth rate of the clone with
-#'     confidence bounds using the method of moments.
+#' Provides an estimate for the net growth rate of the clone with confidence
+#' bounds using the method of moments.
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'    intervals used with default of alpha = 0.05 (95% confidence intervals)
+#'   intervals used with default of alpha = 0.05 (95% confidence intervals)
 #'
-#' @return A dataframe including the net growth rate estimate, confidence intervals,
-#' and other important details (runtime, n, etc.)
+#' @return A dataframe including the net growth rate estimate, confidence
+#'   intervals, and other important details (runtime, n, etc.)
 #'
 #' @export
 #' @importFrom ape "branching.times"
@@ -149,14 +153,17 @@ moments <- function(subtree, alpha = 0.05) {
 }
 
 
-#' maxLike
+#' Growth rate estimate using Maximum Likelihood
+#'
+#' Uses the approximation that coalescence times H_i are equal to a+b*U_i to
+#' find a and b. b is equal to 1/r, where r is the net growth rate
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'    intervals used with default of alpha = 0.05 (95% confidence intervals)
+#'   intervals used with default of alpha = 0.05 (95% confidence intervals)
 #'
-#' @return A dataframe including the net growth rate estimate, confidence intervals,
-#' and other important details (runtime, n, etc.)
+#' @return A dataframe including the net growth rate estimate, confidence
+#'   intervals, and other important details (runtime, n, etc.)
 #' @export
 #' @importFrom maxLik "maxLik"
 #' @importFrom ape "branching.times"
