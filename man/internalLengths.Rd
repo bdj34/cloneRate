@@ -2,7 +2,7 @@
 % Please edit documentation in R/growthRateMethods.R
 \name{internalLengths}
 \alias{internalLengths}
-\title{internalLengths}
+\title{Growth rate estimate using the sum of internal lengths}
 \usage{
 internalLengths(subtree, includeStem = F, alpha = 0.05)
 }
@@ -17,13 +17,12 @@ intervals used with default of alpha = 0.05 (95% confidence intervals)}
 }
 \value{
 A dataframe including the net growth rate estimate, the sum of
-internal lengths and other important details (runtime, n, etc.)
+  internal lengths and other important details (runtime, n, etc.)
 }
 \description{
-Provides an estimate for the net growth rate of the clone with
-    confidence bounds, using the internal lengths method.
+`internalLengths()` provides an estimate for the net growth rate of the clone
+with confidence bounds, using the internal lengths method.
 }
 \examples{
-data(exampleTrees)
-df <- internalLengths(exampleTrees[[1]])
+df <- internalLengths(coalRate::exampleTrees[[1]])
 }

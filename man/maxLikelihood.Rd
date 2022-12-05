@@ -20,6 +20,5 @@ and other important details (runtime, n, etc.)
 maxLike
 }
 \examples{
-data(exampleTrees)
-df <- maxLikelihood(exampleTrees[[1]])
+df <- maxLikelihood(coalRate::exampleTrees[[1]])
 }

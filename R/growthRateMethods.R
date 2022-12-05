@@ -1,19 +1,18 @@
-#' @title internalLengths
+#' Growth rate estimate using the sum of internal lengths
 #'
-#' @description Provides an estimate for the net growth rate of the clone with
-#'     confidence bounds, using the internal lengths method.
+#' `internalLengths()` provides an estimate for the net growth rate of the clone
+#' with confidence bounds, using the internal lengths method.
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param includeStem Boolean indicating whether we should count the stem of the
-#'     tree as contributing to the internal lengths summation
+#'   tree as contributing to the internal lengths summation
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'    intervals used with default of alpha = 0.05 (95% confidence intervals)
+#'   intervals used with default of alpha = 0.05 (95% confidence intervals)
 #'
 #' @return A dataframe including the net growth rate estimate, the sum of
-#' internal lengths and other important details (runtime, n, etc.)
+#'   internal lengths and other important details (runtime, n, etc.)
 #' @examples
-#' data(exampleTrees)
-#' df <- internalLengths(exampleTrees[[1]])
+#' df <- internalLengths(coalRate::exampleTrees[[1]])
 #' @export
 #' @importFrom ape "is.ultrametric"
 internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
@@ -108,8 +107,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @export
 #' @importFrom ape "branching.times"
 #' @examples
-#' data(exampleTrees)
-#' df <- moments(exampleTrees[[1]])
+#' df <- moments(coalRate::exampleTrees[[1]])
 moments <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
@@ -164,8 +162,7 @@ moments <- function(subtree, alpha = 0.05) {
 #' @importFrom ape "branching.times"
 #'
 #' @examples
-#' data(exampleTrees)
-#' df <- maxLikelihood(exampleTrees[[1]])
+#' df <- maxLikelihood(coalRate::exampleTrees[[1]])
 maxLikelihood <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
