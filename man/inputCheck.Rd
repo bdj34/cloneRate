@@ -16,3 +16,4 @@ intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
 Check the validity of inputs to growth rate fns, making sure the tree is an
 ultrametric ape phylo object with reasonable alpha
 }
+\keyword{internal}

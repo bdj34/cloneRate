@@ -231,7 +231,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
 #'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
-#'
+#' @keywords internal
 #' @importFrom ape "is.ultrametric"
 #' @return NULL
 #'

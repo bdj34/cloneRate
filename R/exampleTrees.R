@@ -6,7 +6,7 @@
 #' birth rate minus 1. Tree reconstruction uses the exact distribution of
 #' coalescence times described in "The coalescent of a sample from a binary
 #' branching process", Lambert A., Theor. Pop. Bio. 2018. Tree construction and
-#' formatting uses \code{ape} R package (https://cran.r-project.org/web/packages/ape/index.html).
+#' formatting uses \code{ape} R package [ape::rcoal()].
 #'
 #' @docType data
 #'
@@ -30,7 +30,6 @@
 #' binary branching process", Lambert A., Theor. Pop. Bio. 2018.
 #' @keywords phylogenetics, trees
 #' @examples
-#'
 #' data(exampleTrees) # Load data
 #' library(ggtree) # Package for plotting phylogenetic trees by extending ggplot2
 #' ggtree(exampleTrees[[1]]) # Plot first of 100 trees
