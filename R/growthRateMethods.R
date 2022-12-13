@@ -105,7 +105,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @export
 #' @importFrom ape "is.ultrametric"
 #' @examples
-#' internalLengths(coalRate::exampleTrees[[1]])
+#' sharedMuts(coalRate::exampleMutTrees[[1]])
 #'
 sharedMuts <- function(subtree, nu, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
