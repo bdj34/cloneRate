@@ -2,7 +2,7 @@
 #'
 #' @description `internalLengths()` provides an estimate for the net growth rate of the clone with confidence bounds, using the internal lengths method.
 #'
-#' @param subtree An ape tree subset to include only the clone of interest
+#' @param subtree An ultrametric ape tree subset to include only the clone of interest
 #' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
@@ -90,6 +90,105 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 }
 
 
+
+#' Growth rate estimate using the sum of shared mutations assuming a mutation tree
+#'
+#' @description `sharedMuts()` provides an estimate for the net growth rate of the clone with confidence bounds, using the shared mutations method.
+#'
+#' @param subtree A non-ultrametric ape tree subset to include only the clone of interest
+#' @param nu The mutation rate
+#' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
+#' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
+#'
+#' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
+#' @seealso [coalRate::internalLengths()], [coalRate::moments()], [coalRate::maxLikelihood()]
+#' @export
+#' @importFrom ape "is.ultrametric"
+#' @examples
+#' internalLengths(coalRate::exampleTrees[[1]])
+#'
+sharedMuts <- function(subtree, nu, includeStem = F, alpha = 0.05) {
+  ptm <- proc.time()
+
+  # Make sure tree is NOT ultrametric
+  if (is.ultrametric(subtree)){
+    stop("Tree should be mutation-based, not time-based. Tree should not be ultrametric.")
+  }
+
+  if (includeStem) {
+    message("You have set includeStem = T. Note that we do not include the stem as part of the internal lengths calculation in our work (Johnson et al. 2022)")
+  }
+
+  # Check if tree has stem
+  n <- length(subtree$tip.label)
+  nodes <- subtree$edge[subtree$edge > n]
+  if (1 %in% table(nodes)) {
+    hasStem <- T
+    stemNode <- as.numeric(names(which(table(nodes) == 1)))
+  } else {
+    hasStem <- F
+  }
+
+  # If includeStem is TRUE, make sure tree has stem
+  if (!hasStem & includeStem) {
+    stop("includeStem is set to TRUE, but tree does not have a stem!")
+  }
+
+  # Get list of descendants from each internal node
+  descendant_df <- data.frame(
+    "Node" = (length(subtree$tip.label) + 2):max(subtree$edge), "Parent" = NA,
+    "Edge_length" = NA, "n_cells" = NA
+  )
+
+
+  # Find parent, edge length, and number of descendant cells for each internal node
+  for (k in descendant_df$Node) {
+    descendants <- subtree$edge[subtree$edge[, 1] == k, 2]
+    descendant_df$n_cells[descendant_df$Node == k] <- length(descendants)
+    descendant_df$Edge_length[descendant_df$Node == k] <- subtree$edge.length[which(subtree$edge[, 2] == k)]
+    descendant_df$Parent[descendant_df$Node == k] <- subtree$edge[which(subtree$edge[, 2] == k), 1]
+  }
+
+  # If include Stem is FALSE but tree has a stem, remove stem from calculation
+  if (!includeStem & hasStem) {
+    descendant_df <- descendant_df[!descendant_df$Parent == stemNode, ]
+  }
+
+  # The sum of edge lengths in descendant_df is equal to the total shared mutations
+  sharedMutations <- sum(descendant_df$Edge_length)
+
+  # Calculate growth rate and confidence intervals
+  growthRate <- n * nu / sharedMutations
+  growthRate_lb <- growthRate * (1 + (qnorm(alpha / 2) / sqrt(n))*(1+n/sharedMutations))
+  growthRate_ub <- growthRate * (1 - (qnorm(alpha / 2) / sqrt(n))*(1+n/sharedMutations))
+
+  # Calculate total private (singleton) mutations
+  privateMuts <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
+
+  # Check ratio of private to shared mutations
+  if (privateMuts / sharedMutations <= 3) {
+    warning("Private to shared mutations ratio is less than or equal to 3,
+            which means shared mutations method may not be applicable.")
+  }
+
+  # Get runtime (including all tests)
+  runtime <- proc.time() - ptm
+
+  # return data.frame
+  return(data.frame(
+    "lowerBound" = growthRate_lb, "estimate" = growthRate,
+    "upperBound" = growthRate_ub, "nu" = nu,
+    "sharedMutations" = sharedMutations,
+    "privateMutations" = privateMuts,
+    "extIntRatio" = privateMuts / sharedMutations,
+    "n" = n, "alpha" = alpha, "hasStem" = hasStem,
+    "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
+    "method" = "sharedMuts"
+  ))
+}
+
+
+
 #' Growth rate estimate using Method of Moments
 #'
 #' @description Provides an estimate for the net growth rate of the clone with confidence
@@ -145,6 +244,7 @@ moments <- function(subtree, alpha = 0.05) {
     "method" = "moments"
   ))
 }
+
 
 
 #' Growth rate estimate using Maximum Likelihood

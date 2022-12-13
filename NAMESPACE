@@ -3,6 +3,7 @@
 export(internalLengths)
 export(maxLikelihood)
 export(moments)
+export(sharedMuts)
 export(simTree)
 importFrom(Rmpfr,"asNumeric")
 importFrom(Rmpfr,"mpfr")
