@@ -11,7 +11,8 @@ for (i in c(1:100)){
   b <- a-1
   tree <- coalRate::simTree(a, b, cloneAge = 20, n=100)
   tree_list <- append(tree_list, list(tree))
-  names_vec <- c(names_vec, paste0("r=1_a=", round(a, 5), "_b=", round(b, 5), "_T=20_n=100")) # T is used synonymously with cloneAge
+  names_vec <- c(names_vec, paste0("r=1_a=", round(a, 5), "_b=", round(b, 5),
+                                   "_T=20_n=100")) # T is used synonymously with cloneAge
 }
 
 # Name the list so we have the info on params of the trees generated
