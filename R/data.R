@@ -25,7 +25,7 @@
 #'  Names of each \code{phylo} object (tree) in the list matches the naming used
 #'  in the sources.
 #' }
-#' @references BUUHUBU These datasets were generated and annotated in:
+#' @references wekno2ieci These datasets were generated and annotated in:
 #' [Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 #' [Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/)
 #' [Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/)
