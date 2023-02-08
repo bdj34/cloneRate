@@ -84,8 +84,8 @@ plot(cloneTree)
 We can now apply our methods to the clone tree
 ```{r apply methods}
 # Get maximum likelihood and internal lengths estimates
-print(maxLikelihood(cloneTree))
-print(internalLengths(cloneTree))
+print(maxLikelihood(cloneTree)$estimate)
+print(internalLengths(cloneTree)$estimate)
 ```
 
 
@@ -94,13 +94,13 @@ which are the ones we use in our analysis. Note that there are three clones
 profiled at two different timepoints, meaning there are 39 unique clones.
 The papers which generate this data are:
 
-[Williams et al.](https://pubmed.ncbi.nlm.nih.gov/35058638/)
+[Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 
-[Mitchell et al.](https://pubmed.ncbi.nlm.nih.gov/35650442/)
+[Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/)
 
-[Fabre et al.](https://pubmed.ncbi.nlm.nih.gov/35650444/)
+[Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/)
 
-[Van Egeren et al.](https://pubmed.ncbi.nlm.nih.gov/33621486/)
+[Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 
 
 
