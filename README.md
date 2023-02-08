@@ -47,12 +47,12 @@ plot(tree)
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", maxLike.df$estimate))
-#> [1] "Max. likelihood estimate = 0.478790478637414"
+#> [1] "Max. likelihood estimate = 0.50691856187539"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", intLengths.df$estimate))
-#> [1] "Internal lengths estimate = 0.523599086771774"
+#> [1] "Internal lengths estimate = 0.521575201726908"
 ```
 
 In our [paper](https://www.biorxiv.org), we use simulated trees to test
@@ -93,19 +93,23 @@ print(maxLikelihood(cloneTree))
 #>   lowerBound  estimate upperBound sumInternalLengths sumExternalLengths
 #> 1  0.4153672 0.5156747  0.6159822            118.118           1156.869
 #>   extIntRatio  n alpha hasStem includeStem runtime_s  method
-#> 1    9.794179 71  0.05   FALSE       FALSE     0.011 maxLike
+#> 1    9.794179 71  0.05   FALSE       FALSE     0.012 maxLike
 print(internalLengths(cloneTree))
 #>   lowerBound  estimate upperBound sumInternalLengths sumExternalLengths
 #> 1  0.4612763 0.6010937   0.740911            118.118           1156.869
 #>   extIntRatio  n alpha hasStem includeStem runtime_s  method
-#> 1    9.794179 71  0.05   FALSE       FALSE      0.02 lengths
+#> 1    9.794179 71  0.05   FALSE       FALSE     0.004 lengths
 ```
 
 Our package comes with 42 clones annotated from four distinct
 publications, which are the ones we use in our analysis. Note that there
 are three clones profiled at two different timepoints, meaning there are
-39 unique clones. The papers which generate this data are: [Williams et
-al.](https://pubmed.ncbi.nlm.nih.gov/35058638/) [Mitchell et
-al.](https://pubmed.ncbi.nlm.nih.gov/35650442/) [Fabre et
-al.](https://pubmed.ncbi.nlm.nih.gov/35650444/) [Van Egeren et
-al.](https://pubmed.ncbi.nlm.nih.gov/33621486/)
+39 unique clones. The papers which generate this data are:
+
+[Williams et al.](https://pubmed.ncbi.nlm.nih.gov/35058638/)
+
+[Mitchell et al.](https://pubmed.ncbi.nlm.nih.gov/35650442/)
+
+[Fabre et al.](https://pubmed.ncbi.nlm.nih.gov/35650444/)
+
+[Van Egeren et al.](https://pubmed.ncbi.nlm.nih.gov/33621486/)

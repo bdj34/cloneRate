@@ -93,9 +93,13 @@ Our package comes with 42 clones annotated from four distinct publications,
 which are the ones we use in our analysis. Note that there are three clones
 profiled at two different timepoints, meaning there are 39 unique clones.
 The papers which generate this data are:
+
 [Williams et al.](https://pubmed.ncbi.nlm.nih.gov/35058638/)
+
 [Mitchell et al.](https://pubmed.ncbi.nlm.nih.gov/35650442/)
+
 [Fabre et al.](https://pubmed.ncbi.nlm.nih.gov/35650444/)
+
 [Van Egeren et al.](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 
 
