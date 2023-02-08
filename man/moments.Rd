@@ -21,7 +21,7 @@ Provides an estimate for the net growth rate of the clone with confidence
 bounds using the method of moments.
 }
 \examples{
-df <- moments(coalRate::exampleTrees[[1]])
+df <- moments(cloneRate::exampleTrees[[1]])
 }
 \seealso{
 \code{\link[=internalLengths]{internalLengths()}}, \code{\link[=maxLikelihood]{maxLikelihood()}}

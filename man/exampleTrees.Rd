@@ -38,7 +38,7 @@ ggtree(exampleTrees[[1]]) # Plot first of 100 trees
 
 }
 \references{
-This data set was created for the coalRate package using
+This data set was created for the cloneRate package using
 coalescent theory approaches described in "The coalescent of a sample from a
 binary branching process", Lambert A., Theor. Pop. Bio. 2018.
 }

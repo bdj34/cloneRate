@@ -41,7 +41,7 @@ data(realCloneData)
 of Myeloproliferative Neoplasm
 }
 \examples{
-plot(coalRate::realCloneData[["PD34493"]]) # Plot full reconstructed tree from donor PD34493
+plot(cloneRate::realCloneData[["PD34493"]]) # Plot full reconstructed tree from donor PD34493
 
 
 }

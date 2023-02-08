@@ -1,5 +1,5 @@
 ## code to prepare `exampleTrees` dataset goes here
-library(coalRate)
+library(cloneRate)
 
 # Generate empty list and vector naming the list
 tree_list <- list()
@@ -9,7 +9,7 @@ names_vec <- c()
 for (i in c(1:100)){
   a <- stats::runif(1, min = 1, max = 2)
   b <- a-1
-  tree <- coalRate::simTree(a, b, cloneAge = 20, n=100)
+  tree <- cloneRate::simTree(a, b, cloneAge = 20, n=100)
   tree_list <- append(tree_list, list(tree))
   names_vec <- c(names_vec, paste0("r=1_a=", round(a, 5), "_b=", round(b, 5),
                                    "_T=20_n=100")) # T is used synonymously with cloneAge

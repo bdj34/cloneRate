@@ -1,4 +1,4 @@
 library(testthat)
-library(coalRate)
+library(cloneRate)
 
-test_check("coalRate")
+test_check("cloneRate")

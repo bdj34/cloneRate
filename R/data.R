@@ -25,14 +25,14 @@
 #'  Names of each \code{phylo} object (tree) in the list matches the naming used
 #'  in the sources.
 #' }
-#' @references wekno2ieci These datasets were generated and annotated in:
+#' @references These datasets were generated and annotated in:
 #' [Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 #' [Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/)
 #' [Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/)
 #' [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 #' @keywords phylogenetics, hematopoiesis
 #' @examples
-#' plot(coalRate::realCloneData[["PD34493"]]) # Plot full reconstructed tree from donor PD34493
+#' plot(cloneRate::realCloneData[["PD34493"]]) # Plot full reconstructed tree from donor PD34493
 #'
 #'
 #' @source <https://pubmed.ncbi.nlm.nih.gov/35058638/>

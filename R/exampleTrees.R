@@ -25,7 +25,7 @@
 #'  about the net growth rate (r), birth rate (a), death rate (b), number of
 #'  tips (n), and clone age (T).
 #' }
-#' @references This data set was created for the coalRate package using
+#' @references This data set was created for the cloneRate package using
 #' coalescent theory approaches described in "The coalescent of a sample from a
 #' binary branching process", Lambert A., Theor. Pop. Bio. 2018.
 #' @keywords phylogenetics, trees

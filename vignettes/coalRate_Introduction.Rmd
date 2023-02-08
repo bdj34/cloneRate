@@ -1,8 +1,8 @@
 ---
-title: "coalRate_Introduction"
+title: "cloneRate_Introduction"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{coalRate_Introduction}
+  %\VignetteIndexEntry{cloneRate_Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,5 +15,5 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(coalRate)
+library(cloneRate)
 ```

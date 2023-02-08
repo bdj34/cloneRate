@@ -1,5 +1,5 @@
 Type: Package
-Package: coalRate
+Package: cloneRate
 Title: Estimate growth rates from genealogies
 Version: 0.0.1
 Date: 2022-11-17
@@ -11,8 +11,8 @@ Description: Various methods to quickly estimate net growth rates of
     growth trajectory of clones assuming that reconstructed trees are
     time-based (or mutation-based if a mutation rate is known/estimated).
 License: MIT + file LICENSE
-URL: https://github.com/bdj34/coalRate
-BugReports: https://github.com/bdj34/coalRate/issues
+URL: https://github.com/bdj34/cloneRate
+BugReports: https://github.com/bdj34/cloneRate/issues
 Depends:
     R (>= 3.5.0)
 Imports:

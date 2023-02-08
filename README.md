@@ -1,12 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# coalRate
+# cloneRate
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of coalRate is to provide easily accessible methods for
+The goal of cloneRate is to provide easily accessible methods for
 estimating the growth rate of clones using time-based phylogenetic trees
 as input. This package provides the internal lengths and maximum
 likelihood methods from our recent preprint [Estimating single cell
@@ -15,12 +15,12 @@ theory](https://www.biorxiv.org)
 
 ## Installation
 
-You can install the development version of coalRate from
+You can install the development version of cloneRate from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("bdj34/coalRate")
+devtools::install_github("bdj34/cloneRate")
 ```
 
 ## Example
@@ -31,7 +31,7 @@ This is a basic example which shows you how to simulate a tree and
 calculate the growth rate using two different methods:
 
 ``` r
-library(coalRate)
+library(cloneRate)
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
 tree <- simTree(a=1, b=0.5, cloneAge=20, n=100)
@@ -47,12 +47,12 @@ plot(tree)
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", maxLike.df$estimate))
-#> [1] "Max. likelihood estimate = 0.64824368486325"
+#> [1] "Max. likelihood estimate = 0.578961468328489"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", intLengths.df$estimate))
-#> [1] "Internal lengths estimate = 0.671599116779457"
+#> [1] "Internal lengths estimate = 0.563941151544989"
 ```
 
 In our [paper](https://www.biorxiv.org), we use simulated trees to test
@@ -65,10 +65,10 @@ maximum likelihood and lengths estimates to a real data clone from
 [Williams et al.](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 
 ``` r
-library(coalRate)
+library(cloneRate)
 
 # Load and plot the data
-PD9478 <- coalRate::realCloneData[["PD9478_1"]]
+PD9478 <- cloneRate::realCloneData[["PD9478_1"]]
 plot(PD9478)
 ```
 

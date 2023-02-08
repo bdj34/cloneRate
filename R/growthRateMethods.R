@@ -7,11 +7,11 @@
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
-#' @seealso [coalRate::moments()], [coalRate::maxLikelihood()]
+#' @seealso [cloneRate::moments()], [cloneRate::maxLikelihood()]
 #' @export
 #' @importFrom ape "is.ultrametric"
 #' @examples
-#' internalLengths(coalRate::exampleTrees[[1]])
+#' internalLengths(cloneRate::exampleTrees[[1]])
 #'
 internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
@@ -102,11 +102,11 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
-#' @seealso [coalRate::internalLengths()], [coalRate::moments()], [coalRate::maxLikelihood()]
+#' @seealso [cloneRate::internalLengths()], [cloneRate::moments()], [cloneRate::maxLikelihood()]
 #' @export
 #' @importFrom ape "is.ultrametric"
 #' @examples
-#' sharedMuts(coalRate::exampleMutTrees[[1]])
+#' sharedMuts(cloneRate::exampleMutTrees[[1]])
 #'
 sharedMuts <- function(subtree, nu, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
@@ -201,11 +201,11 @@ sharedMuts <- function(subtree, nu, includeStem = F, alpha = 0.05) {
 #'
 #' @returns A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (runtime, n, etc.)
-#' @seealso [coalRate::internalLengths()], [coalRate::maxLikelihood()]
+#' @seealso [cloneRate::internalLengths()], [cloneRate::maxLikelihood()]
 #' @export
 #' @importFrom ape "branching.times"
 #' @examples
-#' df <- moments(coalRate::exampleTrees[[1]])
+#' df <- moments(cloneRate::exampleTrees[[1]])
 moments <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
@@ -222,7 +222,7 @@ moments <- function(subtree, alpha = 0.05) {
 
   # Get other tree info (lengths)
   extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
-  intLen <- suppressWarnings(coalRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
+  intLen <- suppressWarnings(cloneRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
   n <- length(subtree$tip.label)
   nodes <- subtree$edge[subtree$edge > n]
   if (1 %in% table(nodes)) {
@@ -262,13 +262,13 @@ moments <- function(subtree, alpha = 0.05) {
 #'
 #' @return A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (runtime, n, etc.)
-#' @seealso [coalRate::internalLengths], [coalRate::moments()]
+#' @seealso [cloneRate::internalLengths], [cloneRate::moments()]
 #' @export
 #' @importFrom maxLik "maxLik"
 #' @importFrom ape "branching.times"
 #'
 #' @examples
-#' df <- maxLikelihood(coalRate::exampleTrees[[1]])
+#' df <- maxLikelihood(cloneRate::exampleTrees[[1]])
 #'
 maxLikelihood <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
@@ -294,7 +294,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
 
   # Get other tree info (lengths)
   extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
-  intLen <- suppressWarnings(coalRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
+  intLen <- suppressWarnings(cloneRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
   n <- length(subtree$tip.label)
   nodes <- subtree$edge[subtree$edge > n]
   if (1 %in% table(nodes)) {
