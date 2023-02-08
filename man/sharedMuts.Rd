@@ -22,7 +22,7 @@ A dataframe including the net growth rate estimate, the sum of internal lengths 
 \code{sharedMuts()} provides an estimate for the net growth rate of the clone with confidence bounds, using the shared mutations method.
 }
 \examples{
-internalLengths(coalRate::exampleTrees[[1]])
+sharedMuts(coalRate::exampleMutTrees[[1]])
 
 }
 \seealso{

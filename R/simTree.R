@@ -64,7 +64,7 @@ simTree <- function(a, b, cloneAge, n, precision = 10000, addStem = T) {
   }
 
   # Draw Y = y from the inverse CDF
-  uniform_rv <- mpfr(runif(1), precision)
+  uniform_rv <- mpfr(stats::runif(1), precision)
   y_mpfr <- ((one - alpha_mpfr) * (uniform_rv**(one / n_mpfr))) / (one - alpha_mpfr * uniform_rv**(one / n_mpfr))
 
   # Generate the coalesence times
@@ -113,7 +113,7 @@ simTree <- function(a, b, cloneAge, n, precision = 10000, addStem = T) {
 # Draw from quantile function for the coalescence times (with high precision mpfr)
 inv_cdf_coal_times <- function(y, net, a, alpha, precision) {
   one <- mpfr(1, precision)
-  rv <- mpfr(runif(1), precision)
+  rv <- mpfr(stats::runif(1), precision)
   phi <- (alpha * rv) / (a * (one - alpha * (one - y)))
   return((-one / net) * log((one - y * a * phi) / (one + (net - y * a) * phi)))
 }

@@ -20,7 +20,8 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   inputCheck(subtree, alpha)
 
   if (includeStem) {
-    message("You have set includeStem = T. Note that we do not include the stem as part of the internal lengths calculation in our work (Johnson et al. 2022)")
+    message("You have set includeStem = T. Note that we do not include the stem
+            as part of the internal lengths calculation in our work (Johnson et al. 2022)")
   }
 
   # Check if tree has stem
@@ -63,8 +64,8 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 
   # Calculate growth rate and confidence intervals
   growthRate <- n / intLen
-  growthRate_lb <- growthRate * (1 + qnorm(alpha / 2) / sqrt(n))
-  growthRate_ub <- growthRate * (1 - qnorm(alpha / 2) / sqrt(n))
+  growthRate_lb <- growthRate * (1 + stats::qnorm(alpha / 2) / sqrt(n))
+  growthRate_ub <- growthRate * (1 - stats::qnorm(alpha / 2) / sqrt(n))
 
   # Calculate total external lengths
   extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
@@ -159,8 +160,8 @@ sharedMuts <- function(subtree, nu, includeStem = F, alpha = 0.05) {
 
   # Calculate growth rate and confidence intervals
   growthRate <- n * nu / sharedMutations
-  growthRate_lb <- growthRate * (1 + (qnorm(alpha / 2) / sqrt(n))*(1+n/sharedMutations))
-  growthRate_ub <- growthRate * (1 - (qnorm(alpha / 2) / sqrt(n))*(1+n/sharedMutations))
+  growthRate_lb <- growthRate * (1 + (stats::qnorm(alpha / 2) / sqrt(n))*(1+n/sharedMutations))
+  growthRate_ub <- growthRate * (1 - (stats::qnorm(alpha / 2) / sqrt(n))*(1+n/sharedMutations))
 
   # Calculate total private (singleton) mutations
   privateMuts <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
@@ -208,17 +209,20 @@ sharedMuts <- function(subtree, nu, includeStem = F, alpha = 0.05) {
 moments <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
+  # Check if tree has stem
+  n <- length(subtree$tip.label)
+
   # Basic check on input formatting and alpha value
   inputCheck(subtree, alpha)
 
   # Calculate the growth rate
-  growthRate <- (pi / sqrt(3)) * 1 / (stats::sd(ape::branching.times(t1)))
-  growthRate_lb <- moments_growth_rate * sqrt(1 + 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
-  growthRate_ub <- moments_growth_rate * sqrt(1 - 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
+  growthRate <- (pi / sqrt(3)) * 1 / (stats::sd(ape::branching.times(subtree)))
+  growthRate_lb <- growthRate * sqrt(1 + 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
+  growthRate_ub <- growthRate * sqrt(1 - 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
 
   # Get other tree info (lengths)
   extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
-  intLen <- coalRate::internalLengths(subtree, includeStem = F)$sumInternalLengths
+  intLen <- suppressWarnings(coalRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
   n <- length(subtree$tip.label)
   nodes <- subtree$edge[subtree$edge > n]
   if (1 %in% table(nodes)) {
@@ -290,7 +294,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
 
   # Get other tree info (lengths)
   extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
-  intLen <- coalRate::internalLengths(subtree, includeStem = F)$sumInternalLengths
+  intLen <- suppressWarnings(coalRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
   n <- length(subtree$tip.label)
   nodes <- subtree$edge[subtree$edge > n]
   if (1 %in% table(nodes)) {
@@ -337,9 +341,9 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
 #'
 inputCheck <- function(subtree, alpha) {
   # Must be of class phylo
-  if (class(subtree) != "phylo") {
+  if (! inherits(subtree, "phylo")) {
     stop("Tree must be of class phylo. Use as.phylo function to convert if the
-    formatting is correct. Otherwise, see ape documentation
+    formatting is correct. Otherwise, see ape package documentation
     https://cran.r-project.org/web/packages/ape/ape.pdf")
   }
 
