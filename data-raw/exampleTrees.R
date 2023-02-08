@@ -18,7 +18,7 @@ for (i in c(1:100)){
 # Name the list so we have the info on params of the trees generated
 names(tree_list) <- names_vec
 
-# Rename object and save to data-raw and data
+# Rename object and save to data-raw (?) and data
 exampleTrees <- tree_list
-save(exampleTrees, file = "data-raw/exampleTrees.rda", compress = "bzip2")
+#save(exampleTrees, file = "data-raw/exampleTrees.rda", compress = "bzip2")
 usethis::use_data(exampleTrees, overwrite = TRUE, compress = "bzip2")

@@ -20,7 +20,8 @@ Imports:
     ape (>= 4.0),
     castor (>= 1.7),
     maxLik (>= 1.4),
-    Rmpfr (>= 0.8)
+    Rmpfr (>= 0.8),
+    tibble
 Suggests:
     covr,
     ggtree,
