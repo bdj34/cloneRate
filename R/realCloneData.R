@@ -5,10 +5,10 @@
 #'
 #' @docType data
 #'
-#' @usage data(exampleTrees)
+#' @usage data(realCloneData)
 #'
 #' @format A \code{list} of objects of class \code{phylo} with an included
-#' \code{data.frame} annotating clones
+#' \code{data.frame} "expansions" which has annotated clonal expansions
 #' \describe{
 #'  \item{edge}{A matrix of edge connections which reconstruct the tree.}
 #'  \item{edge.length}{A numeric vector of the branch lengths of the connections
@@ -22,9 +22,8 @@
 #'  \item{expansions}{data.frame identifying the tips that are to be included in
 #'  analysis of expanded clones/clades.}
 #'  See ape package for details on class \code{phylo} objects.
-#'  Names of each \code{phylo} object (tree) in the list provides information
-#'  about the net growth rate (r), birth rate (a), death rate (b), number of
-#'  tips (n), and clone age (T).
+#'  Names of each \code{phylo} object (tree) in the list matches the naming used
+#'  in the sources.
 #' }
 #' @references These datasets were generated and annotated in:
 #' [Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
