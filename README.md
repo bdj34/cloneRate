@@ -22,8 +22,16 @@ You can install the development version of cloneRate from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
+# Install devtools if you don't have it already
+install.packages(setdiff("devtools", rownames(installed.packages()))) 
 devtools::install_github("bdj34/cloneRate")
+```
+
+For this tutorial, we will also use ggplot2 and ggtree, which can be
+installed from CRAN if you don’t have them.
+
+``` r
+install.packages(setdiff(c("ggplot2", "ggtree"), rownames(installed.packages())))
 ```
 
 ## Example
@@ -34,13 +42,29 @@ This is a basic example which shows you how to simulate a tree and
 calculate the growth rate using two different methods:
 
 ``` r
-library(cloneRate)
+library(cloneRate, quietly = T)
+library(ggtree, quietly = T)
+#> ggtree v3.6.2 For help: https://yulab-smu.top/treedata-book/
+#> 
+#> If you use the ggtree package suite in published research, please cite
+#> the appropriate paper(s):
+#> 
+#> Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam.
+#> ggtree: an R package for visualization and annotation of phylogenetic
+#> trees with their covariates and other associated data. Methods in
+#> Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
+#> 
+#> G Yu. Data Integration, Manipulation and Visualization of Phylogenetic
+#> Trees (1st ed.). Chapman and Hall/CRC. 2022. ISBN: 9781032233574
+#> 
+#> Guangchuang Yu. Using ggtree to visualize data on tree-like structures.
+#> Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
-tree <- simTree(a=1, b=0.5, cloneAge=20, n=100)
+tree <- simTree(a=1, b=0.5, cloneAge=30, n=100)
 
 # Plot the tree (see ggtree for more advanced plotting)
-plot(tree)
+ggtree(tree) + layout_dendrogram()
 ```
 
 <img src="man/figures/README-sim example-1.png" width="100%" />
@@ -49,25 +73,21 @@ plot(tree)
 
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
-#> Warning in maxLikelihood(tree): External to internal lengths ratio is less than or equal to 3,
-#>             which means internal lengths method may not be applicable.
-print(paste0("Max. likelihood estimate = ", maxLike.df$estimate))
-#> [1] "Max. likelihood estimate = 0.5610536877424"
+print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
+#> [1] "Max. likelihood estimate = 0.539"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
-#> Warning in internalLengths(tree): External to internal lengths ratio is less than or equal to 3,
-#>             which means internal lengths method may not be applicable.
-print(paste0("Internal lengths estimate = ", intLengths.df$estimate))
-#> [1] "Internal lengths estimate = 0.566508231770236"
+print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
+#> [1] "Internal lengths estimate = 0.613"
 ```
 
 In our [paper](https://www.biorxiv.org), we use simulated trees to test
 our growth rate estimates. As an example, let’s load some simulated data
-that comes with our package, has 100 ultrametric trees and has 100
-mutation-based trees. In the “params” we will find the ground truth
-growth rate, which in this case is 1. Then, let’s apply our methods to
-all of these trees.
+that comes with our package, exampleUltraTrees has 100 ultrametric trees
+and exampleMutTrees has 100 mutation-based trees. In the “params”
+data.frame we will find the ground truth growth rate, which in this case
+is 1. Then, let’s apply our methods to all of these trees.
 
 ``` r
 
@@ -85,7 +105,7 @@ Now that we have 100 estimates on 100 different trees from 3 different
 methods, let’s plot the distributions
 
 ``` r
-library(ggplot2)
+library(ggplot2, quietly = T)
 
 # Combine all into one df for plotting. Note: we have to subset columns because 
 # outputs are slightly different between ultrametric and shared mutation trees
@@ -93,7 +113,7 @@ common_cols <- intersect(colnames(resultsUltraLengths), colnames(resultsMutsShar
 results.df <- do.call(rbind, list(resultsUltraLengths[,common_cols], 
                   resultsUltraMaxLike[,common_cols], resultsMutsShared[,common_cols]))
 
-# Plot, adding a vertical line at r=1
+# Plot, adding a vertical line at r=1 because that's the true growth rate
 ggplot(results.df) + geom_density(aes(x = estimate, color = method)) +
   geom_vline(xintercept = exampleUltraTrees[[1]]$params$r) + theme_bw()
 ```
@@ -124,13 +144,13 @@ print(sd)
 #>                          sharedMuts 
 #> "sharedMuts SD = 0.108356301575057"
 print(rmse)
-#>                             lengths                             maxLike 
-#>   "lengths RMSE = 1.00527059653524"  "maxLike RMSE = 0.995010329550712" 
-#>                          sharedMuts 
-#> "sharedMuts RMSE = 1.0321545862778"
+#>                              lengths                              maxLike 
+#>    "lengths RMSE = 1.00560978320624"   "maxLike RMSE = 0.995275369005195" 
+#>                           sharedMuts 
+#> "sharedMuts RMSE = 1.03198273623031"
 ```
 
-As expected, Maximum likelihood performs the best. While the shared
+As expected, maximum likelihood performs the best. While the shared
 mutations and lengths (aka internalLengths) methods are based on the
 same asymptotic result, we’d expect the shared mutation method to
 perform slightly worse due to the effect of the randomness in poissonian
@@ -143,26 +163,8 @@ maximum likelihood and lengths estimates to a real data clone from
 [Williams et al.](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 
 ``` r
-library(cloneRate)
-library(ggtree)
-#> ggtree v3.6.2 For help: https://yulab-smu.top/treedata-book/
-#> 
-#> If you use the ggtree package suite in published research, please cite
-#> the appropriate paper(s):
-#> 
-#> Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam.
-#> ggtree: an R package for visualization and annotation of phylogenetic
-#> trees with their covariates and other associated data. Methods in
-#> Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
-#> 
-#> S Xu, Z Dai, P Guo, X Fu, S Liu, L Zhou, W Tang, T Feng, M Chen, L
-#> Zhan, T Wu, E Hu, Y Jiang, X Bo, G Yu. ggtreeExtra: Compact
-#> visualization of richly annotated phylogenetic data. Molecular Biology
-#> and Evolution. 2021, 38(9):4039-4042. doi: 10.1093/molbev/msab166
-#> 
-#> Guangchuang Yu.  Data Integration, Manipulation and Visualization of
-#> Phylogenetic Trees (1st edition). Chapman and Hall/CRC. 2022,
-#> doi:10.1201/9781003279242
+library(cloneRate, quietly = T)
+library(ggtree, quietly = T)
 
 # Load and plot the full tree from this individual
 PD9478 <- cloneRate::realCloneData$fullTrees$PD9478_1
@@ -197,6 +199,11 @@ print(maxLikelihood(PD9478_subClone)$estimate)
 print(internalLengths(PD9478_subClone)$estimate)
 #> [1] 0.6010937
 ```
+
+Unfortunately, we don’t have a ground truth to compare to when working
+with real data. However, this individual clone has longitudinal
+sequencing data, which we can use to estimate an orthogonal growth rate.
+This will be added shortly.
 
 Our package comes with 42 clones annotated from four distinct
 publications, which are the ones we use in our analysis. Note that there
