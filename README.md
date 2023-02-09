@@ -38,8 +38,8 @@ install.packages(setdiff(c("ggplot2", "ggtree"), rownames(installed.packages()))
 
 ### Simulated data
 
-This is a basic example which shows you how to simulate a tree and
-calculate the growth rate using two different methods:
+This is a basic example which shows you how to simulate a tree and plot
+it.
 
 ``` r
 library(cloneRate, quietly = T)
@@ -54,11 +54,16 @@ library(ggtree, quietly = T)
 #> trees with their covariates and other associated data. Methods in
 #> Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
 #> 
-#> G Yu. Data Integration, Manipulation and Visualization of Phylogenetic
-#> Trees (1st ed.). Chapman and Hall/CRC. 2022. ISBN: 9781032233574
+#> Shuangbin Xu, Lin Li, Xiao Luo, Meijun Chen, Wenli Tang, Li Zhan, Zehan
+#> Dai, Tommy T. Lam, Yi Guan, Guangchuang Yu. Ggtree: A serialized data
+#> object for visualization of a phylogenetic tree and annotation data.
+#> iMeta 2022, 4(1):e56. doi:10.1002/imt2.56
 #> 
-#> Guangchuang Yu. Using ggtree to visualize data on tree-like structures.
-#> Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
+#> LG Wang, TTY Lam, S Xu, Z Dai, L Zhou, T Feng, P Guo, CW Dunn, BR
+#> Jones, T Bradley, H Zhu, Y Guan, Y Jiang, G Yu. treeio: an R package
+#> for phylogenetic tree input and output with richly annotated and
+#> associated data. Molecular Biology and Evolution. 2020, 37(2):599-603.
+#> doi: 10.1093/molbev/msz240
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
 tree <- simTree(a=1, b=0.5, cloneAge=30, n=100)
@@ -67,19 +72,21 @@ tree <- simTree(a=1, b=0.5, cloneAge=30, n=100)
 ggtree(tree) + layout_dendrogram()
 ```
 
-<img src="man/figures/README-sim example-1.png" width="100%" />
+<img src="man/figures/README-sim plot-1.png" width="100%" />
+
+Then, we can use this tree as input to our methods for growth rate
+estimation:
 
 ``` r
-
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.539"
+#> [1] "Max. likelihood estimate = 0.516"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.613"
+#> [1] "Internal lengths estimate = 0.527"
 ```
 
 In our [paper](https://www.biorxiv.org), we use simulated trees to test
@@ -127,34 +134,31 @@ could happen…
 
 ``` r
 
-mean <- unlist(lapply(split(results.df, results.df$method), function(x){paste0(x$method[1], " mean = ", mean(x$estimate))}))
+mean <- unlist(lapply(split(results.df, results.df$method), 
+                      function(x){mean(x$estimate)}))
 
-sd <- unlist(lapply(split(results.df, results.df$method), function(x){paste0(x$method[1], " SD = ", sd(x$estimate))}))
+sd <- unlist(lapply(split(results.df, results.df$method), 
+                    function(x){sd(x$estimate)}))
 
-rmse <- unlist(lapply(split(results.df, results.df$method), function(x){paste0(x$method[1], " RMSE = ", sqrt(sum((x$estimate-x$r)^2)/length(x$estimate)))}))
+rmse <- unlist(lapply(split(results.df, results.df$method), 
+                      function(x){sqrt(sum((x$estimate-x$r)^2)/length(x$estimate))}))
 
 print(mean)
-#>                              lengths                              maxLike 
-#>    "lengths mean = 1.00544755247781"    "maxLike mean = 1.00581874575515" 
-#>                           sharedMuts 
-#> "sharedMuts mean = 1.03352039938291"
+#>    lengths    maxLike sharedMuts 
+#>   1.005448   1.005819   1.033520
 print(sd)
-#>                             lengths                             maxLike 
-#>    "lengths SD = 0.115112217040427"   "maxLike SD = 0.0887935000028457" 
-#>                          sharedMuts 
-#> "sharedMuts SD = 0.108356301575057"
+#>    lengths    maxLike sharedMuts 
+#>  0.1151122  0.0887935  0.1083563
 print(rmse)
-#>                              lengths                              maxLike 
-#>    "lengths RMSE = 1.00560978320624"   "maxLike RMSE = 0.995275369005195" 
-#>                           sharedMuts 
-#> "sharedMuts RMSE = 1.03198273623031"
+#>    lengths    maxLike sharedMuts 
+#>  1.0053067  0.9950473  1.0319770
 ```
 
 As expected, maximum likelihood performs the best. While the shared
-mutations and lengths (aka internalLengths) methods are based on the
-same asymptotic result, we’d expect the shared mutation method to
-perform slightly worse due to the effect of the randomness in poissonian
-mutations. Now, let’s move on to some real data.
+mutations and lengths (also referred to as internalLengths) methods are
+based on the same asymptotic result, we’d expect the shared mutation
+method to perform slightly worse due to the effect of the randomness in
+poissonian mutations. Now, let’s move on to some real data.
 
 ### Real data
 
@@ -168,14 +172,14 @@ library(ggtree, quietly = T)
 
 # Load and plot the full tree from this individual
 PD9478 <- cloneRate::realCloneData$fullTrees$PD9478_1
-ggtree(PD9478) + geom_text(aes(label=node), vjust=-.3, hjust = -.1, size = 3) + layout_dendrogram()
+ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill ="red", alpha = .1)
 ```
 
 <img src="man/figures/README-realData example-1.png" width="100%" />
 
-Let’s now look at the specific clone represented by node 85, which we
-know corresponds to a clone with a JAK2 and DNMT3A mutation, based on
-the annotation in [Williams et al. Fig.
+Let’s now look at the specific clone represented by node 85 (shaded in
+red), which we know corresponds to a clone with a JAK2 and DNMT3A
+mutation, based on the annotation in [Williams et al. Fig.
 3](https://www.nature.com/articles/s41586-021-04312-6)
 
 ``` r
