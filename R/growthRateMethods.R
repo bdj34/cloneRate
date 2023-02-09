@@ -108,8 +108,15 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @examples
 #' sharedMuts(cloneRate::exampleMutTrees[[1]])
 #'
-sharedMuts <- function(subtree, nu, includeStem = F, alpha = 0.05) {
+sharedMuts <- function(subtree, nu=NULL, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
+
+  if(is.null(nu)){
+    nu <- subtree$params$nu[1]
+    if(is.null(nu)){
+      stop("Need to give a mutation rate (nu) in function call or provide one in params data.frame in tree")
+    }
+  }
 
   # Make sure tree is NOT ultrametric
   if (is.ultrametric(subtree)){
