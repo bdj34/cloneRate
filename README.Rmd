@@ -157,7 +157,7 @@ PD9478 <- cloneRate::realCloneData$fullTrees$PD9478_1
 ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill ="red", alpha = .1)
 ```
 
-Let's now look at the specific clone represented by node 85 (shaded in red), which we know corresponds to a clone with a JAK2 and DNMT3A mutation, based on the annotation in [Williams et al. Fig. 3](https://www.nature.com/articles/s41586-021-04312-6)
+Let's now look at the specific clone represented by node 85 (shaded in red), which we know corresponds to a clone with a JAK2 and DNMT3A mutation, based on the annotation in [Williams et al. Fig. 3](https://www.nature.com/articles/s41586-021-04312-6/figures/3)
 
 ```{r get subclone}
 # Load the clone (with its overly detailed name)

@@ -54,16 +54,13 @@ library(ggtree, quietly = T)
 #> trees with their covariates and other associated data. Methods in
 #> Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
 #> 
-#> Shuangbin Xu, Lin Li, Xiao Luo, Meijun Chen, Wenli Tang, Li Zhan, Zehan
-#> Dai, Tommy T. Lam, Yi Guan, Guangchuang Yu. Ggtree: A serialized data
-#> object for visualization of a phylogenetic tree and annotation data.
-#> iMeta 2022, 4(1):e56. doi:10.1002/imt2.56
+#> Guangchuang Yu. Using ggtree to visualize data on tree-like structures.
+#> Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
 #> 
-#> LG Wang, TTY Lam, S Xu, Z Dai, L Zhou, T Feng, P Guo, CW Dunn, BR
-#> Jones, T Bradley, H Zhu, Y Guan, Y Jiang, G Yu. treeio: an R package
-#> for phylogenetic tree input and output with richly annotated and
-#> associated data. Molecular Biology and Evolution. 2020, 37(2):599-603.
-#> doi: 10.1093/molbev/msz240
+#> Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods
+#> for mapping and visualizing associated data on phylogeny using ggtree.
+#> Molecular Biology and Evolution. 2018, 35(12):3041-3043.
+#> doi:10.1093/molbev/msy194
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
 tree <- simTree(a=1, b=0.5, cloneAge=30, n=100)
@@ -81,12 +78,12 @@ estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.516"
+#> [1] "Max. likelihood estimate = 0.573"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.527"
+#> [1] "Internal lengths estimate = 0.548"
 ```
 
 In our [paper](https://www.biorxiv.org), we use simulated trees to test
@@ -151,7 +148,7 @@ print(sd)
 #>  0.1151122  0.0887935  0.1083563
 print(rmse)
 #>    lengths    maxLike sharedMuts 
-#>  1.0053067  0.9950473  1.0319770
+#>   1.004936   0.995416   1.031274
 ```
 
 As expected, maximum likelihood performs the best. While the shared
@@ -180,7 +177,7 @@ ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill ="red", alph
 Let’s now look at the specific clone represented by node 85 (shaded in
 red), which we know corresponds to a clone with a JAK2 and DNMT3A
 mutation, based on the annotation in [Williams et al. Fig.
-3](https://www.nature.com/articles/s41586-021-04312-6)
+3](https://www.nature.com/articles/s41586-021-04312-6/figures/3)
 
 ``` r
 # Load the clone (with its overly detailed name)
