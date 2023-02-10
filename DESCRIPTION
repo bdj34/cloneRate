@@ -1,15 +1,15 @@
 Type: Package
 Package: cloneRate
-Title: Estimate growth rates from genealogies
+Title: Estimate growth rates from phylogenetic trees
 Version: 0.0.1
-Date: 2022-11-17
+Date: 2023-02-09
 Authors@R: 
     person("Brian", "Johnson", , "brian.d.johnson97@gmail.com", role = c("cre", "aut"))
-Description: Various methods to quickly estimate net growth rates of
-    clones using methods from "Growth rate estimation from coalescent
-    theory", Johnson et al. 2023. Uses coalescent theory to infer early
-    growth trajectory of clones assuming that reconstructed trees are
-    time-based (or mutation-based if a mutation rate is known/estimated).
+Description: Methods to quickly estimate the net growth rate of a population
+    taking a phylogenetic tree as input. Based on coalescent results in 
+    "Estimating single cell clonal dynamics in human blood using coalescent 
+    theory", Johnson et al. 2023. Input should be phylogenetic trees of clones
+    with edge lengths corresponding to either time or mutations.
 License: MIT + file LICENSE
 URL: https://github.com/bdj34/cloneRate
 BugReports: https://github.com/bdj34/cloneRate/issues
