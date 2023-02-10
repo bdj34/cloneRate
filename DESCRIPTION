@@ -2,7 +2,6 @@ Type: Package
 Package: cloneRate
 Title: Estimate growth rates from phylogenetic trees
 Version: 0.0.1
-Date: 2023-02-09
 Authors@R: c(
     person("Brian", "Johnson", , "brian.d.johnson97@gmail.com", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-9477-4677")),
@@ -27,11 +26,13 @@ Imports:
     maxLik (>= 1.4),
     Rmpfr (>= 0.8)
 Suggests:
+    adephylo,
     covr,
     ggplot2,
     ggtree,
     knitr,
     rmarkdown,
+    spelling,
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr

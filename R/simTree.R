@@ -18,9 +18,6 @@
 #'   phylogenetic tree
 #' @export
 #' @importFrom Rmpfr "mpfr"
-#' @importFrom Rmpfr "asNumeric"
-#' @importFrom ape "rcoal"
-#' @importFrom ape "branching.times"
 #' @examples
 #' tree <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50)
 #'
@@ -73,7 +70,7 @@ simTree <- function(a, b, cloneAge, n, precision = 10000, addStem = T) {
   }
 
   # Convert back to normal numeric (no longer need high precision)
-  coal_times <- suppressWarnings(sapply(coal_times_mpfr, asNumeric))
+  coal_times <- suppressWarnings(sapply(coal_times_mpfr, Rmpfr::asNumeric))
 
   # Generate the coalescence intervals for input to ape function
   coal_sorted <- sort(coal_times)
@@ -87,11 +84,11 @@ simTree <- function(a, b, cloneAge, n, precision = 10000, addStem = T) {
   }
 
   # Make tree with ape function
-  tree <- rcoal(asNumeric(n_mpfr), rooted = T, br = coal_intervals)
+  tree <- ape::rcoal(Rmpfr::asNumeric(n_mpfr), rooted = T, br = coal_intervals)
 
   # Sanity checks (coal times must match and be less than cloneAge)
   stopifnot(all(coal_times <= cloneAge))
-  if (!all(round(coal_times, 4) %in% round(branching.times(tree), 4))) {
+  if (!all(round(coal_times, 4) %in% round(ape::branching.times(tree), 4))) {
     stop("Unexpected error: coal. times not matching!")
   }
 
