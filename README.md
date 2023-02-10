@@ -54,15 +54,18 @@ library(ggtree, quietly = T)
 #> trees with their covariates and other associated data. Methods in
 #> Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
 #> 
-#> Guangchuang Yu. Using ggtree to visualize data on tree-like structures.
-#> Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
+#> S Xu, Z Dai, P Guo, X Fu, S Liu, L Zhou, W Tang, T Feng, M Chen, L
+#> Zhan, T Wu, E Hu, Y Jiang, X Bo, G Yu. ggtreeExtra: Compact
+#> visualization of richly annotated phylogenetic data. Molecular Biology
+#> and Evolution. 2021, 38(9):4039-4042. doi: 10.1093/molbev/msab166
 #> 
-#> Guangchuang Yu.  Data Integration, Manipulation and Visualization of
-#> Phylogenetic Trees (1st edition). Chapman and Hall/CRC. 2022,
-#> doi:10.1201/9781003279242
+#> Shuangbin Xu, Lin Li, Xiao Luo, Meijun Chen, Wenli Tang, Li Zhan, Zehan
+#> Dai, Tommy T. Lam, Yi Guan, Guangchuang Yu. Ggtree: A serialized data
+#> object for visualization of a phylogenetic tree and annotation data.
+#> iMeta 2022, 4(1):e56. doi:10.1002/imt2.56
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
-tree <- simTree(a=1, b=0.5, cloneAge=30, n=100)
+tree <- simTree(a = 1, b = 0.5, cloneAge = 30, n = 100)
 
 # Plot the tree (see ggtree for more advanced plotting)
 ggtree(tree) + layout_dendrogram()
@@ -77,12 +80,12 @@ estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.502"
+#> [1] "Max. likelihood estimate = 0.445"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.469"
+#> [1] "Internal lengths estimate = 0.417"
 ```
 
 In our [paper](https://www.biorxiv.org), we use simulated trees to test
@@ -99,7 +102,7 @@ is 1. Then, let’s apply our methods to all of these trees.
 resultsUltraMaxLike <- do.call(rbind, lapply(exampleUltraTrees, maxLikelihood))
 resultsUltraLengths <- do.call(rbind, lapply(exampleUltraTrees, internalLengths))
 
-# Now, let's do the same thing for the shared mutation trees, with the method 
+# Now, let's do the same thing for the shared mutation trees, with the method
 # now being our shared mutations function (analogous to internal Lengths, but with mutations)
 resultsMutsShared <- do.call(rbind, lapply(exampleMutTrees, sharedMuts))
 ```
@@ -110,15 +113,19 @@ methods, let’s plot the distributions
 ``` r
 library(ggplot2, quietly = T)
 
-# Combine all into one df for plotting. Note: we have to subset columns because 
+# Combine all into one df for plotting. Note: we have to subset columns because
 # outputs are slightly different between ultrametric and shared mutation trees
 common_cols <- intersect(colnames(resultsUltraLengths), colnames(resultsMutsShared))
-results.df <- do.call(rbind, list(resultsUltraLengths[,common_cols], 
-                  resultsUltraMaxLike[,common_cols], resultsMutsShared[,common_cols]))
+results.df <- do.call(rbind, list(
+  resultsUltraLengths[, common_cols],
+  resultsUltraMaxLike[, common_cols], resultsMutsShared[, common_cols]
+))
 
 # Plot, adding a vertical line at r=1 because that's the true growth rate
-ggplot(results.df) + geom_density(aes(x = estimate, color = method)) +
-  geom_vline(xintercept = exampleUltraTrees[[1]]$params$r) + theme_bw()
+ggplot(results.df) +
+  geom_density(aes(x = estimate, color = method)) +
+  geom_vline(xintercept = exampleUltraTrees[[1]]$params$r) +
+  theme_bw()
 ```
 
 <img src="man/figures/README-plotExample-1.png" width="100%" />
@@ -130,14 +137,26 @@ could happen…
 
 ``` r
 
-mean <- unlist(lapply(split(results.df, results.df$method), 
-                      function(x){mean(x$estimate)}))
+mean <- unlist(lapply(
+  split(results.df, results.df$method),
+  function(x) {
+    mean(x$estimate)
+  }
+))
 
-sd <- unlist(lapply(split(results.df, results.df$method), 
-                    function(x){sd(x$estimate)}))
+sd <- unlist(lapply(
+  split(results.df, results.df$method),
+  function(x) {
+    sd(x$estimate)
+  }
+))
 
-rmse <- unlist(lapply(split(results.df, results.df$method), 
-                      function(x){sqrt(sum((x$estimate-x$r)^2)/length(x$estimate))}))
+rmse <- unlist(lapply(
+  split(results.df, results.df$method),
+  function(x) {
+    sqrt(sum((x$estimate - x$r)^2) / length(x$estimate))
+  }
+))
 
 print(mean)
 #>    lengths    maxLike sharedMuts 
@@ -147,7 +166,7 @@ print(sd)
 #>  0.1151122  0.0887935  0.1083563
 print(rmse)
 #>    lengths    maxLike sharedMuts 
-#>  1.0055126  0.9957344  1.0324831
+#>  1.0050630  0.9949878  1.0321751
 ```
 
 As expected, maximum likelihood performs the best. While the shared
@@ -168,7 +187,7 @@ library(ggtree, quietly = T)
 
 # Load and plot the full tree from this individual
 PD9478 <- cloneRate::realCloneData$fullTrees$PD9478_1
-ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill ="red", alpha = .1)
+ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill = "red", alpha = .1)
 ```
 
 <img src="man/figures/README-realDataExample-1.png" width="100%" />
@@ -183,7 +202,7 @@ mutation, based on the annotation in [Williams et al. Fig.
 PD9478_subClone <- cloneRate::realCloneData$cloneTrees[["PD9478_1_clone1_JAK2:p.F537_K539delinsL_AND_DNMT3A:p.Y908*_age68.75_williams"]]
 
 # Plot the clone tree
-ggtree(PD9478_subClone)+ layout_dendrogram()
+ggtree(PD9478_subClone) + layout_dendrogram()
 ```
 
 <img src="man/figures/README-getSubclone-1.png" width="100%" />

@@ -58,7 +58,7 @@ library(cloneRate, quietly = T)
 library(ggtree, quietly = T)
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
-tree <- simTree(a=1, b=0.5, cloneAge=30, n=100)
+tree <- simTree(a = 1, b = 0.5, cloneAge = 30, n = 100)
 
 # Plot the tree (see ggtree for more advanced plotting)
 ggtree(tree) + layout_dendrogram()
@@ -90,10 +90,9 @@ is 1. Then, let's apply our methods to all of these trees.
 resultsUltraMaxLike <- do.call(rbind, lapply(exampleUltraTrees, maxLikelihood))
 resultsUltraLengths <- do.call(rbind, lapply(exampleUltraTrees, internalLengths))
 
-# Now, let's do the same thing for the shared mutation trees, with the method 
+# Now, let's do the same thing for the shared mutation trees, with the method
 # now being our shared mutations function (analogous to internal Lengths, but with mutations)
 resultsMutsShared <- do.call(rbind, lapply(exampleMutTrees, sharedMuts))
-
 ```
 
 Now that we have 100 estimates on 100 different trees from 3 different
@@ -102,16 +101,19 @@ methods, let's plot the distributions
 ```{r plotExample}
 library(ggplot2, quietly = T)
 
-# Combine all into one df for plotting. Note: we have to subset columns because 
+# Combine all into one df for plotting. Note: we have to subset columns because
 # outputs are slightly different between ultrametric and shared mutation trees
 common_cols <- intersect(colnames(resultsUltraLengths), colnames(resultsMutsShared))
-results.df <- do.call(rbind, list(resultsUltraLengths[,common_cols], 
-                  resultsUltraMaxLike[,common_cols], resultsMutsShared[,common_cols]))
+results.df <- do.call(rbind, list(
+  resultsUltraLengths[, common_cols],
+  resultsUltraMaxLike[, common_cols], resultsMutsShared[, common_cols]
+))
 
 # Plot, adding a vertical line at r=1 because that's the true growth rate
-ggplot(results.df) + geom_density(aes(x = estimate, color = method)) +
-  geom_vline(xintercept = exampleUltraTrees[[1]]$params$r) + theme_bw()
-
+ggplot(results.df) +
+  geom_density(aes(x = estimate, color = method)) +
+  geom_vline(xintercept = exampleUltraTrees[[1]]$params$r) +
+  theme_bw()
 ```
 
 Finally, let's compute the mean, standard deviation, and root mean
@@ -121,19 +123,30 @@ could happen...
 
 ```{r simRMSE}
 
-mean <- unlist(lapply(split(results.df, results.df$method), 
-                      function(x){mean(x$estimate)}))
+mean <- unlist(lapply(
+  split(results.df, results.df$method),
+  function(x) {
+    mean(x$estimate)
+  }
+))
 
-sd <- unlist(lapply(split(results.df, results.df$method), 
-                    function(x){sd(x$estimate)}))
+sd <- unlist(lapply(
+  split(results.df, results.df$method),
+  function(x) {
+    sd(x$estimate)
+  }
+))
 
-rmse <- unlist(lapply(split(results.df, results.df$method), 
-                      function(x){sqrt(sum((x$estimate-x$r)^2)/length(x$estimate))}))
+rmse <- unlist(lapply(
+  split(results.df, results.df$method),
+  function(x) {
+    sqrt(sum((x$estimate - x$r)^2) / length(x$estimate))
+  }
+))
 
 print(mean)
 print(sd)
 print(rmse)
-
 ```
 
 As expected, maximum likelihood performs the best. While the shared
@@ -154,7 +167,7 @@ library(ggtree, quietly = T)
 
 # Load and plot the full tree from this individual
 PD9478 <- cloneRate::realCloneData$fullTrees$PD9478_1
-ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill ="red", alpha = .1)
+ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill = "red", alpha = .1)
 ```
 
 Let's now look at the specific clone represented by node 85 (shaded in red), which we know corresponds to a clone with a JAK2 and DNMT3A mutation, based on the annotation in [Williams et al. Fig. 3](https://www.nature.com/articles/s41586-021-04312-6/figures/3)
@@ -164,7 +177,7 @@ Let's now look at the specific clone represented by node 85 (shaded in red), whi
 PD9478_subClone <- cloneRate::realCloneData$cloneTrees[["PD9478_1_clone1_JAK2:p.F537_K539delinsL_AND_DNMT3A:p.Y908*_age68.75_williams"]]
 
 # Plot the clone tree
-ggtree(PD9478_subClone)+ layout_dendrogram()
+ggtree(PD9478_subClone) + layout_dendrogram()
 ```
 
 We can now apply our methods to the clone tree. We see that this tree is ultrametric, so we should apply our internalLengths() and maxLikelihood() functions.
