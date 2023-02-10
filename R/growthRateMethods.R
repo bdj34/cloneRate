@@ -9,7 +9,6 @@
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
 #' @seealso [cloneRate::moments()], [cloneRate::maxLikelihood()]
 #' @export
-#' @importFrom ape "is.ultrametric"
 #' @examples
 #' internalLengths(cloneRate::exampleUltraTrees[[1]])
 #'
@@ -104,7 +103,6 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths()], [cloneRate::moments()], [cloneRate::maxLikelihood()]
 #' @export
-#' @importFrom ape "is.ultrametric"
 #' @examples
 #' sharedMuts(cloneRate::exampleMutTrees[[1]])
 #'
@@ -119,7 +117,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
   }
 
   # Make sure tree is NOT ultrametric
-  if (is.ultrametric(subtree)) {
+  if (ape::is.ultrametric(subtree)) {
     stop("Tree should be mutation-based, not time-based. Tree should not be ultrametric.")
   }
 
@@ -210,7 +208,6 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
 #'     intervals, and other important details (runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths()], [cloneRate::maxLikelihood()]
 #' @export
-#' @importFrom ape "branching.times"
 #' @examples
 #' df <- moments(cloneRate::exampleUltraTrees[[1]])
 moments <- function(subtree, alpha = 0.05) {
@@ -271,8 +268,6 @@ moments <- function(subtree, alpha = 0.05) {
 #'     intervals, and other important details (runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths], [cloneRate::moments()]
 #' @export
-#' @importFrom maxLik "maxLik"
-#' @importFrom ape "branching.times"
 #'
 #' @examples
 #' df <- maxLikelihood(cloneRate::exampleUltraTrees[[1]])
@@ -284,7 +279,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   inputCheck(subtree, alpha)
 
   # Get coalescence times
-  coal_times <- branching.times(subtree)
+  coal_times <- ape::branching.times(subtree)
 
   # Log-likelihood function using the approximation for T large
   # params[1]=a, params[2]=r=1/b
@@ -343,7 +338,6 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
 #'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #' @keywords internal
-#' @importFrom ape "is.ultrametric"
 #' @return NULL
 #'
 inputCheck <- function(subtree, alpha) {
