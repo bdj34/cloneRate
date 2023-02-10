@@ -13,10 +13,9 @@ library(phangorn)
 # It makes annotating clones cumbersome and slow, but it only has to be done once,
 # and we're confident that we've done it right. ]
 
-# Set working directory and clone git repository from:
+# Clone git repository into Downloads folder from:
 # Fabre et al. 2022 "The longitudinal dynamics and natural history of clonal haematopoiesis"
-# setwd("~/Downloads")
-# system("git clone https://github.com/margaretefabre/Clonal_dynamics") # Only do once
+# https://github.com/margaretefabre/Clonal_dynamics
 
 # Load ultrametric trees
 load("~/Downloads/Clonal_dynamics/Phylogenies/Files/PD41305/trees/tree_ultra")
@@ -227,7 +226,7 @@ age_vec <- c(63, 1, 1, 29, 38, 81, 78, 75, 76, 48)
 
 ## Now import the sensitivity and adjust for that as Mitchell did
 # Use Mitchell functions from github (https://github.com/emily-mitchell/normal_haematopoiesis)
-source("~/package_development/cloneRate/data-raw/mitchell_fns.R")
+source("data-raw/mitchell_fns.R")
 
 adjusted_mut_tree_list <- list()
 mitchell <- list()
@@ -1106,5 +1105,4 @@ for (i in c(1:length(realCloneData$cloneTrees))) {
 }
 
 # Save as loadable data object for package users
-setwd("~/package_development/cloneRate")
 usethis::use_data(realCloneData, overwrite = TRUE, compress = "bzip2")
