@@ -108,18 +108,18 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @examples
 #' sharedMuts(cloneRate::exampleMutTrees[[1]])
 #'
-sharedMuts <- function(subtree, nu=NULL, includeStem = F, alpha = 0.05) {
+sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
 
-  if(is.null(nu)){
+  if (is.null(nu)) {
     nu <- subtree$params$nu[1]
-    if(is.null(nu)){
+    if (is.null(nu)) {
       stop("Need to give a mutation rate (nu) in function call or provide one in params data.frame in tree")
     }
   }
 
   # Make sure tree is NOT ultrametric
-  if (is.ultrametric(subtree)){
+  if (is.ultrametric(subtree)) {
     stop("Tree should be mutation-based, not time-based. Tree should not be ultrametric.")
   }
 
@@ -167,8 +167,8 @@ sharedMuts <- function(subtree, nu=NULL, includeStem = F, alpha = 0.05) {
 
   # Calculate growth rate and confidence intervals
   growthRate <- n * nu / sharedMutations
-  growthRate_lb <- growthRate * (1 + (stats::qnorm(alpha / 2) / sqrt(n))*(1+n/sharedMutations))
-  growthRate_ub <- growthRate * (1 - (stats::qnorm(alpha / 2) / sqrt(n))*(1+n/sharedMutations))
+  growthRate_lb <- growthRate * (1 + (stats::qnorm(alpha / 2) / sqrt(n)) * (1 + n / sharedMutations))
+  growthRate_ub <- growthRate * (1 - (stats::qnorm(alpha / 2) / sqrt(n)) * (1 + n / sharedMutations))
 
   # Calculate total private (singleton) mutations
   privateMuts <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
@@ -348,7 +348,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
 #'
 inputCheck <- function(subtree, alpha) {
   # Must be of class phylo
-  if (! inherits(subtree, "phylo")) {
+  if (!inherits(subtree, "phylo")) {
     stop("Tree must be of class phylo. Use as.phylo function to convert if the
     formatting is correct. Otherwise, see ape package documentation
     https://cran.r-project.org/web/packages/ape/ape.pdf")
