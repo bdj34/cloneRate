@@ -34,7 +34,6 @@ of Myeloproliferative Neoplasm
 # Plot full reconstructed tree from donor PD34493
 plot(cloneRate::realCloneData[["fullTrees"]][["PD34493"]])
 
-
 }
 \references{
 These datasets were generated and annotated in:

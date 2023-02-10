@@ -21,7 +21,6 @@
 #' @importFrom Rmpfr "asNumeric"
 #' @importFrom ape "rcoal"
 #' @importFrom ape "branching.times"
-#' @importFrom adephylo "distRoot"
 #' @examples
 #' tree <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50)
 #'
@@ -102,8 +101,6 @@ simTree <- function(a, b, cloneAge, n, precision = 10000, addStem = T) {
     tree$edge <- rbind(c(n + 1, n + 2), tree$edge)
     tree$edge.length <- c(cloneAge - max(coal_times), tree$edge.length)
     tree$Nnode <- tree$Nnode + 1
-    # Sanity check: suppress warnings because we know there's a singleton node
-    suppressWarnings(stopifnot(all(distRoot(tree) == cloneAge)))
   }
 
   # Return the tree created from the coalescence times drawn from Lambert distribution

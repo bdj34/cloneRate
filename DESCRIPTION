@@ -3,20 +3,24 @@ Package: cloneRate
 Title: Estimate growth rates from phylogenetic trees
 Version: 0.0.1
 Date: 2023-02-09
-Authors@R: 
-    person("Brian", "Johnson", , "brian.d.johnson97@gmail.com", role = c("cre", "aut"))
-Description: Methods to quickly estimate the net growth rate of a population
-    taking a phylogenetic tree as input. Based on coalescent results in 
-    "Estimating single cell clonal dynamics in human blood using coalescent 
-    theory", Johnson et al. 2023. Input should be phylogenetic trees of clones
-    with edge lengths corresponding to either time or mutations.
+Authors@R: c(
+    person("Brian", "Johnson", email = "brian.d.johnson97@gmail.com", 
+    role = c("cre", "aut"), comment = c(ORCID = "0000-0002-9477-4677")),
+    person("Yubo", "Shuai", role = c("aut"), comment = c(ORCID = "0000-0002-9477-4677")),
+    person("Jason", "Schweinsberg", role = c("aut"), comment = c(ORCID = "0000-0002-4152-0059")),
+    person("Kit", "Curtius", role = c("aut"), comment = c(ORCID = "0000-0002-2678-0960")))
+Description: Methods to quickly estimate the net growth rate of a population or
+    clone whose growth can be approximated by a birth-death branching process. 
+    Input should be phylogenetic trees of clones with edge lengths corresponding 
+    to either time or mutations. Based on coalescent results in "Estimating 
+    single cell clonal dynamics in human blood using coalescent theory", Johnson
+    et al. 2023.
 License: MIT + file LICENSE
 URL: https://github.com/bdj34/cloneRate
 BugReports: https://github.com/bdj34/cloneRate/issues
 Depends:
     R (>= 3.5.0)
 Imports:
-    adephylo (>= 1.1),
     ape (>= 4.0),
     maxLik (>= 1.4),
     Rmpfr (>= 0.8)
