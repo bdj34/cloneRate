@@ -27,7 +27,6 @@
 #' # Plot full reconstructed tree from donor PD34493
 #' plot(cloneRate::realCloneData[["fullTrees"]][["PD34493"]])
 #'
-#'
 #' @source <https://pubmed.ncbi.nlm.nih.gov/35058638/>
 #' @source <https://pubmed.ncbi.nlm.nih.gov/35650442/>
 #' @source <https://pubmed.ncbi.nlm.nih.gov/35650444/>
