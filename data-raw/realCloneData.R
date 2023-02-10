@@ -2,7 +2,7 @@
 
 ####### Following to be removed
 # For now, just load in the clone list
-#realCloneData <- readRDS("~/rotation_fall2021/ultrametric_trees_with_clades_as_labeled_all_FOUR_papers_12192022.rds")
+# realCloneData <- readRDS("~/rotation_fall2021/ultrametric_trees_with_clades_as_labeled_all_FOUR_papers_12192022.rds")
 #######
 rm(list = ls())
 library(ggtree)
@@ -19,8 +19,8 @@ library(phangorn)
 
 # Set working directory and clone git repository from:
 # Fabre et al. 2022 "The longitudinal dynamics and natural history of clonal haematopoiesis"
-#setwd("~/Downloads")
-#system("git clone https://github.com/margaretefabre/Clonal_dynamics") # Only do once
+# setwd("~/Downloads")
+# system("git clone https://github.com/margaretefabre/Clonal_dynamics") # Only do once
 
 # Load ultrametric trees
 load("~/Downloads/Clonal_dynamics/Phylogenies/Files/PD41305/trees/tree_ultra")
@@ -34,11 +34,11 @@ PD34493_ultra <- tree_SNV_c_ultra
 age_vec <- c("PD34493" = 83, "PD41305" = 73, "PD41276" = 79)
 
 # Scale edge length by age to make time-based in years. Add age to metadata
-PD34493_ultra$edge.length <- PD34493_ultra$edge.length*age_vec["PD34493"]
+PD34493_ultra$edge.length <- PD34493_ultra$edge.length * age_vec["PD34493"]
 PD34493_ultra$age <- age_vec[["PD34493"]]
-PD41305_ultra$edge.length <- PD41305_ultra$edge.length*age_vec["PD41305"]
+PD41305_ultra$edge.length <- PD41305_ultra$edge.length * age_vec["PD41305"]
 PD41305_ultra$age <- age_vec[["PD41305"]]
-PD41276_ultra$edge.length <- PD41276_ultra$edge.length*age_vec["PD41276"]
+PD41276_ultra$edge.length <- PD41276_ultra$edge.length * age_vec["PD41276"]
 PD41276_ultra$age <- age_vec[["PD41276"]]
 
 # Create list with all three main trees and add names as in Fabre paper
@@ -62,10 +62,10 @@ for (i in 1:length(fabre)) {
 # First, PD34493
 ID <- names(fabre)[1]
 tree <- fabre[[ID]]
-fabre[[ID]]$has_expanded_clades = T
+fabre[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree so we can manually identify clones (compare to  Fabre Fig 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Get all nodes under 165 (matching SF3B1 clone, in Figure 3B from Fabre)
 cloneTips <- c(tree$tip.label[Descendants(tree, 165)[[1]]])
@@ -74,36 +74,36 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
 fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
 
 ### Plot full tree again so we can manually identify clones (compare again to Fabre Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Node 98 has a clone with a nested subclone from mutation in U2AF1 driver gene
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 98)[[1]]])
 
 # We have a nested subclonal expansion from U2AF1. Load annotation from Fabre github
 load(paste0(ID, "/trees/details"))
-details_U2AF1 <- details3[details3$Gene == "U2AF1",] # Check data.frame. Shows node 119
+details_U2AF1 <- details3[details3$Gene == "U2AF1", ] # Check data.frame. Shows node 119
 # Subtract 1 because we removed outgroup...remove node 118 and all but one descendant
-cloneTips <- tipsWithNested[! tipsWithNested %in% c(tree$tip.label[Descendants(tree, 118)[[1]]][-1])]
+cloneTips <- tipsWithNested[!tipsWithNested %in% c(tree$tip.label[Descendants(tree, 118)[[1]]][-1])]
 cloneDriver <- "unknown"
 cloneName <- "clone3"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
 fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
 
 ### Plot full tree again so we can manually identify clones (compare again to Fabre Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Get all nodes under 154
 cloneTips <- c(tree$tip.label[Descendants(tree, 154)[[1]]])
@@ -112,7 +112,7 @@ cloneName <- "clone4"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
@@ -123,10 +123,10 @@ fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDrive
 # Second patient from fabre, PD41305: No known drivers, no nested expansions to worry about
 ID <- names(fabre)[2]
 tree <- fabre[[ID]]
-fabre[[ID]]$has_expanded_clades = T
+fabre[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Fabre Fig. 3C)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Get nodes under node 143
 cloneTips <- c(tree$tip.label[Descendants(tree, 143)[[1]]])
@@ -135,14 +135,14 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
 fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
 
 ### Plot full tree again so we can manually identify clones (compare to Fabre Fig. 3C)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 102 are clone 2
 cloneTips <- c(tree$tip.label[Descendants(tree, 102)[[1]]])
@@ -151,14 +151,14 @@ cloneName <- "clone2"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
 fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
 
 ### Plot full tree again so we can manually identify clones (compare to Fabre Fig. 3C)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # tips under node 119 are clone 3
 cloneTips <- c(tree$tip.label[Descendants(tree, 119)[[1]]])
@@ -167,7 +167,7 @@ cloneName <- "clone3"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
@@ -179,25 +179,27 @@ fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDrive
 # 1 driver with small nested expansions annotated
 ID <- names(fabre)[3]
 tree <- fabre[[ID]]
-fabre[[ID]]$has_expanded_clades = T
+fabre[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Fabre Fig. 3A)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under 86 are the clone, but we must remove nested expansions
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 86)[[1]]])
 # Load the details to find nested drivers
 load("~/rotation_fall2021/fabre_trees/details_41276")
-details_CBL <- details3[details3$Gene == "CBL",] # Shows node 136. Subtract 1 because we removed outgroup...135
-details_del20q <- details3[details3$variant_ID == "del20q",] # Shows node 165. Subtract 1 because we removed outgroup...164
-cloneTips <- tipsWithNested[! tipsWithNested %in% c(tree$tip.label[Descendants(tree, 135)[[1]]][-1],
-                                                     tree$tip.label[Descendants(tree, 164)[[1]]][-1])]
+details_CBL <- details3[details3$Gene == "CBL", ] # Shows node 136. Subtract 1 because we removed outgroup...135
+details_del20q <- details3[details3$variant_ID == "del20q", ] # Shows node 165. Subtract 1 because we removed outgroup...164
+cloneTips <- tipsWithNested[!tipsWithNested %in% c(
+  tree$tip.label[Descendants(tree, 135)[[1]]][-1],
+  tree$tip.label[Descendants(tree, 164)[[1]]][-1]
+)]
 cloneDriver <- "SF3B1:k666n"
 cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (already removed here)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
@@ -217,7 +219,8 @@ names(fabre_clones) <- fabreCloneNames
 ############# Download Mitchell data
 # Download and unzip mitchell data from https://data.mendeley.com/datasets/np54zjkvxr/1
 mitchell_tree_files <- list.files("~/Downloads/trees_clonal_dynamics_hematopoiesis",
-                             pattern = ".tree", recursive = TRUE, full.names = TRUE)
+  pattern = ".tree", recursive = TRUE, full.names = TRUE
+)
 mitchell_tree_names <- gsub("/.*", "", gsub(".*output_", "", mitchell_tree_files))
 mitchell_trees <- lapply(mitchell_tree_files, ape::read.tree)
 
@@ -232,9 +235,11 @@ source("~/package_development/cloneRate/data-raw/mitchell_fns.R")
 
 adjusted_mut_tree_list <- list()
 mitchell <- list()
-for (i in 1:length(mitchell_trees)){
-  sensitivity <- read.table(list.files(paste0("~/rotation_fall2021/trees_clonal_dynamics_hematopoiesis/filtering_output_",
-                                              names(mitchell_trees)[i]), pattern = "sensitivity", full.names = T), header = T)
+for (i in 1:length(mitchell_trees)) {
+  sensitivity <- read.table(list.files(paste0(
+    "~/rotation_fall2021/trees_clonal_dynamics_hematopoiesis/filtering_output_",
+    names(mitchell_trees)[i]
+  ), pattern = "sensitivity", full.names = T), header = T)
   adjusted_mut_tree <- get_corrected_tree(mitchell_trees[[i]], details = NULL, sensitivity, include_SNVs = TRUE, include_indels = FALSE, get_edge_from_tree = TRUE)
   adjusted_mut_tree_list <- append(adjusted_mut_tree_list, list(adjusted_mut_tree))
 
@@ -246,7 +251,7 @@ for (i in 1:length(mitchell_trees)){
 
   tree_ultra_length_one <- make.ultrametric.tree(adjusted_mut_tree)
   ultra_tree <- tree_ultra_length_one
-  ultra_tree$edge.length <- ultra_tree$edge.length*age_vec[i]
+  ultra_tree$edge.length <- ultra_tree$edge.length * age_vec[i]
   mitchell <- append(mitchell, list(ultra_tree))
 }
 
@@ -267,10 +272,10 @@ mitchellCloneNames <- c()
 # See Fig. 3C in Mitchell et al.
 ID <- "KX003"
 tree <- mitchell[[ID]]
-mitchell[[ID]]$has_expanded_clades = T
+mitchell[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3C)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under 342 are a clone, but we have to remove nested expansion from TET2
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 342)[[1]]])
@@ -279,10 +284,10 @@ cloneName <- "clone1" # Not labelled in paper but label from left to right from 
 cloneTree <- keep.tip(tree, tipsWithNested)
 
 # Plot to visually inspect and find/remove subclones
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Remove tips which are descendants of 195 (by visual inspection of subtree compared to annotated tree in fig3C)
-cloneTips <- tipsWithNested[! tipsWithNested %in% c(cloneTree$tip.label[Descendants(cloneTree, 195)[[1]]][-1])]
+cloneTips <- tipsWithNested[!tipsWithNested %in% c(cloneTree$tip.label[Descendants(cloneTree, 195)[[1]]][-1])]
 cloneTree <- keep.tip(cloneTree, cloneTips)
 
 # Add to the list of clones and move on
@@ -290,7 +295,7 @@ mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3C)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 cloneTips <- c(tree$tip.label[Descendants(tree, 453)[[1]]])
 cloneDriver <- "unknown"
@@ -298,7 +303,7 @@ cloneName <- "clone2"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -308,10 +313,10 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 # Second patient: KX004: many nested expansions
 ID <- "KX004"
 tree <- mitchell[[ID]]
-mitchell[[ID]]$has_expanded_clades = T
+mitchell[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # First clone is node 462, must remove 2p_CN_LOH
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 462)[[1]]])
@@ -320,10 +325,10 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, tipsWithNested)
 
 # Plot to check
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Remove tips which are descendants of 154 (by visual inspection of subtree compared to paper annotation)
-cloneTips <- tipsWithNested[! tipsWithNested %in% c(cloneTree$tip.label[Descendants(cloneTree, 154)[[1]]][-1])]
+cloneTips <- tipsWithNested[!tipsWithNested %in% c(cloneTree$tip.label[Descendants(cloneTree, 154)[[1]]][-1])]
 cloneTree <- keep.tip(cloneTree, cloneTips)
 
 # Add to the list of clones and move on
@@ -332,7 +337,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 542 are clone, by visual comparison to Fig 3B
 cloneTips <- c(tree$tip.label[Descendants(tree, 542)[[1]]]) # No nested
@@ -341,7 +346,7 @@ cloneName <- "clone2"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -349,7 +354,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 cloneTips <- c(tree$tip.label[Descendants(tree, 580)[[1]]]) # No nested
 cloneDriver <- "unknown"
@@ -357,7 +362,7 @@ cloneName <- "clone3"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -365,7 +370,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 620, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 620)[[1]]]) # No nested
@@ -374,7 +379,7 @@ cloneName <- "clone4"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -382,7 +387,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 659, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 659)[[1]]]) # No nested
@@ -391,7 +396,7 @@ cloneName <- "clone5"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -399,7 +404,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under 699, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 699)[[1]]]) # No nested
@@ -408,7 +413,7 @@ cloneName <- "clone"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -416,7 +421,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under 771, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 771)[[1]]]) # No nested
@@ -425,7 +430,7 @@ cloneName <- "clone7"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -433,7 +438,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under 867, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 867)[[1]]]) # No nested
@@ -442,7 +447,7 @@ cloneName <- "clone8"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -453,10 +458,10 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 # Move on to KX008:
 ID <- "KX008"
 tree <- mitchell[[ID]]
-mitchell[[ID]]$has_expanded_clades = T
+mitchell[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 482, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 482)[[1]]])
@@ -465,7 +470,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -473,7 +478,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 549, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 549)[[1]]])
@@ -482,7 +487,7 @@ cloneName <- "clone2"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -490,7 +495,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 598, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 598)[[1]]])
@@ -499,7 +504,7 @@ cloneName <- "clone3"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -507,7 +512,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 644, by visual inspection
 cloneTips <- c(tree$tip.label[Descendants(tree, 644)[[1]]])
@@ -516,7 +521,7 @@ cloneName <- "clone4"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -524,7 +529,7 @@ mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 cloneTips <- c(tree$tip.label[Descendants(tree, 703)[[1]]])
 cloneDriver <- "unknown"
@@ -532,7 +537,7 @@ cloneName <- "clone5"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -558,7 +563,6 @@ names_vec <- c()
 
 # Split trees by age and remove zeroes outgroup
 for (i in 1:length(williams_raw)) {
-
   # Combined object may have more than one timepoint
   combined_object <- williams_raw[[i]]
   patientName <- names(williams_raw)[i]
@@ -567,12 +571,11 @@ for (i in 1:length(williams_raw)) {
   combined_object$ultratree <- drop.tip(combined_object$ultratree, "zeros", collapse.singles = F)
 
   # Get agedf with driver metadata for all timepoints
-  combined_object$agedf <- combined_object$agedf[combined_object$agedf$age_at_sample_pcy > 1,]
+  combined_object$agedf <- combined_object$agedf[combined_object$agedf$age_at_sample_pcy > 1, ]
   unique_ages <- sort(unique(combined_object$agedf$age_at_sample_pcy))
   agedf_all <- combined_object$agedf
 
   for (j in (1:length(unique_ages))) {
-
     # Subset separate_object to only contain a single timepoint
     separate_object <- combined_object$ultratree
     age <- unique_ages[j]
@@ -586,7 +589,7 @@ for (i in 1:length(williams_raw)) {
     separate_object$has_expanded_clades <- F
 
     # Cut agedf to only have metadata from a single timepoint
-    agedf <- agedf_all[! agedf_all$tip.label %in% tipsDrop,]
+    agedf <- agedf_all[!agedf_all$tip.label %in% tipsDrop, ]
 
     separate_object$agedf <- NULL
 
@@ -606,10 +609,10 @@ williamsCloneNames <- c()
 ### Go one by one, starting with PD7271: No nested
 ID <- "PD7271_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig. 2)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under 120 are a clone
 cloneTips <- c(tree$tip.label[Descendants(tree, 120)[[1]]])
@@ -618,7 +621,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -629,10 +632,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD5182_1: No nested. Note: Number after underscore indicates the timepoint (some individuals have multiple sampling times)
 ID <- "PD5182_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 38 are clonal
 cloneTips <- c(tree$tip.label[Descendants(tree, 38)[[1]]])
@@ -641,7 +644,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -652,17 +655,17 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 ID <- "PD5182_2"
 tree <- williams[[ID]]
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
-williams[[ID]]$has_expanded_clades = F
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+williams[[ID]]$has_expanded_clades <- F
 
 
 # PD5182_3: No nested
 ID <- "PD5182_3"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 102
 cloneTips <- c(tree$tip.label[Descendants(tree, 102)[[1]]])
@@ -671,7 +674,7 @@ cloneName <- "clone2" # Don't match the other clone name because they aren't the
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -682,10 +685,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD5847_1: No nested (1 DMNT3A but only 1 doesn't affect coal times)
 ID <- "PD5847_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 103
 cloneTips <- c(tree$tip.label[Descendants(tree, 103)[[1]]])
@@ -694,7 +697,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -705,10 +708,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD5179_1: No nested (1 annotated (CUX1) but doesn't split)
 ID <- "PD5179_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 cloneTips <- c(tree$tip.label[Descendants(tree, 97)[[1]]])
 cloneDriver <- "JAK2:v617f_AND_9+_AND_9q-_AND_1q+"
@@ -716,7 +719,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -726,10 +729,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD6634_1: No nested
 ID <- "PD6634_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 4)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 39
 cloneTips <- c(tree$tip.label[Descendants(tree, 39)[[1]]])
@@ -738,7 +741,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -749,10 +752,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD9478_1: No nested
 ID <- "PD9478_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 85 are a clone
 cloneTips <- c(tree$tip.label[Descendants(tree, 85)[[1]]])
@@ -761,7 +764,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -772,20 +775,20 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD6629_1: One nested (JAK2 within DMNT3A)
 ID <- "PD6629_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 34 but must remove the JAK2 subclone (node 39)
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 34)[[1]]])
-cloneTips <- tipsWithNested[! tipsWithNested %in% tree$tip.label[Descendants(tree, 39)[[1]]][-1]]
+cloneTips <- tipsWithNested[!tipsWithNested %in% tree$tip.label[Descendants(tree, 39)[[1]]][-1]]
 cloneDriver <- "DNMT3A:p.R882H"
 cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -793,7 +796,7 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 39 are the JAK2 clone
 cloneTips <- c(tree$tip.label[Descendants(tree, 39)[[1]]])
@@ -803,7 +806,7 @@ cloneName <- "clone2"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -814,22 +817,24 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD6629_2: Nested expansions to be removed
 ID <- "PD6629_2"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under 31 but must remove subclones
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 31)[[1]]])
 # Remove the nested expansion with TET2 (node 38) and 9pUPD (node 46)
-cloneTips <- tipsWithNested[! tipsWithNested %in% c(tree$tip.label[Descendants(tree, 38)[[1]]][-1],
-                                                                 tree$tip.label[Descendants(tree, 46)[[1]]][-1])]
+cloneTips <- tipsWithNested[!tipsWithNested %in% c(
+  tree$tip.label[Descendants(tree, 38)[[1]]][-1],
+  tree$tip.label[Descendants(tree, 46)[[1]]][-1]
+)]
 cloneDriver <- "DNMT3A:p.R882H_AND_JAK2:p.V617F"
 cloneName <- "clone2" # Match naming with PD6629_1 (first timepoint)
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -840,10 +845,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD6646_1: No nested in this one
 ID <- "PD6646_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 95 are DNMT3A CBL clone
 cloneTips <- c(tree$tip.label[Descendants(tree, 95)[[1]]])
@@ -852,7 +857,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -860,7 +865,7 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 112 are DNMT3A JAK2 clone
 cloneTips <- c(tree$tip.label[Descendants(tree, 112)[[1]]])
@@ -869,7 +874,7 @@ cloneName <- "clone2"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -877,7 +882,7 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under 163 are unknown expansion
 cloneTips <- c(tree$tip.label[Descendants(tree, 163)[[1]]])
@@ -886,7 +891,7 @@ cloneName <- "clone3"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -896,20 +901,20 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD6646_2: Remove 9pUPD
 ID <- "PD6646_2"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Under node 29 but must remove nested subclone
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 29)[[1]]])
-cloneTips <- tipsWithNested[! tipsWithNested %in% c(tree$tip.label[Descendants(tree, 42)[[1]]][-1])]
+cloneTips <- tipsWithNested[!tipsWithNested %in% c(tree$tip.label[Descendants(tree, 42)[[1]]][-1])]
 cloneDriver <- "DNMT3A:p.?_AND_JAK2:p.V617F"
 cloneName <- "clone2" # Match clone name from previous timepoint
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -920,21 +925,23 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD5117_1: Remove 9pUPD and TET2
 ID <- "PD5117_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 2)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 93, but must remove the nested subclones
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 93)[[1]]])
-cloneTips <- tipsWithNested[! tipsWithNested %in% c(tree$tip.label[Descendants(tree, 134)[[1]]][-1],
-                                                                 tree$tip.label[Descendants(tree, 124)[[1]]][-1])]
+cloneTips <- tipsWithNested[!tipsWithNested %in% c(
+  tree$tip.label[Descendants(tree, 134)[[1]]][-1],
+  tree$tip.label[Descendants(tree, 124)[[1]]][-1]
+)]
 cloneDriver <- "JAK2:p.V617F"
 cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -945,10 +952,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD4781_1: No nested
 ID <- "PD4781_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 41 are a clone
 cloneTips <- c(tree$tip.label[Descendants(tree, 41)[[1]]])
@@ -957,7 +964,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -968,10 +975,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD4781_2: No nested
 ID <- "PD4781_2"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 cloneTips <- c(tree$tip.label[Descendants(tree, 24)[[1]]])
 cloneDriver <- "JAK2:p.V617F_AND_9pUPD_AND_TET2:p.Q1632*_AND_7p-_AND_7q+"
@@ -979,7 +986,7 @@ cloneName <- "clone1" # Match PD4781_1 naming
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -990,10 +997,10 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 # PD5147_1: No nested
 ID <- "PD5147_1"
 tree <- williams[[ID]]
-williams[[ID]]$has_expanded_clades = T
+williams[[ID]]$has_expanded_clades <- T
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 4)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Tips under node 69 are clonal
 cloneTips <- c(tree$tip.label[Descendants(tree, 69)[[1]]])
@@ -1002,7 +1009,7 @@ cloneName <- "clone1"
 cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
-ggtree(cloneTree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
+ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -1014,8 +1021,8 @@ williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", clon
 ID <- "PD5163_1"
 tree <- williams[[ID]]
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 2)
-ggtree(tree) + geom_text(aes(label=node), vjust=-.3) + layout_dendrogram()
-williams[[ID]]$has_expanded_clades = F
+ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+williams[[ID]]$has_expanded_clades <- F
 
 
 # Name the mitchell_clones list
@@ -1050,7 +1057,7 @@ ultra_tree1$sensitivity <- NULL
 ultra_tree1$age <- 34
 ultra_tree1$diagnosis_age <- 34
 
-ggtree(ultra_tree1)+layout_dendrogram()
+ggtree(ultra_tree1) + layout_dendrogram()
 
 
 # Clone age is 40 years for tree2
@@ -1061,7 +1068,7 @@ agedf <- data.frame("age" = 40, "tip.label" = tree2$tip.label)
 tree2$agedf <- agedf
 ultra_tree2 <- fit_tree(tree2, switch_nodes = c(), cores = 6, model = "nb_tree", niter = 2000)$ultratree
 
-ggtree(ultra_tree2)+layout_dendrogram()
+ggtree(ultra_tree2) + layout_dendrogram()
 
 ultra_tree2$agedf <- NULL
 ultra_tree2$sensitivity <- NULL
@@ -1072,8 +1079,10 @@ ultra_tree2$diagnosis_age <- 63
 
 # Note: we don't have full trees for Van Egeren, only clones
 vanEgeren_clones <- list(ultra_tree1, ultra_tree2)
-names(vanEgeren_clones) <- c("vanEgerenET1_clone1_JAK2:p.V617F_age34",
-                             "vanEgerenET2_clone1_JAK2:p.V617F_age63")
+names(vanEgeren_clones) <- c(
+  "vanEgerenET1_clone1_JAK2:p.V617F_age34",
+  "vanEgerenET2_clone1_JAK2:p.V617F_age63"
+)
 
 
 
@@ -1096,14 +1105,10 @@ realCloneData <- list(fullTree_list, clone_list)
 names(realCloneData) <- c("fullTrees", "cloneTrees")
 
 # Remove "has_expanded_clades" because it doesn't make sense in the expanded clones list
-for(i in c(1:length(realCloneData$cloneTrees))){
+for (i in c(1:length(realCloneData$cloneTrees))) {
   realCloneData$cloneTrees[[i]]$has_expanded_clades <- NULL
 }
 
 # Save as loadable data object for package users
 setwd("~/package_development/cloneRate")
 usethis::use_data(realCloneData, overwrite = TRUE, compress = "bzip2")
-
-
-
-
