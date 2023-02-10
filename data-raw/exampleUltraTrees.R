@@ -1,5 +1,4 @@
 ## code to prepare `exampleTrees` dataset goes here
-library(cloneRate)
 
 # Generate empty list and vector naming the list
 tree_list <- list()

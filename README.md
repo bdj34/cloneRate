@@ -57,10 +57,9 @@ library(ggtree, quietly = T)
 #> Guangchuang Yu. Using ggtree to visualize data on tree-like structures.
 #> Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
 #> 
-#> Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods
-#> for mapping and visualizing associated data on phylogeny using ggtree.
-#> Molecular Biology and Evolution. 2018, 35(12):3041-3043.
-#> doi:10.1093/molbev/msy194
+#> Guangchuang Yu.  Data Integration, Manipulation and Visualization of
+#> Phylogenetic Trees (1st edition). Chapman and Hall/CRC. 2022,
+#> doi:10.1201/9781003279242
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
 tree <- simTree(a=1, b=0.5, cloneAge=30, n=100)
@@ -69,7 +68,7 @@ tree <- simTree(a=1, b=0.5, cloneAge=30, n=100)
 ggtree(tree) + layout_dendrogram()
 ```
 
-<img src="man/figures/README-sim plot-1.png" width="100%" />
+<img src="man/figures/README-simPlot-1.png" width="100%" />
 
 Then, we can use this tree as input to our methods for growth rate
 estimation:
@@ -78,12 +77,12 @@ estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.573"
+#> [1] "Max. likelihood estimate = 0.502"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.548"
+#> [1] "Internal lengths estimate = 0.469"
 ```
 
 In our [paper](https://www.biorxiv.org), we use simulated trees to test
@@ -148,7 +147,7 @@ print(sd)
 #>  0.1151122  0.0887935  0.1083563
 print(rmse)
 #>    lengths    maxLike sharedMuts 
-#>   1.004936   0.995416   1.031274
+#>  1.0055126  0.9957344  1.0324831
 ```
 
 As expected, maximum likelihood performs the best. While the shared
@@ -172,7 +171,7 @@ PD9478 <- cloneRate::realCloneData$fullTrees$PD9478_1
 ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill ="red", alpha = .1)
 ```
 
-<img src="man/figures/README-realData example-1.png" width="100%" />
+<img src="man/figures/README-realDataExample-1.png" width="100%" />
 
 Let’s now look at the specific clone represented by node 85 (shaded in
 red), which we know corresponds to a clone with a JAK2 and DNMT3A
@@ -187,7 +186,7 @@ PD9478_subClone <- cloneRate::realCloneData$cloneTrees[["PD9478_1_clone1_JAK2:p.
 ggtree(PD9478_subClone)+ layout_dendrogram()
 ```
 
-<img src="man/figures/README-get subclone-1.png" width="100%" />
+<img src="man/figures/README-getSubclone-1.png" width="100%" />
 
 We can now apply our methods to the clone tree. We see that this tree is
 ultrametric, so we should apply our internalLengths() and

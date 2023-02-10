@@ -4,7 +4,7 @@
 \alias{sharedMuts}
 \title{Growth rate estimate using the sum of shared mutations assuming a mutation tree}
 \usage{
-sharedMuts(subtree, nu, includeStem = F, alpha = 0.05)
+sharedMuts(subtree, nu = NULL, includeStem = F, alpha = 0.05)
 }
 \arguments{
 \item{subtree}{A non-ultrametric ape tree subset to include only the clone of interest}

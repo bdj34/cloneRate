@@ -20,7 +20,7 @@ A dataframe including the net growth rate estimate, the sum of internal lengths 
 \code{internalLengths()} provides an estimate for the net growth rate of the clone with confidence bounds, using the internal lengths method.
 }
 \examples{
-internalLengths(cloneRate::exampleTrees[[1]])
+internalLengths(cloneRate::exampleUltraTrees[[1]])
 
 }
 \seealso{

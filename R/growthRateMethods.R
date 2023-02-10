@@ -11,7 +11,7 @@
 #' @export
 #' @importFrom ape "is.ultrametric"
 #' @examples
-#' internalLengths(cloneRate::exampleTrees[[1]])
+#' internalLengths(cloneRate::exampleUltraTrees[[1]])
 #'
 internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
@@ -212,7 +212,7 @@ sharedMuts <- function(subtree, nu=NULL, includeStem = F, alpha = 0.05) {
 #' @export
 #' @importFrom ape "branching.times"
 #' @examples
-#' df <- moments(cloneRate::exampleTrees[[1]])
+#' df <- moments(cloneRate::exampleUltraTrees[[1]])
 moments <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
@@ -275,7 +275,7 @@ moments <- function(subtree, alpha = 0.05) {
 #' @importFrom ape "branching.times"
 #'
 #' @examples
-#' df <- maxLikelihood(cloneRate::exampleTrees[[1]])
+#' df <- maxLikelihood(cloneRate::exampleUltraTrees[[1]])
 #'
 maxLikelihood <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()

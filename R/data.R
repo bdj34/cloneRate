@@ -24,7 +24,8 @@
 #' [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 #' @keywords phylogenetics, hematopoiesis
 #' @examples
-#' plot(cloneRate::realCloneData[["PD34493"]]) # Plot full reconstructed tree from donor PD34493
+#' # Plot full reconstructed tree from donor PD34493
+#' plot(cloneRate::realCloneData[["fullTrees"]][["PD34493"]])
 #'
 #'
 #' @source <https://pubmed.ncbi.nlm.nih.gov/35058638/>

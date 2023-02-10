@@ -53,7 +53,7 @@ install.packages(setdiff(c("ggplot2", "ggtree"), rownames(installed.packages()))
 
 This is a basic example which shows you how to simulate a tree and plot it.
 
-```{r sim plot}
+```{r simPlot}
 library(cloneRate, quietly = T)
 library(ggtree, quietly = T)
 
@@ -66,7 +66,7 @@ ggtree(tree) + layout_dendrogram()
 
 Then, we can use this tree as input to our methods for growth rate estimation:
 
-```{r sim estimate}
+```{r simEstimate}
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
@@ -148,7 +148,7 @@ You can apply these methods to real data as well. Here, we apply our
 maximum likelihood and lengths estimates to a real data clone from
 [Williams et al.](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 
-```{r realData example}
+```{r realDataExample}
 library(cloneRate, quietly = T)
 library(ggtree, quietly = T)
 
@@ -159,7 +159,7 @@ ggtree(PD9478) + layout_dendrogram() + geom_hilight(node = 85, fill ="red", alph
 
 Let's now look at the specific clone represented by node 85 (shaded in red), which we know corresponds to a clone with a JAK2 and DNMT3A mutation, based on the annotation in [Williams et al. Fig. 3](https://www.nature.com/articles/s41586-021-04312-6/figures/3)
 
-```{r get subclone}
+```{r getSubclone}
 # Load the clone (with its overly detailed name)
 PD9478_subClone <- cloneRate::realCloneData$cloneTrees[["PD9478_1_clone1_JAK2:p.F537_K539delinsL_AND_DNMT3A:p.Y908*_age68.75_williams"]]
 
@@ -169,7 +169,7 @@ ggtree(PD9478_subClone)+ layout_dendrogram()
 
 We can now apply our methods to the clone tree. We see that this tree is ultrametric, so we should apply our internalLengths() and maxLikelihood() functions.
 
-```{r apply methods}
+```{r applyMethods}
 # Get maximum likelihood and internal lengths estimates
 print(maxLikelihood(PD9478_subClone)$estimate)
 print(internalLengths(PD9478_subClone)$estimate)

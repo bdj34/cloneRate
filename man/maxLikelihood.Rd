@@ -21,7 +21,7 @@ Uses the approximation that coalescence times H_i are equal to a+b*U_i to
 find a and b. b is equal to 1/r, where r is the net growth rate
 }
 \examples{
-df <- maxLikelihood(cloneRate::exampleTrees[[1]])
+df <- maxLikelihood(cloneRate::exampleUltraTrees[[1]])
 
 }
 \seealso{

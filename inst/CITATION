@@ -1,0 +1,18 @@
+citHeader("To cite cloneRate in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "Estimating single cell clonal dynamics in human blood
+using coalescent theory",
+  author   = "Brian Johnson, Yubo Shuai, Jason Schweinsberg, Kit Curtius",
+  journal  = "NA",
+  year     = 2023,
+  volume   = NA,
+  number   = NA,
+  pages    = NA,
+  url      = "NA",
+  textVersion = paste(
+    "Johnson, B., Shuai, Y., Schweinsberg, J., Curtius, K. Estimating single cell clonal dynamics in human blood
+    using coalescent theory. 2023."
+  )
+)

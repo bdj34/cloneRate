@@ -19,16 +19,15 @@ library(phangorn)
 
 # Set working directory and clone git repository from:
 # Fabre et al. 2022 "The longitudinal dynamics and natural history of clonal haematopoiesis"
-setwd("~/Downloads")
+#setwd("~/Downloads")
 #system("git clone https://github.com/margaretefabre/Clonal_dynamics") # Only do once
-setwd("Clonal_dynamics/Phylogenies/Files")
 
 # Load ultrametric trees
-load("PD41305/trees/tree_ultra")
+load("~/Downloads/Clonal_dynamics/Phylogenies/Files/PD41305/trees/tree_ultra")
 PD41305_ultra <- tree_SNV_c_ultra
-load("PD41276/trees/tree_ultra")
+load("~/Downloads/Clonal_dynamics/Phylogenies/Files/PD41276/trees/tree_ultra")
 PD41276_ultra <- tree_SNV_c_ultra
-load("PD34493/trees/tree_ultra")
+load("~/Downloads/Clonal_dynamics/Phylogenies/Files/PD34493/trees/tree_ultra")
 PD34493_ultra <- tree_SNV_c_ultra
 
 # Assign ages at sampling (can't find exact ages, manually copied from paper)
