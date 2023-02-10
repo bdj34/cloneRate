@@ -4,6 +4,9 @@ rm(list = ls())
 library(ggtree)
 library(phangorn)
 
+# Set working directory to be the package, if necessary
+#setwd("~/package_development/cloneRate/")
+
 # Unfortunately, this requires a lot of manual checking back and forth between
 # the published tree figures from the papers and the data. We exclude nested
 # expansions which are the result of annotated driver mutations; any subclone
