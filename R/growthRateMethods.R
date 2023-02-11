@@ -2,7 +2,8 @@
 #'
 #' @description `internalLengths()` provides an estimate for the net growth rate of the clone with confidence bounds, using the internal lengths method.
 #'
-#' @param subtree An ultrametric ape tree subset to include only the clone of interest
+#' @param subtree An ultrametric tree subset to include only the clone of
+#' interest. Alternatively, a list with several such trees.
 #' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
@@ -14,6 +15,13 @@
 #'
 internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
+
+  # If we have a list of phylo objects instead of a single phylo objects, call recursively
+  if (inherits(subtree, "list") & !inherits(subtree, "phylo")){
+    # Call function recrusively on all trees in list, then combine results into one data.frame
+    return.df <- do.call(rbind, lapply(exampleUltraTrees, internalLengths))
+    return(return.df)
+  }
 
   # Perform basic checks on the input tree
   inputCheck(subtree, alpha)
