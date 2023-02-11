@@ -21,6 +21,7 @@ Description: Methods to quickly estimate the net growth rate of a
 License: MIT + file LICENSE
 URL: https://github.com/bdj34/cloneRate
 BugReports: https://github.com/bdj34/cloneRate/issues
+Depends: R (>= 3.6.0)
 Imports:
     ape (>= 4.0),
     maxLik (>= 1.4),

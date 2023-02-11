@@ -7,7 +7,8 @@
 internalLengths(subtree, includeStem = F, alpha = 0.05)
 }
 \arguments{
-\item{subtree}{An ultrametric ape tree subset to include only the clone of interest}
+\item{subtree}{An ultrametric tree subset to include only the clone of
+interest. Alternatively, a list with several such trees.}
 
 \item{includeStem}{Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation}
 
