@@ -6,7 +6,7 @@ Authors@R: c(
     person("Brian", "Johnson", , "brian.d.johnson97@gmail.com", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-9477-4677")),
     person("Yubo", "Shuai", role = "aut",
-           comment = c(ORCID = "0000-0002-9477-4677")),
+           comment = c(ORCID = "0000-0002-3058-9077")),
     person("Jason", "Schweinsberg", role = "aut",
            comment = c(ORCID = "0000-0002-4152-0059")),
     person("Kit", "Curtius", role = "aut",
@@ -32,6 +32,7 @@ Suggests:
     ggplot2,
     ggtree,
     knitr,
+    parallel,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)

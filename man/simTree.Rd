@@ -4,7 +4,7 @@
 \alias{simTree}
 \title{Simulate birth and death branching trees}
 \usage{
-simTree(a, b, cloneAge, n, precision = 10000, addStem = T)
+simTree(a, b, cloneAge, n, precision = 1000, addStem = T, n_trees = 1)
 }
 \arguments{
 \item{a}{Birth rate}
@@ -20,6 +20,8 @@ rates)}
 
 \item{addStem}{Boolean indicating whether to add stem to tree preceding first
 split}
+
+\item{nTrees}{Integer indicating the number of trees you want}
 }
 \value{
 An ape object of class "phylo" representing the ultrametric
