@@ -2,38 +2,47 @@
 % Please edit documentation in R/simTree.R
 \name{simTree}
 \alias{simTree}
-\title{Simulate birth and death branching trees}
+\title{Simulate ultrametric birth and death branching trees}
 \usage{
-simTree(a, b, cloneAge, n, precision = 1000, addStem = T, n_trees = 1)
+simTree(a, b, cloneAge, n, precBits = 100, addStem = T, nTrees = 1, nCores = 1)
 }
 \arguments{
 \item{a}{Birth rate}
 
 \item{b}{Death rate}
 
-\item{cloneAge}{Clone age (make sure it's same time units as birth and death
-rates)}
+\item{cloneAge}{Clone age. Make sure it's same time units as birth and death
+rates}
 
-\item{n}{Number of samples (number of tips of the tree to be returned)}
+\item{n}{Number of samples/tips of the tree to be returned}
 
-\item{precision}{Rmpfr param for handling high precision numbers}
+\item{precBits}{Rmpfr param for handling high precision numbers}
 
 \item{addStem}{Boolean indicating whether to add stem to tree preceding first
-split}
+split/coalescence}
 
-\item{nTrees}{Integer indicating the number of trees you want}
+\item{nTrees}{Integer indicating the number of trees to generate. Default is
+1}
+
+\item{nCores}{Integer indicating the number of cores to use if parallel pkg
+is installed}
 }
 \value{
 An ape object of class "phylo" representing the ultrametric
-phylogenetic tree
+phylogenetic tree, with elapsed runtime in seconds included. If nTrees
+param is greater than 1, a list of objects of class "phylo"
 }
 \description{
-Generates a sampled tree from a supercritial (birth rate > death
-rate) birth and death branching process according to the coalescent point
-process described in "Lambert, A. The coalescent of a sample from a binary
-branching process. (2018)."
+Generates a sampled tree (or a list of many sampled trees) from
+a supercritial (birth rate > death rate) birth and death branching process
+according to the coalescent point process described in "Lambert, A. The
+coalescent of a sample from a binary branching process. (2018)."
 }
 \examples{
+# Generate a single tree
 tree <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50)
+
+# Generate a list of trees
+tree_list <- simTree(a = 1, b = 0.5, cloneAge = 20, n = 50, nTrees = 100)
 
 }
