@@ -18,8 +18,8 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")){
-    # Call function recrusively on all trees in list, then combine results into one data.frame
-    return.df <- do.call(rbind, lapply(exampleUltraTrees, internalLengths))
+    # Call function recursively on all trees in list, then combine results into one data.frame
+    return.df <- do.call(rbind, lapply(subtree, internalLengths))
     return(return.df)
   }
 
@@ -221,6 +221,13 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
 moments <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
+  # If we have a list of phylo objects instead of a single phylo objects, call recursively
+  if (inherits(subtree, "list") & !inherits(subtree, "phylo")){
+    # Call function recursively on all trees in list, then combine results into one data.frame
+    return.df <- do.call(rbind, lapply(subtree, moments))
+    return(return.df)
+  }
+
   # Check if tree has stem
   n <- length(subtree$tip.label)
 
@@ -282,6 +289,13 @@ moments <- function(subtree, alpha = 0.05) {
 #'
 maxLikelihood <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
+
+  # If we have a list of phylo objects instead of a single phylo objects, call recursively
+  if (inherits(subtree, "list") & !inherits(subtree, "phylo")){
+    # Call function recursively on all trees in list, then combine results into one data.frame
+    return.df <- do.call(rbind, lapply(subtree, maxLikelihood))
+    return(return.df)
+  }
 
   # Basic check on input formatting and alpha value
   inputCheck(subtree, alpha)
