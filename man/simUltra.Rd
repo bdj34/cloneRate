@@ -9,9 +9,9 @@ simUltra(
   b,
   cloneAge,
   n,
+  nTrees = 1,
   precBits = 1000,
   addStem = T,
-  nTrees = 1,
   nCores = 1
 )
 }
@@ -26,15 +26,15 @@ sure it's same time units as birth and death rates}
 \item{n}{Number of samples/tips of the tree to be returned. Can be a vector
 of length 'nTrees' as well.}
 
+\item{nTrees}{Integer indicating the number of trees to generate. Default is
+1}
+
 \item{precBits}{Rmpfr param for handling high precision numbers. Needed for
 drawing the coalescence times. Can be a vector of length 'nTrees', though
 it is not recommended}
 
 \item{addStem}{Boolean indicating whether to add stem to tree preceding first
 split/coalescence. Can also be a vector of length 'nTrees'}
-
-\item{nTrees}{Integer indicating the number of trees to generate. Default is
-1}
 
 \item{nCores}{Integer indicating the number of cores to use if parallel pkg
 is installed. Default is 1.}

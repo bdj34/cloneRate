@@ -17,7 +17,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
 
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
-  if (inherits(subtree, "list") & !inherits(subtree, "phylo")){
+  if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, internalLengths))
     return(return.df)
@@ -222,7 +222,7 @@ moments <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
-  if (inherits(subtree, "list") & !inherits(subtree, "phylo")){
+  if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, moments))
     return(return.df)
@@ -291,7 +291,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
-  if (inherits(subtree, "list") & !inherits(subtree, "phylo")){
+  if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, maxLikelihood))
     return(return.df)

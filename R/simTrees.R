@@ -35,8 +35,8 @@
 #' # Generate a list of trees
 #' tree_list <- simUltra(a = 1, b = 0.5, cloneAge = 20, n = 50, nTrees = 10)
 #'
-simUltra <- function(a, b, cloneAge, n, precBits = 1000, addStem = T,
-                     nTrees = 1, nCores = 1) {
+simUltra <- function(a, b, cloneAge, n, nTrees = 1,
+                     precBits = 1000, addStem = T, nCores = 1) {
   # Store runtime for each tree
   ptm <- proc.time()
 
