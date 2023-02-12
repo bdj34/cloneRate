@@ -11,13 +11,13 @@
 #'   sure it's same time units as birth and death rates
 #' @param n Number of samples/tips of the tree to be returned. Can be a vector
 #'   of length 'nTrees' as well.
+#' @param nTrees Integer indicating the number of trees to generate. Default is
+#'   1
 #' @param precBits Rmpfr param for handling high precision numbers. Needed for
 #'   drawing the coalescence times. Can be a vector of length 'nTrees', though
 #'   it is not recommended
 #' @param addStem Boolean indicating whether to add stem to tree preceding first
 #'   split/coalescence. Can also be a vector of length 'nTrees'
-#' @param nTrees Integer indicating the number of trees to generate. Default is
-#'   1
 #' @param nCores Integer indicating the number of cores to use if parallel pkg
 #'  is installed. Default is 1.
 #'
@@ -172,12 +172,12 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
 #' @param n Number of samples/tips of the tree to be returned
 #' @param nu Mutation rate in units of mutations per unit time. Make sure time
 #'   units are consistent with birth and death rates and cloneAge
+#' @param nTrees Integer indicating the number of trees to generate. Default is
+#'   1.
 #' @param precBits Rmpfr param for handling high precision numbers. Needed to
 #'   draw coalescence times.
 #' @param addStem Boolean indicating whether to add stem to tree preceding first
 #'   split/coalescence
-#' @param nTrees Integer indicating the number of trees to generate. Default is
-#'   1.
 #' @param nCores Integer indicating the number of cores to use if parallel pkg
 #'  is installed. Default is 1.
 #'
@@ -198,8 +198,8 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
 #'   nu = stats::runif(n = 10, min = 10, max = 20), nTrees = 10
 #' )
 #'
-simMut <- function(a, b, cloneAge, n, nu,
-                   precBits = 1000, addStem = T, nTrees = 1, nCores = 1) {
+simMut <- function(a, b, cloneAge, n, nu, nTrees = 1,
+                   precBits = 1000, addStem = T, nCores = 1) {
   # Generate ultrametric, time-based trees
   ultraTrees <- simUltra(
     a = a, b = b, cloneAge = cloneAge, n = n,

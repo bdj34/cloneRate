@@ -10,9 +10,9 @@ simMut(
   cloneAge,
   n,
   nu,
+  nTrees = 1,
   precBits = 1000,
   addStem = T,
-  nTrees = 1,
   nCores = 1
 )
 }
@@ -29,14 +29,14 @@ rates}
 \item{nu}{Mutation rate in units of mutations per unit time. Make sure time
 units are consistent with birth and death rates and cloneAge}
 
+\item{nTrees}{Integer indicating the number of trees to generate. Default is
+1.}
+
 \item{precBits}{Rmpfr param for handling high precision numbers. Needed to
 draw coalescence times.}
 
 \item{addStem}{Boolean indicating whether to add stem to tree preceding first
 split/coalescence}
-
-\item{nTrees}{Integer indicating the number of trees to generate. Default is
-1.}
 
 \item{nCores}{Integer indicating the number of cores to use if parallel pkg
 is installed. Default is 1.}
