@@ -9,9 +9,7 @@ simMut(
   b,
   cloneAge,
   n,
-  nu = NULL,
-  nu_min = NULL,
-  nu_max = NULL,
+  nu,
   precBits = 1000,
   addStem = T,
   nTrees = 1,
@@ -30,12 +28,6 @@ rates}
 
 \item{nu}{Mutation rate in units of mutations per unit time. Make sure time
 units are consistent with birth and death rates and cloneAge}
-
-\item{nu_min}{Minimum of uniform distribution if drawing mutation rate as a
-uniformly distributed random variable.}
-
-\item{nu_max}{Maximum of uniform distribution if drawing mutation rate as a
-uniformly distributed random variable.}
 
 \item{precBits}{Rmpfr param for handling high precision numbers. Needed to
 draw coalescence times.}
@@ -71,8 +63,8 @@ tree <- simMut(a = 1, b = 0.5, cloneAge = 40, n = 50, nu = 10)
 
 # Generate a list of mutation-based trees with a range of mutation rates
 tree_list <- simMut(
-  a = 1, b = 0.5, cloneAge = 40, n = 50, nu_min = 10,
-  nu_max = 20, nTrees = 10
+  a = 1, b = 0.5, cloneAge = 40, n = 50,
+  nu = stats::runif(n=10, min = 10, max = 20), nTrees = 10
 )
 
 }

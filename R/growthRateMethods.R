@@ -118,7 +118,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
 
   if (is.null(nu)) {
-    nu <- subtree$params$nu[1]
+    nu <- subtree$metadata$nu[1]
     if (is.null(nu)) {
       stop("Need to give a mutation rate (nu) in function call or provide one in params data.frame in tree")
     }

@@ -64,14 +64,16 @@ simUltra <- function(a, b, cloneAge, n, precBits = 1000, addStem = T,
   if (nTrees > 1) {
     # Parallelize if "parallel" pkg avail. (user must set nCores > 1 explicitly)
     if (requireNamespace("parallel", quietly = TRUE)) {
-      return.list <- parallel::mcmapply(simUltra, a=a_vec,
+      return.list <- parallel::mcmapply(simUltra,
+        a = a_vec,
         b = b,
         cloneAge = cloneAge, n = n, precBits = precBits,
         addStem = addStem, nTrees = 1, nCores = 1,
         mc.cores = nCores, SIMPLIFY = F
       )
     } else {
-      return.list <- mapply(FUN = simUltra, a=a_vec,
+      return.list <- mapply(
+        FUN = simUltra, a = a_vec,
         b = b, cloneAge = cloneAge,
         n = n, precBits = precBits, addStem = addStem,
         nTrees = 1, SIMPLIFY = F
@@ -170,10 +172,6 @@ simUltra <- function(a, b, cloneAge, n, precBits = 1000, addStem = T,
 #' @param n Number of samples/tips of the tree to be returned
 #' @param nu Mutation rate in units of mutations per unit time. Make sure time
 #'   units are consistent with birth and death rates and cloneAge
-#' @param nu_min Minimum of uniform distribution if drawing mutation rate as a
-#'   uniformly distributed random variable.
-#' @param nu_max Maximum of uniform distribution if drawing mutation rate as a
-#'   uniformly distributed random variable.
 #' @param precBits Rmpfr param for handling high precision numbers. Needed to
 #'   draw coalescence times.
 #' @param addStem Boolean indicating whether to add stem to tree preceding first
@@ -196,11 +194,11 @@ simUltra <- function(a, b, cloneAge, n, precBits = 1000, addStem = T,
 #'
 #' # Generate a list of mutation-based trees with a range of mutation rates
 #' tree_list <- simMut(
-#'   a = 1, b = 0.5, cloneAge = 40, n = 50, nu_min = 10,
-#'   nu_max = 20, nTrees = 10
+#'   a = 1, b = 0.5, cloneAge = 40, n = 50,
+#'   nu = stats::runif(n=10, min = 10, max = 20), nTrees = 10
 #' )
 #'
-simMut <- function(a, b, cloneAge, n, nu = NULL, nu_min = NULL, nu_max = NULL,
+simMut <- function(a, b, cloneAge, n, nu,
                    precBits = 1000, addStem = T, nTrees = 1, nCores = 1) {
   # Generate ultrametric, time-based trees
   ultraTrees <- simUltra(
@@ -210,7 +208,7 @@ simMut <- function(a, b, cloneAge, n, nu = NULL, nu_min = NULL, nu_max = NULL,
   )
 
   # Convert from ultrametric, time-based trees to mutation based trees
-  ultra2mut(ultraTrees, nu = nu, nu_min = nu_min, nu_max = nu_max)
+  ultra2mut(ultraTrees, nu = nu)
 }
 
 
@@ -225,12 +223,9 @@ simMut <- function(a, b, cloneAge, n, nu = NULL, nu_min = NULL, nu_max = NULL,
 #'
 #' @param tree A single tree or list of trees of class "phylo", with edge
 #'   lengths in units of time
-#' @param nu Mutation rate in units of mutations per unit time. Make sure time
-#'   units are consistent in nu and tree$edge.length
-#' @param nu_min Minimum of uniform distribution if drawing mutation rate as a
-#'   uniformly distributed random variable.
-#' @param nu_max Maximum of uniform distribution if drawing mutation rate as a
-#'   uniformly distributed random variable.
+#' @param nu Mutation rate in units of mutations per unit time. Can also be a
+#'   vector of mutation rates with length equal to the number of input trees.
+#'   Make sure time units are consistent in nu and tree$edge.length
 #'
 #' @return An ape object of class "phylo" representing the phylogenetic tree
 #'   with edge lengths in units of mutations. Value of mutation rate will be
@@ -242,13 +237,17 @@ simMut <- function(a, b, cloneAge, n, nu = NULL, nu_min = NULL, nu_max = NULL,
 #' @export
 #' @examples
 #' # Convert the time-based, ultrametric example trees into mutation-based trees
-#' mutTrees <- ultra2mut(exampleUltraTrees, nu_min = 10, nu_max = 20)
+#' mutTrees <- ultra2mut(exampleUltraTrees,
+#'         nu = stats::runif(n = length(exampleUltraTrees), min = 10, max = 20))
 #'
-ultra2mut <- function(tree, nu = NULL, nu_min = NULL, nu_max = NULL) {
+ultra2mut <- function(tree, nu) {
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
   if (inherits(tree, "list") & !inherits(tree, "phylo")) {
+    if (!(length(nu) == 1 | length(nu) == length(tree))) {
+      stop("Length of nu must be 1 or equal to the number of input trees")
+    }
     # Call function recursively on all trees in list, then combine results into one data.frame
-    return.df <- lapply(tree, ultra2mut, nu = nu, nu_min = nu_min, nu_max = nu_max)
+    return.df <- mapply(ultra2mut, tree, nu = nu, SIMPLIFY = F)
     return(return.df)
   }
 
@@ -256,15 +255,6 @@ ultra2mut <- function(tree, nu = NULL, nu_min = NULL, nu_max = NULL) {
   if (is.null(tree$edge.length)) {
     stop("Tree doesn't have edge lengths so there is no way to generate random
          number of mutations. Use a 'phylo' object with an 'edge.length' vector.")
-  }
-
-  # Set mutation rate if not explicitly set. Also, check mutation rate input.
-  if (is.null(nu)) {
-    if (is.null(nu_min) | is.null(nu_max)) {
-      stop("Must specify either the mutation rate (nu), or a range of possible
-           values (nu_min and nu_max) for the mutation rate")
-    }
-    nu <- stats::runif(1, nu_min, nu_max)
   }
 
   # Adjust edge lengths of the tree using poisson random draws

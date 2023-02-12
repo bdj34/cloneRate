@@ -4,20 +4,15 @@
 \alias{ultra2mut}
 \title{Add poissonian mutations to an ultrametric tree(s)}
 \usage{
-ultra2mut(tree, nu = NULL, nu_min = NULL, nu_max = NULL)
+ultra2mut(tree, nu)
 }
 \arguments{
 \item{tree}{A single tree or list of trees of class "phylo", with edge
 lengths in units of time}
 
-\item{nu}{Mutation rate in units of mutations per unit time. Make sure time
-units are consistent in nu and tree$edge.length}
-
-\item{nu_min}{Minimum of uniform distribution if drawing mutation rate as a
-uniformly distributed random variable.}
-
-\item{nu_max}{Maximum of uniform distribution if drawing mutation rate as a
-uniformly distributed random variable.}
+\item{nu}{Mutation rate in units of mutations per unit time. Can also be a
+vector of mutation rates with length equal to the number of input trees.
+Make sure time units are consistent in nu and tree$edge.length}
 }
 \value{
 An ape object of class "phylo" representing the phylogenetic tree
@@ -35,6 +30,7 @@ rate. Mutation rate can be set or drawn from a uniform distribution.
 }
 \examples{
 # Convert the time-based, ultrametric example trees into mutation-based trees
-mutTrees <- ultra2mut(exampleUltraTrees, nu_min = 10, nu_max = 20)
+mutTrees <- ultra2mut(exampleUltraTrees,
+        nu = stats::runif(n = length(exampleUltraTrees), min = 10, max = 20))
 
 }
