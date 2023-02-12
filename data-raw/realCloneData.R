@@ -14,7 +14,7 @@ library(phangorn)
 # that produces more than one tip. These annotations are not
 # explicitly included in the data we download, so we have to manually remove them.
 # It makes annotating clones cumbersome and slow, but it only has to be done once,
-# and we're confident that we've done it right. ]
+# and we're more confident that it's right.
 
 # Clone git repository into Downloads folder from:
 # Fabre et al. 2022 "The longitudinal dynamics and natural history of clonal haematopoiesis"
