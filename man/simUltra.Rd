@@ -16,20 +16,22 @@ simUltra(
 )
 }
 \arguments{
-\item{a}{Birth rate}
+\item{a}{Birth rate or vector of birth rates of length 'nTrees'}
 
-\item{b}{Death rate}
+\item{b}{Death rate or vector of death rates of length 'nTrees'}
 
-\item{cloneAge}{Clone age. Make sure it's same time units as birth and death
-rates}
+\item{cloneAge}{Clone age or vector of clone ages of length 'nTrees'. Make
+sure it's same time units as birth and death rates}
 
-\item{n}{Number of samples/tips of the tree to be returned}
+\item{n}{Number of samples/tips of the tree to be returned. Can be a vector
+of length 'nTrees' as well.}
 
 \item{precBits}{Rmpfr param for handling high precision numbers. Needed for
-drawing the coalescence times.}
+drawing the coalescence times. Can be a vector of length 'nTrees', though
+it is not recommended}
 
 \item{addStem}{Boolean indicating whether to add stem to tree preceding first
-split/coalescence}
+split/coalescence. Can also be a vector of length 'nTrees'}
 
 \item{nTrees}{Integer indicating the number of trees to generate. Default is
 1}

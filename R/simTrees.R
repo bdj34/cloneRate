@@ -5,15 +5,17 @@
 #'   according to the coalescent point process described in "Lambert, A. The
 #'   coalescent of a sample from a binary branching process. (2018)."
 #'
-#' @param a Birth rate
-#' @param b Death rate
-#' @param cloneAge Clone age. Make sure it's same time units as birth and death
-#'   rates
-#' @param n Number of samples/tips of the tree to be returned
+#' @param a Birth rate or vector of birth rates of length 'nTrees'
+#' @param b Death rate or vector of death rates of length 'nTrees'
+#' @param cloneAge Clone age or vector of clone ages of length 'nTrees'. Make
+#'   sure it's same time units as birth and death rates
+#' @param n Number of samples/tips of the tree to be returned. Can be a vector
+#'   of length 'nTrees' as well.
 #' @param precBits Rmpfr param for handling high precision numbers. Needed for
-#'   drawing the coalescence times.
+#'   drawing the coalescence times. Can be a vector of length 'nTrees', though
+#'   it is not recommended
 #' @param addStem Boolean indicating whether to add stem to tree preceding first
-#'   split/coalescence
+#'   split/coalescence. Can also be a vector of length 'nTrees'
 #' @param nTrees Integer indicating the number of trees to generate. Default is
 #'   1
 #' @param nCores Integer indicating the number of cores to use if parallel pkg
@@ -44,21 +46,35 @@ simUltra <- function(a, b, cloneAge, n, precBits = 1000, addStem = T,
     precBits = precBits, addStem = addStem, nTrees = nTrees, nCores = nCores
   )
 
+  # Make sure length of params is either one or equal to 'nTrees'
+  if (!all(unlist(lapply(list(a, b, cloneAge, n), length)) == 1 |
+    unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
+    stop(paste0("Input parameters must be length 1 or length equal to the value
+                of param 'nTrees', which is ", nTrees))
+  }
+
+  # If a is length 1, make it a vector of length nTrees for first argument to mapply
+  if (length(a) == 1) {
+    a_vec <- rep(a, nTrees)
+  } else {
+    a_vec <- a
+  }
+
   # Call recursively to generate nTrees if nTrees > 1
   if (nTrees > 1) {
     # Parallelize if "parallel" pkg avail. (user must set nCores > 1 explicitly)
     if (requireNamespace("parallel", quietly = TRUE)) {
-      return.list <- parallel::mclapply(rep(a, nTrees), simUltra,
+      return.list <- parallel::mcmapply(simUltra, a=a_vec,
         b = b,
         cloneAge = cloneAge, n = n, precBits = precBits,
         addStem = addStem, nTrees = 1, nCores = 1,
-        mc.cores = nCores
+        mc.cores = nCores, SIMPLIFY = F
       )
     } else {
-      return.list <- lapply(rep(a, nTrees), simUltra,
+      return.list <- mapply(FUN = simUltra, a=a_vec,
         b = b, cloneAge = cloneAge,
         n = n, precBits = precBits, addStem = addStem,
-        nTrees = 1
+        nTrees = 1, SIMPLIFY = F
       )
     }
     return(return.list)
@@ -186,9 +202,6 @@ simUltra <- function(a, b, cloneAge, n, precBits = 1000, addStem = T,
 #'
 simMut <- function(a, b, cloneAge, n, nu = NULL, nu_min = NULL, nu_max = NULL,
                    precBits = 1000, addStem = T, nTrees = 1, nCores = 1) {
-  # Store runtime for each tree
-  ptm <- proc.time()
-
   # Generate ultrametric, time-based trees
   ultraTrees <- simUltra(
     a = a, b = b, cloneAge = cloneAge, n = n,
@@ -321,44 +334,44 @@ inv_cdf_coal_times <- function(y, net, a, alpha, precBits) {
 inputCheck_simTree <- function(a, b, cloneAge, n, precBits, addStem, nTrees,
                                nCores) {
   # Check that we have reasonable inputs
-  if (!a > b) {
+  if (!all(a > b)) {
     stop("simUltra function generates trees for supercritical birth-death branching
          processes. Birth rate (a) must be greater than death rate (b).")
   }
-  if (!a > 0) {
+  if (!all(a > 0)) {
     stop("simUltra function generates trees for supercritical birth-death branching
          processes. Birth rate (a) must be greater than 0.")
   }
-  if (b < 0) {
+  if (any(b < 0)) {
     stop("negative death rate (b) doesn't make sense.")
   }
-  if (n > exp((a - b) * cloneAge)) {
+  if (any(n > exp((a - b) * cloneAge))) {
     warning("Number of samples (n) is greater than expected population size at
          given net growth rate (a-b) and clone age (cloneAge). This more closely
          resembles a critical rather than the supercritical branching process we
          model. Increase net growth rate or cloneAge, or decrease number of
          samples (n).")
   }
-  if (round(n) != n | n < 2) {
+  if (any(round(n) != n) | any(n < 2)) {
     stop("Number of samples must be a positive whole number greater than 1")
   }
-  if (round(nTrees) != nTrees | nTrees < 1) {
+  if (any(round(nTrees) != nTrees) | any(nTrees < 1) | length(nTrees) != 1) {
     stop("Number of trees must be a positive whole number greater than 0")
   }
-  if (precBits < 2) {
+  if (any(precBits < 2)) {
     stop("precBits for mpfr function is given in bits, and must be at least 2
          bits. For example, double precision corresponds to 53 bits. See Rmpfr
          documentation for details on precBits argument (?Rmpfr::mpfr).")
   }
-  if (!inherits(addStem, "logical")) {
+  if (!all(inherits(addStem, "logical"))) {
     stop("addStem must be logical, indicating whether we want to include a
          'stem' or 'trunk'")
   }
-  if (round(nCores) != nCores | nCores < 1) {
+  if (any(round(nCores) != nCores) | any(nCores < 1)) {
     stop("Number of cores must be a positive whole number greater than 0.
          nCores=1 indicates no parallelization.")
   }
-  if (nCores > 1 & !requireNamespace("parallel", quietly = T)) {
+  if (any(nCores > 1) & !all(requireNamespace("parallel", quietly = T))) {
     warning(paste0("nCores set to ", nCores, " but 'parallel' package is not
                    installed, and simUltra() will run without parallelization."))
   }
