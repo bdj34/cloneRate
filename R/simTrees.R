@@ -195,7 +195,7 @@ simUltra <- function(a, b, cloneAge, n, precBits = 1000, addStem = T,
 #' # Generate a list of mutation-based trees with a range of mutation rates
 #' tree_list <- simMut(
 #'   a = 1, b = 0.5, cloneAge = 40, n = 50,
-#'   nu = stats::runif(n=10, min = 10, max = 20), nTrees = 10
+#'   nu = stats::runif(n = 10, min = 10, max = 20), nTrees = 10
 #' )
 #'
 simMut <- function(a, b, cloneAge, n, nu,
@@ -238,7 +238,8 @@ simMut <- function(a, b, cloneAge, n, nu,
 #' @examples
 #' # Convert the time-based, ultrametric example trees into mutation-based trees
 #' mutTrees <- ultra2mut(exampleUltraTrees,
-#'         nu = stats::runif(n = length(exampleUltraTrees), min = 10, max = 20))
+#'   nu = stats::runif(n = length(exampleUltraTrees), min = 10, max = 20)
+#' )
 #'
 ultra2mut <- function(tree, nu) {
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
