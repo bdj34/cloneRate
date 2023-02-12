@@ -31,6 +31,7 @@ rate. Mutation rate can be set or drawn from a uniform distribution.
 \examples{
 # Convert the time-based, ultrametric example trees into mutation-based trees
 mutTrees <- ultra2mut(exampleUltraTrees,
-        nu = stats::runif(n = length(exampleUltraTrees), min = 10, max = 20))
+  nu = stats::runif(n = length(exampleUltraTrees), min = 10, max = 20)
+)
 
 }
