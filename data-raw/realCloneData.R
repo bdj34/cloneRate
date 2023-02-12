@@ -54,6 +54,9 @@ for (i in 1:length(fabre)) {
   fabre[[i]]$node.label <- NULL
   fabre[[i]]$has_expanded_clades <- F
   fabre[[i]] <- ape::drop.tip(fabre[[i]], "Ancestral", collapse.singles = F)
+  ID <- names(fabre)[i]
+  fabre[[i]]$metadata <- data.frame("ID" = ID, "age" = fabre[[ID]]$age,
+                          "diagnosis.age" = NA, "malnorm" = "Normal")
 }
 
 # One by one, annotate clones as they do in the paper, and remove subclones
@@ -74,6 +77,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot so we can manually identify potential subclones within the clone (none here)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = fabre[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
 fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
@@ -85,7 +94,7 @@ ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 98)[[1]]])
 
 # We have a nested subclonal expansion from U2AF1. Load annotation from Fabre github
-load(paste0(ID, "/trees/details"))
+load(paste0("~/Downloads/Clonal_dynamics/Phylogenies/Files/", ID, "/trees/details"))
 details_U2AF1 <- details3[details3$Gene == "U2AF1", ] # Check data.frame. Shows node 119
 # Subtract 1 because we removed outgroup...remove node 118 and all but one descendant
 cloneTips <- tipsWithNested[!tipsWithNested %in% c(tree$tip.label[Descendants(tree, 118)[[1]]][-1])]
@@ -95,6 +104,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = fabre[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
@@ -111,6 +126,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = fabre[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
@@ -135,6 +156,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot so we can manually identify potential subclones within the clone (none here)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = fabre[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
 fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
@@ -151,6 +178,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot so we can manually identify potential subclones within the clone (none here)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = fabre[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
 fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
@@ -166,6 +199,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (none here)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = fabre[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
@@ -185,7 +224,7 @@ ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 # Tips under 86 are the clone, but we must remove nested expansions
 tipsWithNested <- c(tree$tip.label[Descendants(tree, 86)[[1]]])
 # Load the details to find nested drivers
-load("~/rotation_fall2021/fabre_trees/details_41276")
+load(paste0("~/Downloads/Clonal_dynamics/Phylogenies/Files/", ID, "/trees/details"))
 details_CBL <- details3[details3$Gene == "CBL", ] # Shows node 136. Subtract 1 because we removed outgroup...135
 details_del20q <- details3[details3$variant_ID == "del20q", ] # Shows node 165. Subtract 1 because we removed outgroup...164
 cloneTips <- tipsWithNested[!tipsWithNested %in% c(
@@ -198,6 +237,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot so we can manually identify potential subclones within the clone (already removed here)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = fabre[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
@@ -260,6 +305,9 @@ for (i in 1:length(mitchell)) {
   mitchell[[i]]$has_expanded_clades <- F
   mitchell[[i]]$age <- mitchell[[i]]$agedf$age[1]
   mitchell[[i]]$agedf <- NULL
+  ID <- names(mitchell)[i]
+  mitchell[[i]]$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                    "diagnosis.age" = NA, "malnorm" = "Normal")
 }
 
 # Start a list with clones and a vector of names
@@ -288,6 +336,12 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 cloneTips <- tipsWithNested[!tipsWithNested %in% c(cloneTree$tip.label[Descendants(cloneTree, 195)[[1]]][-1])]
 cloneTree <- keep.tip(cloneTree, cloneTips)
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
@@ -302,6 +356,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -325,6 +385,12 @@ cloneTree <- keep.tip(tree, tipsWithNested)
 # Plot to check
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Remove tips which are descendants of 154 (by visual inspection of subtree compared to paper annotation)
 cloneTips <- tipsWithNested[!tipsWithNested %in% c(cloneTree$tip.label[Descendants(cloneTree, 154)[[1]]][-1])]
 cloneTree <- keep.tip(cloneTree, cloneTips)
@@ -346,6 +412,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
@@ -361,6 +433,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -379,6 +457,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
@@ -395,6 +479,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -413,6 +503,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
@@ -430,6 +526,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
@@ -446,6 +548,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -470,6 +578,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
@@ -486,6 +600,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -504,6 +624,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
@@ -521,6 +647,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
+
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
 mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
@@ -536,6 +668,12 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = mitchell[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
+                                 "malnorm" = "Normal")
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
@@ -559,6 +697,13 @@ williams_raw <- readRDS("~/Downloads/PDD_TELO.rds") # Downloaded from: https://g
 williams <- list()
 names_vec <- c()
 
+# Define diagnosis vec as the age when each patient was diagnosed. Manually entered from Williams paper
+diagnosis_vec <- c(
+  "PD7271" = 20, "PD5163" = 31, "PD5117" = 64, "PD5182" = 32, "PD5179" = 34,
+  "PD5847" = 44, "PD6629" = 54, "PD9478" = 53, "PD6646" = 76, "PD4781" = 73,
+  "PD6634" = 26, "PD5147" = 81
+)
+
 # Split trees by age and remove zeroes outgroup
 for (i in 1:length(williams_raw)) {
   # Combined object may have more than one timepoint
@@ -572,6 +717,8 @@ for (i in 1:length(williams_raw)) {
   combined_object$agedf <- combined_object$agedf[combined_object$agedf$age_at_sample_pcy > 1, ]
   unique_ages <- sort(unique(combined_object$agedf$age_at_sample_pcy))
   agedf_all <- combined_object$agedf
+
+  combined_object$diagnosis.age <- diagnosis_vec[patientName]
 
   for (j in (1:length(unique_ages))) {
     # Subset separate_object to only contain a single timepoint
@@ -590,6 +737,12 @@ for (i in 1:length(williams_raw)) {
     agedf <- agedf_all[!agedf_all$tip.label %in% tipsDrop, ]
 
     separate_object$agedf <- NULL
+
+    # Add metadata data.frame to each object
+    separate_object$metadata <- data.frame("ID" = paste0(names(williams_raw)[i], "_", j),
+                                           "age" = age,
+                                         "diagnosis.age" = diagnosis_vec[patientName],
+                                         "malnorm" = "Malignant")
 
     williams <- append(williams, list(separate_object))
     names_vec <- c(names_vec, paste0(names(williams_raw)[i], "_", j))
@@ -621,6 +774,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -643,6 +803,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -674,6 +841,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -697,6 +871,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -718,6 +899,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -741,6 +929,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -763,6 +958,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -788,6 +990,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -805,6 +1014,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -834,6 +1050,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -857,6 +1080,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -874,6 +1104,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -890,6 +1127,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -913,6 +1157,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -941,6 +1192,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -964,6 +1222,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
 
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
+
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
 williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
@@ -985,6 +1250,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -1008,6 +1280,13 @@ cloneTree <- keep.tip(tree, cloneTips)
 
 # Plot to check (no nested)
 ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
+
+# Add metadata df for easier analysis
+cloneTree$metadata <- data.frame("ID" = ID, "age" = williams[[ID]]$age,
+                                 "cloneName" = cloneName,
+                                 "cloneDriver" = cloneDriver,
+                                 "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
+                                 "malnorm" = "Malignant")
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
@@ -1053,10 +1332,8 @@ ultra_tree1$sensitivity <- NULL
 
 # Set patient age (not clone age or tree age)
 ultra_tree1$age <- 34
-ultra_tree1$diagnosis_age <- 34
 
 ggtree(ultra_tree1) + layout_dendrogram()
-
 
 # Clone age is 40 years for tree2
 tree2 <- ape::read.tree("~/stemcellsim/StemCellSim/ET2_tree.txt")
@@ -1073,7 +1350,20 @@ ultra_tree2$sensitivity <- NULL
 
 # Set patient age (not clone age or tree age)
 ultra_tree2$age <- 63
-ultra_tree2$diagnosis_age <- 63
+
+# Note: we don't have full trees for Van Egeren, only clones
+# Add metadata df for easier analysis
+ultra_tree1$metadata <- data.frame("ID" = "vanEgerenET1", "age" = 34,
+                                   "cloneName" = "clone1",
+                                   "cloneDriver" = "JAK2:p.V617F",
+                                   "diagnosis.age" = 34,
+                                   "malnorm" = "Malignant")
+
+ultra_tree2$metadata <- data.frame("ID" = "vanEgerenET2", "age" = 63,
+                                   "cloneName" = "clone1",
+                                   "cloneDriver" = "JAK2:p.V617F",
+                                   "diagnosis.age" = 63,
+                                   "malnorm" = "Malignant")
 
 # Note: we don't have full trees for Van Egeren, only clones
 vanEgeren_clones <- list(ultra_tree1, ultra_tree2)
