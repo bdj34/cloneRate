@@ -215,7 +215,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
 #' @returns A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths()], [cloneRate::maxLikelihood()]
-#' @export
+#' @noRd
 #' @examples
 #' df <- moments(cloneRate::exampleUltraTrees[[1]])
 moments <- function(subtree, alpha = 0.05) {

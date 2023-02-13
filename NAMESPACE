@@ -2,7 +2,6 @@
 
 export(internalLengths)
 export(maxLikelihood)
-export(moments)
 export(sharedMuts)
 export(simMut)
 export(simUltra)
