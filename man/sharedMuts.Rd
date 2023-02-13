@@ -26,5 +26,5 @@ sharedMuts(cloneRate::exampleMutTrees[[1]])
 
 }
 \seealso{
-\code{\link[=internalLengths]{internalLengths()}}, \code{\link[=moments]{moments()}}, \code{\link[=maxLikelihood]{maxLikelihood()}}
+\code{\link[=internalLengths]{internalLengths()}}
 }

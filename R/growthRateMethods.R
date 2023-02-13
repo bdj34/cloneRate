@@ -8,7 +8,7 @@
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
-#' @seealso [cloneRate::moments()], [cloneRate::maxLikelihood()]
+#' @seealso [cloneRate::maxLikelihood()], [cloneRate::sharedMuts()]
 #' @export
 #' @examples
 #' internalLengths(cloneRate::exampleUltraTrees[[1]])
@@ -109,7 +109,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
-#' @seealso [cloneRate::internalLengths()], [cloneRate::moments()], [cloneRate::maxLikelihood()]
+#' @seealso [cloneRate::internalLengths()]
 #' @export
 #' @examples
 #' sharedMuts(cloneRate::exampleMutTrees[[1]])
@@ -203,73 +203,6 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
 
 
 
-#' Growth rate estimate using Method of Moments
-#'
-#' @description Provides an estimate for the net growth rate of the clone with confidence
-#'     bounds using the method of moments.
-#'
-#' @param subtree An ape tree subset to include only the clone of interest
-#' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
-#'
-#' @returns A dataframe including the net growth rate estimate, confidence
-#'     intervals, and other important details (runtime, n, etc.)
-#' @seealso [cloneRate::internalLengths()], [cloneRate::maxLikelihood()]
-#' @noRd
-#' @examples
-#' df <- moments(cloneRate::exampleUltraTrees[[1]])
-moments <- function(subtree, alpha = 0.05) {
-  ptm <- proc.time()
-
-  # If we have a list of phylo objects instead of a single phylo objects, call recursively
-  if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
-    # Call function recursively on all trees in list, then combine results into one data.frame
-    return.df <- do.call(rbind, lapply(subtree, moments))
-    return(return.df)
-  }
-
-  # Check if tree has stem
-  n <- length(subtree$tip.label)
-
-  # Basic check on input formatting and alpha value
-  inputCheck(subtree, alpha)
-
-  # Calculate the growth rate
-  growthRate <- (pi / sqrt(3)) * 1 / (stats::sd(ape::branching.times(subtree)))
-  growthRate_lb <- growthRate * sqrt(1 + 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
-  growthRate_ub <- growthRate * sqrt(1 - 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
-
-  # Get other tree info (lengths)
-  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
-  intLen <- suppressWarnings(cloneRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
-  n <- length(subtree$tip.label)
-  nodes <- subtree$edge[subtree$edge > n]
-  if (1 %in% table(nodes)) {
-    hasStem <- T
-  } else {
-    hasStem <- F
-  }
-
-  # Check ratio of external to internal lengths
-  if (extLen / intLen <= 3) {
-    warning("External to internal lengths ratio is less than or equal to 3,
-            which means internal lengths method may not be applicable.")
-  }
-
-  runtime <- proc.time() - ptm
-
-  return(data.frame(
-    "lowerBound" = growthRate_lb, "estimate" = growthRate,
-    "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
-    "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
-    "n" = n, "alpha" = alpha, "hasStem" = hasStem,
-    "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
-    "method" = "moments"
-  ))
-}
-
-
-
 #' Growth rate estimate using Maximum Likelihood
 #'
 #' @description Uses the approximation that coalescence times H_i are equal to a+b*U_i to
@@ -281,7 +214,7 @@ moments <- function(subtree, alpha = 0.05) {
 #'
 #' @return A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (runtime, n, etc.)
-#' @seealso [cloneRate::internalLengths], [cloneRate::moments()]
+#' @seealso [cloneRate::internalLengths]
 #' @export
 #'
 #' @examples
@@ -388,4 +321,74 @@ inputCheck <- function(subtree, alpha) {
   }
 
   return(NULL)
+}
+
+
+
+
+
+
+#' Growth rate estimate using Method of Moments (NOT EXPORTED CURRENTLY)
+#'
+#' @description Provides an estimate for the net growth rate of the clone with confidence
+#'     bounds using the method of moments.
+#'
+#' @param subtree An ape tree subset to include only the clone of interest
+#' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
+#'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
+#'
+#' @returns A dataframe including the net growth rate estimate, confidence
+#'     intervals, and other important details (runtime, n, etc.)
+#' @seealso [cloneRate::internalLengths()], [cloneRate::maxLikelihood()]
+#' @noRd
+#' @examples
+#' df <- moments(cloneRate::exampleUltraTrees[[1]])
+moments <- function(subtree, alpha = 0.05) {
+  ptm <- proc.time()
+
+  # If we have a list of phylo objects instead of a single phylo objects, call recursively
+  if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
+    # Call function recursively on all trees in list, then combine results into one data.frame
+    return.df <- do.call(rbind, lapply(subtree, moments))
+    return(return.df)
+  }
+
+  # Check if tree has stem
+  n <- length(subtree$tip.label)
+
+  # Basic check on input formatting and alpha value
+  inputCheck(subtree, alpha)
+
+  # Calculate the growth rate
+  growthRate <- (pi / sqrt(3)) * 1 / (stats::sd(ape::branching.times(subtree)))
+  growthRate_lb <- growthRate * sqrt(1 + 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
+  growthRate_ub <- growthRate * sqrt(1 - 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
+
+  # Get other tree info (lengths)
+  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
+  intLen <- suppressWarnings(cloneRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
+  n <- length(subtree$tip.label)
+  nodes <- subtree$edge[subtree$edge > n]
+  if (1 %in% table(nodes)) {
+    hasStem <- T
+  } else {
+    hasStem <- F
+  }
+
+  # Check ratio of external to internal lengths
+  if (extLen / intLen <= 3) {
+    warning("External to internal lengths ratio is less than or equal to 3,
+            which means internal lengths method may not be applicable.")
+  }
+
+  runtime <- proc.time() - ptm
+
+  return(data.frame(
+    "lowerBound" = growthRate_lb, "estimate" = growthRate,
+    "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
+    "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
+    "n" = n, "alpha" = alpha, "hasStem" = hasStem,
+    "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
+    "method" = "moments"
+  ))
 }

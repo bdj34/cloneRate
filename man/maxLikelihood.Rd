@@ -25,5 +25,5 @@ df <- maxLikelihood(cloneRate::exampleUltraTrees[[1]])
 
 }
 \seealso{
-\link{internalLengths}, \code{\link[=moments]{moments()}}
+\link{internalLengths}
 }
