@@ -49,14 +49,12 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   # Get list of descendants from each internal node
   descendant_df <- data.frame(
     "Node" = (length(subtree$tip.label) + 2):max(subtree$edge), "Parent" = NA,
-    "Edge_length" = NA, "n_cells" = NA
+    "Edge_length" = NA
   )
 
 
-  # Find parent, edge length, and number of descendant cells for each internal node
+  # Find parent and edge length preceding each internal node
   for (k in descendant_df$Node) {
-    descendants <- subtree$edge[subtree$edge[, 1] == k, 2]
-    descendant_df$n_cells[descendant_df$Node == k] <- length(descendants)
     descendant_df$Edge_length[descendant_df$Node == k] <- subtree$edge.length[which(subtree$edge[, 2] == k)]
     descendant_df$Parent[descendant_df$Node == k] <- subtree$edge[which(subtree$edge[, 2] == k), 1]
   }
