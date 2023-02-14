@@ -86,15 +86,16 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   # Get runtime (including all tests)
   runtime <- proc.time() - ptm
 
-  # return(c(growthRate_lb, growthRate, growthRate_ub, intLen))
-  return(data.frame(
+  result.df <- data.frame(
     "lowerBound" = growthRate_lb, "estimate" = growthRate,
     "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
     "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
     "n" = n, "alpha" = alpha, "hasStem" = hasStem,
     "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
     "method" = "lengths"
-  ))
+  )
+  # return(c(growthRate_lb, growthRate, growthRate_ub, intLen))
+  return(cbind(result.df, subtree$metadata))
 }
 
 
