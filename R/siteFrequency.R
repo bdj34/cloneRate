@@ -11,7 +11,9 @@
 #' @returns A data.frame with three columns: the number of descendant cells, site
 #'  frequency in units of time or mutations, and normalized site frequency. If a
 #'  list of trees are input, output will be a list of such data.frames.
-#' @seealso [cloneRate::internalLengths()], [cloneRate::sharedMuts()]
+#' @seealso [cloneRate::internalLengths()] and [cloneRate::sharedMuts()] which
+#'  use the sum of edge lengths ancestral to between 2 and n-1 tips to calculate
+#'  a growth rate.
 #' @export
 #' @examples
 #' # Get site frequency of a single tree
