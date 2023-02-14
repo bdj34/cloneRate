@@ -313,7 +313,7 @@ inputCheck <- function(subtree, alpha) {
 
   # Only works for ultrametric trees
   if (!ape::is.ultrametric(subtree)) {
-    stop("Tree is not ultrametric. intenralLengths, moments, and maxLike fns.
+    stop("Tree is not ultrametric. internalLengths, moments, and maxLike fns.
         should only be used with ultrametric trees. For usage with mutation trees,
         use sharedMuts fn.")
   }
