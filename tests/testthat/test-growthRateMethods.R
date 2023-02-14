@@ -66,6 +66,7 @@ test_that("Ultra fns. throw error or warning for unreasonable alpha" , {
   ultraTree <- simUltra(a = 1, b = 0, cloneAge = 20, n = 10)
   expect_error(internalLengths(ultraTree, alpha = 2), regexp = "alpha must be between 0 and 1")
   expect_warning(maxLikelihood(ultraTree, alpha = .95), regexp = "1-alpha confidence intervals")
+  expect_warning(moments(ultraTree, alpha = .95), regexp = "1-alpha confidence intervals")
 })
 
 
