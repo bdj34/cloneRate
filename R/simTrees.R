@@ -40,18 +40,18 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
   # Store runtime for each tree
   ptm <- proc.time()
 
+  # Make sure length of params is either one or equal to 'nTrees'
+  if (!all(unlist(lapply(list(a, b, cloneAge, n), length)) == 1 |
+           unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
+    stop(paste0("Input parameters must be length 1 or length equal to the value
+                of param 'nTrees', which is ", nTrees))
+  }
+
   # Check inputs to make sure they make sense
   inputCheck_simTree(
     a = a, b = b, cloneAge = cloneAge, n = n,
     precBits = precBits, addStem = addStem, nTrees = nTrees, nCores = nCores
   )
-
-  # Make sure length of params is either one or equal to 'nTrees'
-  if (!all(unlist(lapply(list(a, b, cloneAge, n), length)) == 1 |
-    unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
-    stop(paste0("Input parameters must be length 1 or length equal to the value
-                of param 'nTrees', which is ", nTrees))
-  }
 
   # If a is length 1, make it a vector of length nTrees for first argument to mapply
   if (length(a) == 1) {
