@@ -136,6 +136,16 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
     stop("Tree should be mutation-based, not time-based. Tree should not be ultrametric.")
   }
 
+  # Make sure alpha is reasonable
+  if (alpha < 0 | alpha > 1) {
+    stop("alpha must be between 0 and 1")
+  }
+  if (alpha > 0.25) {
+    warning(paste0("We calulate 1-alpha confidence intervals. The given confidence
+            intervals, with alpha = ", alpha, " correspond to ", 1 - alpha, "%
+            confidence intervals, which will be very narrow."))
+  }
+
   if (includeStem) {
     message("You have set includeStem = T. Note that we do not include the stem as part of the internal lengths calculation in our work (Johnson et al. 2022)")
   }
@@ -313,7 +323,7 @@ inputCheck <- function(subtree, alpha) {
 
   # Only works for ultrametric trees
   if (!ape::is.ultrametric(subtree)) {
-    stop("Tree is not ultrametric. internalLengths, moments, and maxLike fns.
+    stop("Tree is not ultrametric. internalLengths, and maxLike fns.
         should only be used with ultrametric trees. For usage with mutation trees,
         use sharedMuts fn.")
   }
