@@ -31,5 +31,7 @@ example.list <- siteFrequency(exampleMutTrees)
 
 }
 \seealso{
-\code{\link[=internalLengths]{internalLengths()}}, \code{\link[=sharedMuts]{sharedMuts()}}
+\code{\link[=internalLengths]{internalLengths()}} and \code{\link[=sharedMuts]{sharedMuts()}} which
+use the sum of edge lengths ancestral to between 2 and n-1 tips to calculate
+a growth rate.
 }
