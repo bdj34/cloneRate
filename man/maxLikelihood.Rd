@@ -25,5 +25,6 @@ df <- maxLikelihood(cloneRate::exampleUltraTrees[[1]])
 
 }
 \seealso{
-\link{internalLengths}
+\link{internalLengths} which uses an alternatvie method for
+growth rate estimation from an ultrametric tree.
 }

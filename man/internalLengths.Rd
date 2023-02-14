@@ -25,5 +25,6 @@ internalLengths(cloneRate::exampleUltraTrees[[1]])
 
 }
 \seealso{
-\code{\link[=maxLikelihood]{maxLikelihood()}}, \code{\link[=sharedMuts]{sharedMuts()}}
+\code{\link[=maxLikelihood]{maxLikelihood()}}, \code{\link[=sharedMuts]{sharedMuts()}} for other
+growth rate methods.
 }

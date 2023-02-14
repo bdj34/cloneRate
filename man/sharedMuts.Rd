@@ -26,5 +26,5 @@ sharedMuts(cloneRate::exampleMutTrees[[1]])
 
 }
 \seealso{
-\code{\link[=internalLengths]{internalLengths()}}
+\code{\link[=internalLengths]{internalLengths()}} which is the ultrametric/time-based analogue
 }

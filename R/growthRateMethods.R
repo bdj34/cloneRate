@@ -8,7 +8,8 @@
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
-#' @seealso [cloneRate::maxLikelihood()], [cloneRate::sharedMuts()]
+#' @seealso [cloneRate::maxLikelihood()], [cloneRate::sharedMuts()] for other
+#'  growth rate methods.
 #' @export
 #' @examples
 #' internalLengths(cloneRate::exampleUltraTrees[[1]])
@@ -108,7 +109,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
-#' @seealso [cloneRate::internalLengths()]
+#' @seealso [cloneRate::internalLengths()] which is the ultrametric/time-based analogue
 #' @export
 #' @examples
 #' sharedMuts(cloneRate::exampleMutTrees[[1]])
@@ -231,7 +232,8 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
 #'
 #' @return A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (runtime, n, etc.)
-#' @seealso [cloneRate::internalLengths]
+#' @seealso [cloneRate::internalLengths] which uses an alternatvie method for
+#'  growth rate estimation from an ultrametric tree.
 #' @export
 #'
 #' @examples
