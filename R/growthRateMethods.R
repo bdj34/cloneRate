@@ -20,6 +20,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, internalLengths))
+    return.df$names <- names(subtree)
     return(return.df)
   }
 
@@ -114,6 +115,14 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #'
 sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
   ptm <- proc.time()
+
+  # If we have a list of phylo objects instead of a single phylo objects, call recursively
+  if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
+    # Call function recursively on all trees in list, then combine results into one data.frame
+    return.df <- do.call(rbind, lapply(subtree, sharedMuts))
+    return.df$names <- names(subtree)
+    return(return.df)
+  }
 
   if (is.null(nu)) {
     nu <- subtree$metadata$nu[1]
@@ -225,6 +234,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, maxLikelihood))
+    return.df$names <- names(subtree)
     return(return.df)
   }
 
