@@ -2,27 +2,32 @@
 % Please edit documentation in R/siteFrequency.R
 \name{siteFrequency}
 \alias{siteFrequency}
-\title{Get site frequency of a tree}
+\title{Get site frequency spectrum of a tree}
 \usage{
 siteFrequency(tree, includeStem = F)
 }
 \arguments{
-\item{tree}{An ultrametric tree subset to include only the clone of
-interest. Alternatively, a list with several such trees.}
+\item{tree}{An ultrametric or mutation-based tree subset to include only the
+clone of interest. Alternatively, a list with several such trees.}
 
-\item{includeStem}{Boolean indicating whether we should count the stem of the tree as contributing to the site frequency distribution. Default is FALSE}
+\item{includeStem}{Boolean indicating whether we should count the stem of the
+tree as contributing to the site frequency distribution. Default is FALSE.}
 }
 \value{
 A data.frame with three columns: the number of descendant cells, site
 frequency in units of time or mutations, and normalized site frequency. If a
-list of trees are input, output will be a data.frame with two columns for
-each input tree and a final column with averaged site frequency spectrum.
+list of trees are input, output will be a list of such data.frames.
 }
 \description{
-\code{siteFrequency()} returns a data.frame with the frequency of in units of time or mutations
+\code{siteFrequency()} returns a data.frame with the frequency in
+units of time or mutations, as well as a normalized frequency.
 }
 \examples{
-siteFrequency(exampleUltraTrees[[1]])
+# Get site frequency of a single tree
+example.df <- siteFrequency(exampleUltraTrees[[1]])
+
+# Get site frequency of a list of trees
+example.list <- siteFrequency(exampleMutTrees)
 
 }
 \seealso{

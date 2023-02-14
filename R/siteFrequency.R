@@ -1,23 +1,24 @@
 #' Get site frequency spectrum of a tree
 #'
-#' @description `siteFrequency()` returns a data.frame with the frequency of in units of time or mutations
+#' @description `siteFrequency()` returns a data.frame with the frequency in
+#'  units of time or mutations, as well as a normalized frequency.
 #'
-#' @param tree An ultrametric tree subset to include only the clone of
-#' interest. Alternatively, a list with several such trees.
-#' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the site frequency distribution. Default is FALSE
+#' @param tree An ultrametric or mutation-based tree subset to include only the
+#'  clone of interest. Alternatively, a list with several such trees.
+#' @param includeStem Boolean indicating whether we should count the stem of the
+#'  tree as contributing to the site frequency distribution. Default is FALSE.
 #'
 #' @returns A data.frame with three columns: the number of descendant cells, site
 #'  frequency in units of time or mutations, and normalized site frequency. If a
-#'   list of trees are input, output will be a data.frame with two columns for
-#'   each input tree and a final column with averaged site frequency spectrum.
+#'  list of trees are input, output will be a list of such data.frames.
 #' @seealso [cloneRate::internalLengths()], [cloneRate::sharedMuts()]
 #' @export
 #' @examples
 #' # Get site frequency of a single tree
-#' siteFrequency(exampleUltraTrees[[1]])
+#' example.df <- siteFrequency(exampleUltraTrees[[1]])
 #'
 #' # Get site frequency of a list of trees
-#' siteFrequency(exampleMutTrees)
+#' example.list <- siteFrequency(exampleMutTrees)
 #'
 siteFrequency <- function(tree, includeStem = F) {
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
