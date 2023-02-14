@@ -57,7 +57,7 @@ for (i in 1:length(fabre)) {
   ID <- names(fabre)[i]
   fabre[[i]]$metadata <- data.frame(
     "ID" = ID, "age" = fabre[[ID]]$age,
-    "diagnosis.age" = NA, "malnorm" = "Normal"
+    "diagnosis.age" = NA, "malnorm" = "Normal", "sourcePaper" = "mitchell"
   )
 }
 
@@ -84,7 +84,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
 
 # No subclones, add to the list of clones and move on
@@ -114,7 +114,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
 
 # No subclones, add to the list of clones and move on
@@ -138,7 +138,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
 
 # No subclones, add to the list of clones and move on
@@ -169,7 +169,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
 
 # No subclones, add to the list of clones and move on
@@ -193,7 +193,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
 
 # No subclones, add to the list of clones and move on
@@ -217,7 +217,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
 
 # No subclones, add to the list of clones and move on
@@ -257,7 +257,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
 
 # No subclones, add to the list of clones and move on
@@ -324,7 +324,7 @@ for (i in 1:length(mitchell)) {
   ID <- names(mitchell)[i]
   mitchell[[i]]$metadata <- data.frame(
     "ID" = ID, "age" = mitchell[[ID]]$age,
-    "diagnosis.age" = NA, "malnorm" = "Normal"
+    "diagnosis.age" = NA, "malnorm" = "Normal", "sourcePaper" = "mitchell"
   )
 }
 
@@ -359,7 +359,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -382,7 +382,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -412,7 +412,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Remove tips which are descendants of 154 (by visual inspection of subtree compared to paper annotation)
@@ -441,7 +441,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -465,7 +465,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -490,7 +490,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -515,7 +515,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -540,7 +540,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -565,7 +565,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -590,7 +590,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -621,7 +621,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -646,7 +646,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -671,7 +671,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -696,7 +696,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -720,7 +720,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
@@ -791,7 +791,7 @@ for (i in 1:length(williams_raw)) {
       "ID" = paste0(names(williams_raw)[i], "_", j),
       "age" = age,
       "diagnosis.age" = diagnosis_vec[patientName],
-      "malnorm" = "Malignant"
+      "malnorm" = "Malignant", "sourcePaper" = "williams"
     )
 
     williams <- append(williams, list(separate_object))
@@ -830,7 +830,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -862,7 +862,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -901,7 +901,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -933,7 +933,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -964,7 +964,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -995,7 +995,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1027,7 +1027,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1060,7 +1060,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1087,7 +1087,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1124,7 +1124,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1156,7 +1156,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1182,7 +1182,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1208,7 +1208,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1240,7 +1240,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1276,7 +1276,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1308,7 +1308,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1339,7 +1339,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1371,7 +1371,7 @@ cloneTree$metadata <- data.frame(
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "williams", "sourcePaper" = "williams"
 )
 
 # Add to the list of clones and move on
@@ -1444,7 +1444,7 @@ ultra_tree1$metadata <- data.frame(
   "cloneName" = "clone1",
   "cloneDriver" = "JAK2:p.V617F",
   "diagnosis.age" = 34,
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "van egeren"
 )
 
 ultra_tree2$metadata <- data.frame(
@@ -1452,7 +1452,7 @@ ultra_tree2$metadata <- data.frame(
   "cloneName" = "clone1",
   "cloneDriver" = "JAK2:p.V617F",
   "diagnosis.age" = 63,
-  "malnorm" = "Malignant"
+  "malnorm" = "Malignant", "sourcePaper" = "van egeren"
 )
 
 # Note: we don't have full trees for Van Egeren, only clones
@@ -1465,14 +1465,6 @@ names(vanEgeren_clones) <- c(
 
 
 
-
-
-
-# Make combined clone list
-names(fabre_clones) <- paste0(names(fabre_clones), "_fabre")
-names(mitchell_clones) <- paste0(names(mitchell_clones), "_mitchell")
-names(williams_clones) <- paste0(names(williams_clones), "_williams")
-names(vanEgeren_clones) <- paste0(names(vanEgeren_clones), "_vanEgeren")
 
 # Merge all clone_lists into one list
 clone_list <- c(fabre_clones, mitchell_clones, williams_clones, vanEgeren_clones)
