@@ -223,7 +223,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
 #' Growth rate estimate using Maximum Likelihood
 #'
 #' @description Uses the approximation that coalescence times H_i are equal to a+b*U_i to
-#'     find a and b. b is equal to 1/r, where r is the net growth rate
+#'     find a and b. b is equal to 1/r, where r is the net growth rate.
 #'
 #' @param subtree An ape tree subset to include only the clone of interest
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence

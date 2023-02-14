@@ -16,7 +16,7 @@ tree as contributing to the site frequency distribution. Default is FALSE.}
 \value{
 A data.frame with three columns: the number of descendant cells, site
 frequency in units of time or mutations, and normalized site frequency. If a
-list of trees are input, output will be a list of such data.frames.
+list of trees is input, output will be a list of such data.frames.
 }
 \description{
 \code{siteFrequency()} returns a data.frame with the frequency in
