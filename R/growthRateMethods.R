@@ -358,6 +358,7 @@ moments <- function(subtree, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, moments))
+    return.df$names <- names(subtree)
     return(return.df)
   }
 
@@ -369,7 +370,8 @@ moments <- function(subtree, alpha = 0.05) {
 
   # Calculate the growth rate
   growthRate <- (pi / sqrt(3)) * 1 / (stats::sd(ape::branching.times(subtree)))
-  growthRate_lb <- growthRate * sqrt(1 + 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
+  growthRate_lb <- growthRate * suppressWarnings(sqrt(1 + 4 * stats::qnorm(alpha / 2) / sqrt(5 * n)))
+  if(growthRate_lb == "NaN") {growthRate_lb <- 0}
   growthRate_ub <- growthRate * sqrt(1 - 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
 
   # Get other tree info (lengths)
