@@ -1,0 +1,113 @@
+---
+title: "cloneRate Analysis of human blood data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cloneRate Analysis of human blood data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this vignette, we'll walk through our data analysis corresponding to [our 
+work](https://www.biorxiv.org/) analyzing single-cell Whole Genome Sequencing 
+(scWGS) data from four different papers. As part of this package, we have 
+included everything needed to reproduce this analysis, which consists of 
+reconstructed phylogenetic trees and de-identified metadata about the donors 
+who were sequenced. 
+
+### Packages
+First, we'll have to load the packages we want to use. To help understand the
+data, we'll want to be able to visualize the phylogenetic trees. 
+`ggtree` is a package which will help use to do this. 
+
+```{r setup, results=FALSE, message = FALSE}
+# Load and attach our package cloneRate
+library(cloneRate)
+
+# Install ggplot2 if necessary, then load and attach it with library()
+if(! requireNamespace("ggplot2")){
+  install.packages("ggplot2")
+}
+library(ggplot2)
+
+# Install ggtree if necessary, then load and attach it with library()
+if(! requireNamespace("ggtree")){
+  install.packages("ggtree")
+}
+library(ggtree)
+
+```
+
+### Real data
+
+First, let's examine `realCloneData`, which contains all of the necessary 
+data to reproduce our analysis.
+
+```{r dataPreview}
+summary(cloneRate::realCloneData)
+```
+There are two lists contained in this dataset, one which contains the full 
+reconstructed tree for each individual at each timepoint (named `fullTrees`), 
+and one which contains specific clones from the full trees (named `cloneTrees`).
+We require that a clone must have at least `n=10` tips (or cells)  to be 
+included in `cloneTrees`. We discuss this requirement in our [simulation 
+vignette](cloneRate-simulate.html) For now, let's
+split these into two different variables for clarity.
+
+```{r dataSplit}
+fullTrees.list <- cloneRate::realCloneData$fullTrees
+cloneTrees.list <- cloneRate::realCloneData$cloneTrees
+```
+
+Let's start by looking at the full tree from a single individual, "PD9478". 
+Because some individuals in this study are sequenced at multiple 
+timepoints, we refer to the ID ("PD9478") and timepoint ("_1") to get a specific
+tree from `fullTrees.list`. In this case, the only timepoint is timepoint 1, so 
+let's take a look at the full tree "PD9478_1". This data comes from the work of 
+[Williams et al., and more details can be found in their paper, linked here.](https://pubmed.ncbi.nlm.nih.gov/35058638/)
+
+```{r firstTreePlot}
+# Plot the full tree from individual PD9478 at timepoint 1
+PD9478 <- fullTrees.list$PD9478_1
+ggtree(PD9478) + theme_tree2(fgcolor = "blue") + geom_hilight(node = 85, fill = "red", alpha = .1)+ xlab("Time (years)")
+```
+
+If you went through the [simulation vignette](cloneRate-simulate.html), you'll notice that this tree looks quite a bit different than the ones we simulated. In the above tree, there is a clear example of a somatic clonal expansion, which we highlight in red. We know from the authors who produced this data (see [Williams et al. Fig. 3](https://www.nature.com/articles/s41586-021-04312-6/figures/3)), that all the sampled cells within this clone have a mutation in the JAK2 gene and the DNMT3A gene, both of which are known to be important in clonal expansions in blood. Let's look more closely at the clone in red and see what we can learn from the tree. 
+
+```{r getSubclone}
+# Load the red clone from our cloneTrees.list
+PD9478_subClone <- cloneTrees.list[["PD9478_1_clone1"]]
+
+# Plot the clone tree
+ggtree(PD9478_subClone) + theme_tree2(fgcolor = "blue") +xlab("Time (years)") #+ layout_dendrogram()
+```
+
+Now this tree of the clonal expansion looks a lot more like the trees we simulate! This suggests that the growth rate of each cell within this clone is roughly the same as other cells within the clone. We can now apply our methods to the clone tree shown above. We see that this tree is ultrametric and we know that it's time-based, in units of years, so we should apply our `internalLengths()` and `maxLikelihood()` functions.
+
+```{r applyMethods}
+# Get maximum likelihood and internal lengths estimates
+print(maxLikelihood(PD9478_subClone)$estimate)
+print(internalLengths(PD9478_subClone)$estimate)
+```
+
+Unfortunately, we don't have a ground truth to compare to when working with real data. However, this individual clone has longitudinal sequencing data, which we can use to estimate an orthogonal growth rate. This will be added shortly in a [new vignette titled `validation`](validation.html).
+
+Let's apply our analysis to all of the clone trees!
+
+```{r applyAll}
+resultsLengths <- internalLengths(cloneTrees.list)
+resultsMaxLike <- maxLikelihood(cloneTrees.list)
+```
+
+Our package comes with 42 clones annotated from four distinct publications, which are the ones we use in our analysis. Note that there are three clones profiled at two different timepoints, meaning there are 39 unique clones. More vignettes and code to reproduce our full analysis from our recent [preprint](biorxiv.org) are coming soon! The papers which generate this data are:
+
+[Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
+[Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/) 
+[Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/) 
+[Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
