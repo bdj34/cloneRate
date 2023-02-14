@@ -89,7 +89,7 @@ cloneTree$metadata <- data.frame(
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
-fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
+fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName))
 
 ### Plot full tree again so we can manually identify clones (compare again to Fabre Fig. 3B)
 ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
@@ -119,7 +119,7 @@ cloneTree$metadata <- data.frame(
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
-fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
+fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName))
 
 ### Plot full tree again so we can manually identify clones (compare again to Fabre Fig. 3B)
 ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
@@ -143,7 +143,7 @@ cloneTree$metadata <- data.frame(
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
-fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
+fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName))
 
 
 ####### PD41305: second individual from Fabre
@@ -174,7 +174,7 @@ cloneTree$metadata <- data.frame(
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
-fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
+fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName))
 
 ### Plot full tree again so we can manually identify clones (compare to Fabre Fig. 3C)
 ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
@@ -198,7 +198,7 @@ cloneTree$metadata <- data.frame(
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
-fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
+fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName))
 
 ### Plot full tree again so we can manually identify clones (compare to Fabre Fig. 3C)
 ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
@@ -222,7 +222,7 @@ cloneTree$metadata <- data.frame(
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
-fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
+fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -262,7 +262,7 @@ cloneTree$metadata <- data.frame(
 
 # No subclones, add to the list of clones and move on
 fabre_clones <- append(fabre_clones, list(cloneTree))
-fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(fabre[[ID]]$age, 2)))
+fabreCloneNames <- c(fabreCloneNames, paste0(ID, "_", cloneName))
 
 # Name the fabre_clones list
 names(fabre_clones) <- fabreCloneNames
@@ -364,7 +364,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3C)
 ggtree(tree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogram()
@@ -387,7 +387,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 # Second patient: KX004: many nested expansions
@@ -421,7 +421,7 @@ cloneTree <- keep.tip(cloneTree, cloneTips)
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
@@ -446,7 +446,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
@@ -470,7 +470,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
@@ -495,7 +495,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
@@ -520,7 +520,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
@@ -545,7 +545,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
@@ -570,7 +570,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3B)
@@ -595,7 +595,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 # KX007 (no expansions with n >= 10 tips, once nested expansions removed)
@@ -626,7 +626,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
@@ -651,7 +651,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
@@ -676,7 +676,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
@@ -701,7 +701,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Mitchell Fig. 3A)
@@ -725,7 +725,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 mitchell_clones <- append(mitchell_clones, list(cloneTree))
-mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(mitchell[[ID]]$age, 2)))
+mitchellCloneNames <- c(mitchellCloneNames, paste0(ID, "_", cloneName))
 
 # Name the mitchell_clones list
 names(mitchell_clones) <- mitchellCloneNames
@@ -835,7 +835,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -867,7 +867,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 # PD5182_2: No clades!
@@ -906,7 +906,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -938,7 +938,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -969,7 +969,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 # PD6634_1: No nested
@@ -1000,7 +1000,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1032,7 +1032,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1065,7 +1065,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
@@ -1092,7 +1092,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1129,7 +1129,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1161,7 +1161,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
@@ -1187,7 +1187,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 ### Plot full tree again so we can manually identify clones (compare to Williams Fig 3)
@@ -1213,7 +1213,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 # PD6646_2: Remove 9pUPD
@@ -1245,7 +1245,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1281,7 +1281,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1313,7 +1313,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1344,7 +1344,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1376,7 +1376,7 @@ cloneTree$metadata <- data.frame(
 
 # Add to the list of clones and move on
 williams_clones <- append(williams_clones, list(cloneTree))
-williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName, "_", cloneDriver, "_age", round(williams[[ID]]$age, 2)))
+williamsCloneNames <- c(williamsCloneNames, paste0(ID, "_", cloneName))
 
 
 
@@ -1458,8 +1458,8 @@ ultra_tree2$metadata <- data.frame(
 # Note: we don't have full trees for Van Egeren, only clones
 vanEgeren_clones <- list(ultra_tree1, ultra_tree2)
 names(vanEgeren_clones) <- c(
-  "vanEgerenET1_clone1_JAK2:p.V617F_age34",
-  "vanEgerenET2_clone1_JAK2:p.V617F_age63"
+  "vanEgerenET1_clone1",
+  "vanEgerenET2_clone1"
 )
 
 
