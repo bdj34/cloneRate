@@ -1,9 +1,9 @@
 test_that("2 tip tree gives normalized frequency of 1 to n_descendants = 2", {
-  tree <- simUltra(a = 1, b = 0, cloneAge = 10, n =2)
+  tree <- simUltra(a = 1, b = 0, cloneAge = 10, n = 2)
   siteFreq.df <- siteFrequency(tree, includeStem = T)
   expect_equal(siteFreq.df$normalizedFreq, 1)
 
-  tree <- simUltra(a = 1, b = 0, cloneAge = 10, n =3)
+  tree <- simUltra(a = 1, b = 0, cloneAge = 10, n = 3)
   siteFreq.df <- siteFrequency(tree, includeStem = F)
   expect_equal(siteFreq.df$normalizedFreq, 1)
 })

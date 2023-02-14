@@ -42,7 +42,7 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
 
   # Make sure length of params is either one or equal to 'nTrees'
   if (!all(unlist(lapply(list(a, b, cloneAge, n), length)) == 1 |
-           unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
+    unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
     stop(paste0("Input parameters must be length 1 or length equal to the value
                 of param 'nTrees', which is ", nTrees))
   }

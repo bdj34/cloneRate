@@ -27,7 +27,7 @@ siteFrequency <- function(tree, includeStem = F) {
     return.list <- lapply(tree, siteFrequency)
 
     # Keep naming if they had names
-    if( ! is.null(names(tree))){
+    if (!is.null(names(tree))) {
       names(return.list) <- paste0(names(tree), "_siteFrequency")
     }
     return(return.list)
