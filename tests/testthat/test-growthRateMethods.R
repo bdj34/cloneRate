@@ -54,6 +54,11 @@ test_that("ultrametric fns. return error when given mutation tree(s)", {
   expect_error(moments(mutTrees), regexp = "Tree is not ultrametric.")
 })
 
+test_that("sharedMuts() throws error for ultrametric tree", {
+  ultraTree <- simUltra(a = 1, b = 0, cloneAge = 10, n = 10)
+  expect_error(sharedMuts(ultraTree, nu = 10), "Tree should be mutation-based")
+})
+
 test_that("sharedMuts throws error or warning for unreasonable alpha", {
   mutTree <- simMut(a = 1, b = 0, cloneAge = 20, nu = 100, n = 10)
   expect_error(sharedMuts(mutTree, alpha = 2), regexp = "alpha must be between 0 and 1")
