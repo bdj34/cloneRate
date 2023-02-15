@@ -9,7 +9,7 @@ sharedMuts(subtree, nu = NULL, includeStem = F, alpha = 0.05)
 \arguments{
 \item{subtree}{A non-ultrametric ape tree subset to include only the clone of interest}
 
-\item{nu}{The mutation rate}
+\item{nu}{The mutation rate. If none given, sharedMuts() will first look for a \code{nu} column in a \code{metadata} data.frame of the tree, and then look for a \code{nu} in the tree itself. Will throw error if no \code{nu} given or found.}
 
 \item{includeStem}{Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation}
 
