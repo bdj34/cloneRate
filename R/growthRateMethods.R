@@ -20,7 +20,7 @@ internalLengths <- function(subtree, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, internalLengths))
-    return.df$cloneName <- names(subtree)
+    return.df$cloneName_result <- names(subtree)
     return(return.df)
   }
 
@@ -115,7 +115,7 @@ sharedMuts <- function(subtree, nu = NULL, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, sharedMuts))
-    return.df$cloneName <- names(subtree)
+    return.df$cloneName_result  <- names(subtree)
     return(return.df)
   }
 
@@ -240,7 +240,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, maxLikelihood))
-    return.df$cloneName <- names(subtree)
+    return.df$cloneName_result  <- names(subtree)
     return(return.df)
   }
 
@@ -367,7 +367,7 @@ moments <- function(subtree, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, moments))
-    return.df$cloneName <- names(subtree)
+    return.df$cloneName_result  <- names(subtree)
     return(return.df)
   }
 
