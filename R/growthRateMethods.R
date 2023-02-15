@@ -126,10 +126,14 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
     return(return.df)
   }
 
+  # Try to find nu either in metadata data.frame or tree itself
   if (is.null(nu)) {
     nu <- subtree$metadata$nu[1]
     if (is.null(nu)) {
-      stop("Need to give a mutation rate (nu) in function call or provide one in params data.frame in tree")
+      nu <- subtree$nu[1]
+      if (is.null(nu)) {
+        stop("Need to give a mutation rate (nu) in function call or provide one in params data.frame in tree")
+      }
     }
   }
 

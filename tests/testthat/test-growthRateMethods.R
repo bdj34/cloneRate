@@ -8,7 +8,12 @@ test_that("shared mutations method needs mutation rate", {
   mutTree$metadata <- NULL
   expect_error(sharedMuts(mutTree), regexp = "Need to give a mutation rate")
 
-  # Specify mutation rate and sharedMuts() should work
+  # Add nu to tree and sharedMuts() should work
+  mutTree$nu <- 10
+  expect_no_error(sharedMuts(mutTree))
+
+  # Specify mutation rate and sharedMuts() should work without nu in tree or metadata
+  mutTree$nu <- NULL
   expect_no_error(sharedMuts(mutTree, nu = 10))
 })
 
