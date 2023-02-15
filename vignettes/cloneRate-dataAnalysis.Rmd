@@ -24,7 +24,7 @@ who were sequenced.
 ### Packages
 First, we'll have to load the packages we want to use. To help understand the
 data, we'll want to be able to visualize the phylogenetic trees. 
-`ggtree` is a package which will help use to do this. 
+`ggtree` is a package which will help us do this, and it's built on `ggplot2` so we'll use that as well.
 
 ```{r setup, results=FALSE, message = FALSE}
 # Load and attach our package cloneRate
@@ -78,7 +78,7 @@ PD9478 <- fullTrees.list$PD9478_1
 ggtree(PD9478) + theme_tree2(fgcolor = "blue") + geom_hilight(node = 85, fill = "red", alpha = .1)+ xlab("Time (years)")
 ```
 
-If you went through the [simulation vignette](cloneRate-simulate.html), you'll notice that this tree looks quite a bit different than the ones we simulated. In the above tree, there is a clear example of a somatic clonal expansion, which we highlight in red. We know from the authors who produced this data (see [Williams et al. Fig. 3](https://www.nature.com/articles/s41586-021-04312-6/figures/3)), that all the sampled cells within this clone have a mutation in the JAK2 gene and the DNMT3A gene, both of which are known to be important in clonal expansions in blood. Let's look more closely at the clone in red and see what we can learn from the tree. 
+If you went through the [simulation vignette](cloneRate-simulate.html), you'll notice that this tree looks quite a bit different than the ones we simulated. In the above tree, there is a clear example of a somatic clonal expansion, which we highlight in red. We know from the authors who produced this data (see [Williams et al. Fig. 3 PD9478](https://www.nature.com/articles/s41586-021-04312-6/figures/3)), that all the sampled cells within this clone have a mutation in the JAK2 gene and the DNMT3A gene, both of which are known to be important in clonal expansions in blood. Let's look more closely at the clone in red and see what we can learn from the tree. 
 
 ```{r getSubclone}
 # Load the red clone from our cloneTrees.list
@@ -92,22 +92,186 @@ Now this tree of the clonal expansion looks a lot more like the trees we simulat
 
 ```{r applyMethods}
 # Get maximum likelihood and internal lengths estimates
-print(maxLikelihood(PD9478_subClone)$estimate)
-print(internalLengths(PD9478_subClone)$estimate)
+print(round(maxLikelihood(PD9478_subClone)$estimate, 3))
+print(round(internalLengths(PD9478_subClone)$estimate, 3))
 ```
 
-Unfortunately, we don't have a ground truth to compare to when working with real data. However, this individual clone has longitudinal sequencing data, which we can use to estimate an orthogonal growth rate. This will be added shortly in a [new vignette titled `validation`](validation.html).
+Unfortunately, we don't have a ground truth to compare to when working with real data. However, this individual clone has longitudinal sequencing data, which we can use to estimate an orthogonal growth rate.
 
 Let's apply our analysis to all of the clone trees!
 
 ```{r applyAll}
+# Apply each of our estimates
 resultsLengths <- internalLengths(cloneTrees.list)
 resultsMaxLike <- maxLikelihood(cloneTrees.list)
+
+# Preview the output
+print(head(resultsMaxLike[,c(1:3)]))
+
+# Check correlation of the estimates from the two methods
+print(stats::cor.test(resultsLengths$estimate, resultsMaxLike$estimate))
 ```
 
-Our package comes with 42 clones annotated from four distinct publications, which are the ones we use in our analysis. Note that there are three clones profiled at two different timepoints, meaning there are 39 unique clones. More vignettes and code to reproduce our full analysis from our recent [preprint](biorxiv.org) are coming soon! The papers which generate this data are:
+Each of the functions (`maxLikelihood()` and `internalLengths()`) returns a data.frame with the same columns, and we'll walk through what the columns mean here:
 
-[Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
-[Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/) 
-[Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/) 
-[Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
+```{r columnsInfo}
+# Check that column names are the same
+stopifnot(all(colnames(resultsMaxLike) == colnames(resultsLengths)))
+
+# Print column names
+colnames(resultsMaxLike)
+```
+
+* `lowerBound`, `estimate`, `upperBound`: These are the growth rate estimate and confidence intervals. The default is 95% confidence intervals, but this can be adjusted by setting the `alpha` parameter in the function input.
+* `cloneAgeEstimate` this is the estimate of the time from clone initiation to sampling. The earliest coalescence time in the clone tree gives us a rough estimate of the clone age, and then we add 1/r (1 divided by the growth rate estimate) to account for the expected time from initiation to the first surviving division (first coalescence). 
+* `sumInternalLengths`, `sumExternalLengths`, `extintRatio`: These are the sum of the internal edge lengths, external edge lengths, and the ratio between the two. We use this ratio to say whether enough time has passed to use our method ([see simulation vignette](cloneRate-simulate.html)). Fortunately, all of our real data has a ratio > 3, so we can apply our methods to all of the clone trees.
+* `n` is the number of tips in the clone tree. In this case, this corresponds to the number of cells sequenced in the clone.
+* `alpha` is the confidence level. We use `1-alpha` confidence intervals.
+* `runtime_s` is the runtime of our method in seconds. Nice and fast!
+* `method` is the method used, which helps if we want to combine data.frames output from different methods for plotting.
+* `names` is a unique name for the clone corresponding to the individual ID and clone number. For individuals from the [William's paper](https://pubmed.ncbi.nlm.nih.gov/35058638/), where some individuals were sampled at multiple timepoints, the ID will be followed by "_1", "_2", or "_3" to indicate the timepoint.
+
+Now that we have growth rates, let's make some sense of them. If we look inside cloneTrees.list, we realize that we also have metadata. Let's print two examples, one from an individual with a Myeloproliferative Neoplasm (MPN), and one without:
+
+```{r viewMetdata}
+# Show the metadata of an individual without MPN
+print(cloneTrees.list$PD34493_clone1$metadata)
+
+# And the metadata of an individual with MPN
+print(cloneTrees.list$PD9478_1_clone1$metadata)
+```
+
+For a biological and/or clinical analysis, the most important of these are:
+
+* `age` which tells us the individual's age. We know that clonal hematopoiesis is associated with aging.
+* `cloneDriver` which tells us the clonal hematopoiesis driver which likely leads to the expansion.
+* `diagnosis.age` which tells us when the individual was diagnosed with Myeloproliferative Neoplasm (MPN). If the individual doesn't have MPN, `diagnosis.age` is `NA`. 
+* `malnorm` which tells us whether the individual has been diagnosed with a Myeloproliferative Neoplasm (MPN). This information is already conveyed in `diagnosis.age`, but it's sometimes easier to work with in this format.
+
+Let's combine all of the `cloneTrees.list` metadata into one data.frame, so we can analyze it together with th results of running our functions.
+
+```{r combineMetdata}
+# Combine all metadata into a single data.frame
+metadataAll <- do.call(rbind, lapply(cloneTrees.list, function(x){return(x$metadata)}))
+print(head(metadataAll))
+```
+
+Let's join the data.frames. We can use cbind from base R because we know the order of the metadata is the same as the order of the results data.frame. We can check this by comparing the `cloneName_result` and `cloneName_meta` columns, which should be (and are) the same.
+```{r joinMetaResults}
+# Combine metadata with estimates using cbind. Check if cloneNames match
+resultsLengthsMeta <- cbind(resultsLengths, metadataAll)
+stopifnot(resultsLengthsMeta$cloneName_result == resultsLengthsMeta$cloneName_meta)
+
+resultsMaxLikeMeta <- cbind(resultsMaxLike, metadataAll)
+stopifnot(resultsLengthsMeta$cloneName_result == resultsLengthsMeta$cloneName_meta)
+
+# Because max. likelihood performs slightly better, use that going forward
+results <- resultsMaxLikeMeta
+```
+
+## Analysis
+Here, we recreate the analysis in [Figure 5E-G of our work](https://www.biorxiv.org/). These are just a few of many analyses that can be done with this data, so don't be limited by what we do.
+
+If we split the cohort by MPN and normal, we might expect differences in the growth rates. Because the sequencing depth on average is higher in the normals, due to study design, we're more likely to pick up more clones from the normal individuals. To avoid this bias as much as possible, we'll compare the mean growth rate between individuals with and without MPN.
+
+First, we want to avoid double counting the clones which appear twice:
+```{r splitMalNorm}
+# If patient ID and clone number are the same, even if timepoint differs, then we have a duplicate
+# Make a new column for patient, removing anything after "_" from cloneName_result
+results$patient <- gsub("_.*", "", results$cloneName_result)
+results$cloneNumber <- gsub(".*_clone", "", results$cloneName_result)
+
+# Combining patient ID (without timepoint) and clone number will give us a unique ID for the clone regardless of sampling time
+results$uniqueCloneID <- paste0(results$patient, "_", results$cloneNumber)
+
+# Find which clone IDs appear twice
+tmp <- table(results$uniqueCloneID)
+repeatsVec <- names(tmp)[tmp==2]
+
+# Remove the duplicate with fewer number of cells sequenced, n
+rowsRemove <- c()
+for (cloneID in repeatsVec){
+  duplicateRows <- which(results$uniqueCloneID == cloneID)
+  removeIndex <- duplicateRows[which.min(results$n[duplicateRows])]
+  rowsRemove <- c(rowsRemove, removeIndex)
+}
+
+uniqueResults <- results[!c(1:nrow(results)) %in% rowsRemove, ]
+# Check that each unique clone now only appears once (no duplicates)
+stopifnot(all(table(uniqueResults$uniqueCloneID) == 1))
+```
+
+### MPN vs. Normal (Fig. 5E)
+Now, let's take the mean for each individual and re-create [Fig. 5E](https://www.biorxiv.org/)
+```{r meanInd}
+uniqueIndividuals <- unique(uniqueResults$patient)
+individualMeans <- c()
+malNorm <- c()
+
+for(ind in uniqueIndividuals){
+  individualMeans <- c(individualMeans, mean(uniqueResults$estimate[uniqueResults$patient == ind]))
+  malNorm <- c(malNorm, uniqueResults$malnorm[uniqueResults$patient == ind][1])
+}
+
+# Combine results into a data.frame
+mal_vs_norm.df <- data.frame("Patient" = uniqueIndividuals,
+                             "meanEstimate" = individualMeans,
+                             "malNorm" = malNorm)
+
+# Run a non-parametric Mann-whitney test to see if they're significantly different
+nonparamTest <- wilcox.test(meanEstimate ~ malNorm, data = mal_vs_norm.df)
+print(nonparamTest)
+
+# Set ordering for plot and plot using ggplot (re-make Fig. 5E)
+mal_vs_norm.df$malNorm <- factor(mal_vs_norm.df$malNorm, levels = c("Normal", "Malignant"))
+ggplot(mal_vs_norm.df, aes(x = malNorm, y = meanEstimate)) + 
+  geom_text(aes(label = paste0("p = ", round(nonparamTest$p.value, 3))), x = 1.2, y = 1.2, size = 8)+
+  geom_boxplot(width=0.3, aes(color = malNorm), outlier.shape = NA)+
+  geom_jitter(aes(x = malNorm, y = meanEstimate, color = malNorm), width = .1, size = 2) +
+  scale_color_manual(values = c("black", "red"), labels = c("Normal", "MPN"))+
+  theme_bw()+ ylab("Mean net growth rate (per yr.)") + xlab("") + 
+  theme(legend.position = "none",
+        axis.ticks.x = element_blank(), axis.title.x = element_blank(),
+        axis.text = element_text(size=16), axis.title.y = element_text(size=16))
+
+```
+
+### Single vs. multi-driver
+Taking our results from unique clones, `uniqueResults`, let's compare growth rates from clones with either an unknown driver or a single driver to those with multiple drivers. For this, we'll notice a handy convention: drivers are separated with "_AND_", so any clone with "_AND_" in the driver column, has multiple drivers:
+
+```{r multiDriver}
+# Set the multi driver variable according to whether multiple drivers are annotated
+uniqueResults$multiDriver <- "Single or unknown"
+uniqueResults$multiDriver[grepl("AND", uniqueResults$cloneDriver)] <- "Multiple"
+
+# Run a non-parametric test to see if the differences are significant
+nonParamTest <- wilcox.test(estimate ~ multiDriver, data = uniqueResults)
+print(nonParamTest)
+
+# Set levels to control plot order
+uniqueResults$multiDriver <- factor(uniqueResults$multiDriver, levels = c("Single or unknown", "Multiple"))
+
+# Plot
+colors <- c("#000000", "#56B4E9", "#009E73", "#D55E00", "#CC79A7")
+ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) + 
+  geom_boxplot(width=0.3, aes(color = multiDriver), outlier.shape = NA)+
+  geom_jitter(aes(x = multiDriver, y = estimate, color = multiDriver), width = .1) +
+  scale_color_manual(values = c(colors[3], colors[5]), labels = c("MPN", "Normal"))+
+  theme_bw()+ geom_text(aes(label = paste0("p=", round(nonParamTest$p.value, 7))),x = 1.5, y = 2, size = 6)+
+  ylab("Net growth rate (per yr.)")+xlab("")+ ggtitle("Driver mutations")+
+  theme(legend.position = "none", axis.ticks.x = element_blank(), 
+        axis.title.x = element_blank(), axis.text = element_text(size=16), 
+        axis.title.y = element_text(size=16), plot.title = element_text(size = 18, hjust = .5))
+```
+
+
+Our package comes with 42 clones annotated from four distinct publications, which are the ones we use in our analysis. Note that there are three clones profiled at two different timepoints, meaning there are 39 unique clones. 
+
+## References / Data sources:
+
+*[Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
+*[Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/) 
+*[Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/) 
+*[Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
+
+If you enjoyed the color palette for the plotting, we tried to use colorblind friendly colors, specifically pulling colors from a palette designed by [Bang Wong](https://www.nature.com/articles/nmeth.1618) and available from [this great resource.](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)

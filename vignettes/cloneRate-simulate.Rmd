@@ -17,3 +17,5 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(cloneRate)
 ```
+
+The ape documentation describing the class `phylo` can be found [here](http://ape-package.ird.fr/misc/FormatTreeR_24Oct2012.pdf)
