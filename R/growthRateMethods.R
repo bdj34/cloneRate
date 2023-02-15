@@ -4,7 +4,6 @@
 #'
 #' @param subtree An ultrametric tree subset to include only the clone of
 #' interest. Alternatively, a list with several such trees.
-#' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (clone age estimate, runtime, n, etc.)
@@ -14,7 +13,7 @@
 #' @examples
 #' internalLengths(cloneRate::exampleUltraTrees[[1]])
 #'
-internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
+internalLengths <- function(subtree, alpha = 0.05) {
   ptm <- proc.time()
 
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
@@ -28,13 +27,10 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   # Perform basic checks on the input tree
   inputCheck(subtree, alpha)
 
-  if (includeStem) {
-    message("You have set includeStem = T. Note that we do not include the stem
-            as part of the internal lengths calculation in our work (Johnson et al. 2022)")
-  }
+  # Get number of tips
+  n <- ape::Ntip(subtree)
 
   # Check if tree has stem
-  n <- length(subtree$tip.label)
   nodes <- subtree$edge[subtree$edge > n]
   if (1 %in% table(nodes)) {
     hasStem <- T
@@ -43,14 +39,9 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
     hasStem <- F
   }
 
-  # If includeStem is TRUE, make sure tree has stem
-  if (!hasStem & includeStem) {
-    stop("includeStem is set to TRUE, but tree does not have a stem!")
-  }
-
   # Get list of descendants from each internal node
   descendant_df <- data.frame(
-    "Node" = (length(subtree$tip.label) + 2):max(subtree$edge), "Parent" = NA,
+    "Node" = (n + 2):max(subtree$edge), "Parent" = NA,
     "Edge_length" = NA
   )
 
@@ -61,8 +52,8 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
     descendant_df$Parent[descendant_df$Node == k] <- subtree$edge[which(subtree$edge[, 2] == k), 1]
   }
 
-  # If include Stem is FALSE but tree has a stem, remove stem from calculation
-  if (!includeStem & hasStem) {
+  # If tree has a stem, remove stem from calculation
+  if (hasStem) {
     descendant_df <- descendant_df[!descendant_df$Parent == stemNode, ]
   }
 
@@ -75,7 +66,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
   growthRate_ub <- growthRate * (1 - stats::qnorm(alpha / 2) / sqrt(n))
 
   # Calculate total external lengths
-  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
+  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:n)])
 
   # Check ratio of external to internal lengths
   if (extLen / intLen <= 3) {
@@ -94,8 +85,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
     "upperBound" = growthRate_ub, "cloneAgeEstimate" = cloneAgeEstimate,
     "sumInternalLengths" = intLen,
     "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
-    "n" = n, "alpha" = alpha, "hasStem" = hasStem,
-    "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
+    "n" = n, "alpha" = alpha, "runtime_s" = runtime[["elapsed"]],
     "method" = "lengths"
   )
 
@@ -110,7 +100,6 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #'
 #' @param subtree A non-ultrametric ape tree subset to include only the clone of interest
 #' @param nu The mutation rate. If none given, sharedMuts() will first look for a `nu` column in a `metadata` data.frame of the tree, and then look for a `nu` in the tree itself. Will throw error if no `nu` given or found.
-#' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (clone age estimate, runtime, n, etc.)
@@ -119,7 +108,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @examples
 #' sharedMuts(cloneRate::exampleMutTrees[[1]])
 #'
-sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
+sharedMuts <- function(subtree, nu = NULL, alpha = 0.05) {
   ptm <- proc.time()
 
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
@@ -156,12 +145,10 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
             confidence intervals, which will be very narrow."))
   }
 
-  if (includeStem) {
-    message("You have set includeStem = T. Note that we do not include the stem as part of the internal lengths calculation in our work (Johnson et al. 2022)")
-  }
+  # Get number of tips
+  n <- ape::Ntip(subtree)
 
   # Check if tree has stem
-  n <- length(subtree$tip.label)
   nodes <- subtree$edge[subtree$edge > n]
   if (1 %in% table(nodes)) {
     hasStem <- T
@@ -170,14 +157,9 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
     hasStem <- F
   }
 
-  # If includeStem is TRUE, make sure tree has stem
-  if (!hasStem & includeStem) {
-    stop("includeStem is set to TRUE, but tree does not have a stem!")
-  }
-
   # Get list of descendants from each internal node
   descendant_df <- data.frame(
-    "Node" = (length(subtree$tip.label) + 2):max(subtree$edge), "Parent" = NA,
+    "Node" = (n + 2):max(subtree$edge), "Parent" = NA,
     "Edge_length" = NA, "n_cells" = NA
   )
 
@@ -190,8 +172,8 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
     descendant_df$Parent[descendant_df$Node == k] <- subtree$edge[which(subtree$edge[, 2] == k), 1]
   }
 
-  # If include Stem is FALSE but tree has a stem, remove stem from calculation
-  if (!includeStem & hasStem) {
+  # If tree has a stem, remove stem from calculation
+  if (hasStem) {
     descendant_df <- descendant_df[!descendant_df$Parent == stemNode, ]
   }
 
@@ -204,7 +186,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
   growthRate_ub <- growthRate * (1 - (stats::qnorm(alpha / 2) / sqrt(n)) * (1 + n / sharedMutations))
 
   # Calculate total private (singleton) mutations
-  privateMuts <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
+  privateMuts <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:n)])
 
   # Check ratio of private to shared mutations
   if (privateMuts / sharedMutations <= 3) {
@@ -226,8 +208,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
     "sharedMutations" = sharedMutations,
     "privateMutations" = privateMuts,
     "extIntRatio" = privateMuts / sharedMutations,
-    "n" = n, "alpha" = alpha, "hasStem" = hasStem,
-    "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
+    "n" = n, "alpha" = alpha, "runtime_s" = runtime[["elapsed"]],
     "method" = "sharedMuts"
   )
 
@@ -241,9 +222,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
 #' @description Uses the approximation that coalescence times H_i are equal to a+b*U_i to
 #'     find a and b. b is equal to 1/r, where r is the net growth rate.
 #'
-#' @param subtree An ape tree subset to include only the clone of interest
-#' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
+#' @inheritParams internalLengths
 #'
 #' @return A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (clone age estimate, runtime, n, etc.)
@@ -268,6 +247,9 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   # Basic check on input formatting and alpha value
   inputCheck(subtree, alpha)
 
+  # Get number of tips
+  n <- ape::Ntip(subtree)
+
   # Get coalescence times
   coal_times <- ape::branching.times(subtree)
 
@@ -285,9 +267,8 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   growthRate <- maxLik::maxLik(LL, start = c(mean(coal_times), .1), )$estimate[2]
 
   # Get other tree info (lengths)
-  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
-  intLen <- suppressWarnings(cloneRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
-  n <- length(subtree$tip.label)
+  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:n)])
+  intLen <- suppressWarnings(cloneRate::internalLengths(subtree)$sumInternalLengths)
   nodes <- subtree$edge[subtree$edge > n]
   if (1 %in% table(nodes)) {
     hasStem <- T
@@ -316,8 +297,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
     "upperBound" = growthRate_ub, "cloneAgeEstimate" = cloneAgeEstimate,
     "sumInternalLengths" = intLen,
     "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
-    "n" = n, "alpha" = alpha, "hasStem" = hasStem,
-    "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
+    "n" = n, "alpha" = alpha, "runtime_s" = runtime[["elapsed"]],
     "method" = "maxLike"
   ))
 }
@@ -372,9 +352,7 @@ inputCheck <- function(subtree, alpha) {
 #' @description Provides an estimate for the net growth rate of the clone with confidence
 #'     bounds using the method of moments.
 #'
-#' @param subtree An ape tree subset to include only the clone of interest
-#' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
-#'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
+#' @inheritParams internalLengths
 #'
 #' @returns A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (clone age estimate, runtime, n, etc.)
@@ -393,8 +371,8 @@ moments <- function(subtree, alpha = 0.05) {
     return(return.df)
   }
 
-  # Check if tree has stem
-  n <- length(subtree$tip.label)
+  # Get number of tips
+  n <- ape::Ntip(subtree)
 
   # Basic check on input formatting and alpha value
   inputCheck(subtree, alpha)
@@ -408,9 +386,8 @@ moments <- function(subtree, alpha = 0.05) {
   growthRate_ub <- growthRate * sqrt(1 - 4 * stats::qnorm(alpha / 2) / sqrt(5 * n))
 
   # Get other tree info (lengths)
-  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:length(subtree$tip.label))])
-  intLen <- suppressWarnings(cloneRate::internalLengths(subtree, includeStem = F)$sumInternalLengths)
-  n <- length(subtree$tip.label)
+  extLen <- sum(subtree$edge.length[subtree$edge[, 2] %in% c(1:n)])
+  intLen <- suppressWarnings(cloneRate::internalLengths(subtree)$sumInternalLengths)
   nodes <- subtree$edge[subtree$edge > n]
   if (1 %in% table(nodes)) {
     hasStem <- T
@@ -434,8 +411,7 @@ moments <- function(subtree, alpha = 0.05) {
     "upperBound" = growthRate_ub, "cloneAgeEstimate" = cloneAgeEstimate,
     "sumInternalLengths" = intLen,
     "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
-    "n" = n, "alpha" = alpha, "hasStem" = hasStem,
-    "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
+    "n" = n, "alpha" = alpha, "runtime_s" = runtime[["elapsed"]],
     "method" = "moments"
   ))
 }
