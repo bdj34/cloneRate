@@ -105,7 +105,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @description `sharedMuts()` provides an estimate for the net growth rate of the clone with confidence bounds, using the shared mutations method.
 #'
 #' @param subtree A non-ultrametric ape tree subset to include only the clone of interest
-#' @param nu The mutation rate
+#' @param nu The mutation rate. If none given, sharedMuts() will first look for a `nu` column in a `metadata` data.frame of the tree, and then look for a `nu` in the tree itself. Will throw error if no `nu` given or found.
 #' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
