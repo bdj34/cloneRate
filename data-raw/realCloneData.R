@@ -720,7 +720,7 @@ cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
   "cloneName" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
-  "malnorm" = "Normal", "sourcePaper" = "mitchell", "sourcePaper" = "mitchell"
+  "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
 
 # Add to the list of clones and move on
