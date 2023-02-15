@@ -19,31 +19,31 @@ test_that("shared mutations method needs mutation rate", {
 
 test_that("Max. likelihood returns correct number and names", {
   check.df <- maxLikelihood(realCloneData$cloneTrees)
-  expect_equal(check.df$names, names(realCloneData$cloneTrees))
+  expect_equal(check.df$cloneName_result, names(realCloneData$cloneTrees))
   expect_length(realCloneData$cloneTrees, nrow(check.df))
 })
 
 test_that("Internal lengths returns correct number and names", {
   check.df <- internalLengths(realCloneData$cloneTrees)
-  expect_equal(check.df$names, names(realCloneData$cloneTrees))
+  expect_equal(check.df$cloneName_result, names(realCloneData$cloneTrees))
   expect_length(realCloneData$cloneTrees, nrow(check.df))
 })
 
 test_that("Moments returns correct number and names", {
   check.df <- moments(realCloneData$cloneTrees)
-  expect_equal(check.df$names, names(realCloneData$cloneTrees))
+  expect_equal(check.df$cloneName_result, names(realCloneData$cloneTrees))
   expect_length(realCloneData$cloneTrees, nrow(check.df))
 })
 
 test_that("Shared muts. returns correct number and names", {
   check.df <- sharedMuts(exampleMutTrees)
-  expect_equal(check.df$names, names(exampleMutTrees)) # Should both be NULL
+  expect_equal(check.df$cloneName_result, names(exampleMutTrees)) # Should both be NULL
   expect_length(exampleMutTrees, nrow(check.df))
 
   # Now give exampleMutTrees names and check
   names(exampleMutTrees) <- paste0(c(1:length(exampleMutTrees)))
   check.df <- sharedMuts(exampleMutTrees)
-  expect_equal(check.df$names, names(exampleMutTrees))
+  expect_equal(check.df$cloneName_result, names(exampleMutTrees))
   expect_length(exampleMutTrees, nrow(check.df))
 })
 
