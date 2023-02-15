@@ -14,7 +14,7 @@ intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
 }
 \value{
 A dataframe including the net growth rate estimate, confidence
-intervals, and other important details (runtime, n, etc.)
+intervals, and other important details (clone age estimate, runtime, n, etc.)
 }
 \description{
 Uses the approximation that coalescence times H_i are equal to a+b*U_i to

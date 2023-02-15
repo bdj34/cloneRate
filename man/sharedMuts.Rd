@@ -16,7 +16,7 @@ sharedMuts(subtree, nu = NULL, includeStem = F, alpha = 0.05)
 \item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
 }
 \value{
-A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
+A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (clone age estimate, runtime, n, etc.)
 }
 \description{
 \code{sharedMuts()} provides an estimate for the net growth rate of the clone with confidence bounds, using the shared mutations method.
