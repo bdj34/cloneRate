@@ -94,8 +94,8 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
     "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
     "method" = "lengths"
   )
-  # return(c(growthRate_lb, growthRate, growthRate_ub, intLen))
-  return(cbind(result.df, subtree$metadata))
+
+  return(result.df)
 }
 
 
@@ -208,7 +208,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
   runtime <- proc.time() - ptm
 
   # return data.frame
-  return(data.frame(
+  result.df <- data.frame(
     "lowerBound" = growthRate_lb, "estimate" = growthRate,
     "upperBound" = growthRate_ub, "nu" = nu,
     "sharedMutations" = sharedMutations,
@@ -217,7 +217,9 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
     "n" = n, "alpha" = alpha, "hasStem" = hasStem,
     "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
     "method" = "sharedMuts"
-  ))
+  )
+
+  return(result.df)
 }
 
 
