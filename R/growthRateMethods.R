@@ -7,7 +7,7 @@
 #' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
-#' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
+#' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (clone age estimate, runtime, n, etc.)
 #' @seealso [cloneRate::maxLikelihood()], [cloneRate::sharedMuts()] for other
 #'  growth rate methods.
 #' @export
@@ -83,12 +83,16 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
             which means internal lengths method may not be applicable.")
   }
 
+  # Estimate clone age
+  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1/growthRate
+
   # Get runtime (including all tests)
   runtime <- proc.time() - ptm
 
   result.df <- data.frame(
     "lowerBound" = growthRate_lb, "estimate" = growthRate,
-    "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
+    "upperBound" = growthRate_ub, "cloneAgeEstimate" = cloneAgeEstimate,
+    "sumInternalLengths" = intLen,
     "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
     "n" = n, "alpha" = alpha, "hasStem" = hasStem,
     "includeStem" = includeStem, "runtime_s" = runtime[["elapsed"]],
@@ -109,7 +113,7 @@ internalLengths <- function(subtree, includeStem = F, alpha = 0.05) {
 #' @param includeStem Boolean indicating whether we should count the stem of the tree as contributing to the internal lengths summation
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
-#' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (runtime, n, etc.)
+#' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (clone age estimate, runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths()] which is the ultrametric/time-based analogue
 #' @export
 #' @examples
@@ -208,6 +212,9 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
             which means shared mutations method may not be applicable.")
   }
 
+  # Estimate clone age
+  cloneAgeEstimate <- max(ape::branching.times(subtree))/nu + 1/growthRate
+
   # Get runtime (including all tests)
   runtime <- proc.time() - ptm
 
@@ -215,6 +222,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
   result.df <- data.frame(
     "lowerBound" = growthRate_lb, "estimate" = growthRate,
     "upperBound" = growthRate_ub, "nu" = nu,
+    "cloneAgeEstimate" = cloneAgeEstimate,
     "sharedMutations" = sharedMutations,
     "privateMutations" = privateMuts,
     "extIntRatio" = privateMuts / sharedMutations,
@@ -238,7 +246,7 @@ sharedMuts <- function(subtree, nu = NULL, includeStem = F, alpha = 0.05) {
 #'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @return A dataframe including the net growth rate estimate, confidence
-#'     intervals, and other important details (runtime, n, etc.)
+#'     intervals, and other important details (clone age estimate, runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths] which uses an alternatvie method for
 #'  growth rate estimation from an ultrametric tree.
 #' @export
@@ -298,11 +306,15 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   growthRate_lb <- growthRate * (1 + c * stats::qnorm(alpha / 2) / sqrt(n))
   growthRate_ub <- growthRate * (1 - c * stats::qnorm(alpha / 2) / sqrt(n))
 
+  # Estimate clone age
+  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1/growthRate
+
   runtime <- proc.time() - ptm
 
   return(data.frame(
     "lowerBound" = growthRate_lb, "estimate" = growthRate,
-    "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
+    "upperBound" = growthRate_ub, "cloneAgeEstimate" = cloneAgeEstimate,
+    "sumInternalLengths" = intLen,
     "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
     "n" = n, "alpha" = alpha, "hasStem" = hasStem,
     "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
@@ -365,7 +377,7 @@ inputCheck <- function(subtree, alpha) {
 #'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #'
 #' @returns A dataframe including the net growth rate estimate, confidence
-#'     intervals, and other important details (runtime, n, etc.)
+#'     intervals, and other important details (clone age estimate, runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths()], [cloneRate::maxLikelihood()]
 #' @noRd
 #' @examples
@@ -412,11 +424,15 @@ moments <- function(subtree, alpha = 0.05) {
             which means internal lengths method may not be applicable.")
   }
 
+  # Estimate clone age
+  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1/growthRate
+
   runtime <- proc.time() - ptm
 
   return(data.frame(
     "lowerBound" = growthRate_lb, "estimate" = growthRate,
-    "upperBound" = growthRate_ub, "sumInternalLengths" = intLen,
+    "upperBound" = growthRate_ub, "cloneAgeEstimate" = cloneAgeEstimate,
+    "sumInternalLengths" = intLen,
     "sumExternalLengths" = extLen, extIntRatio = extLen / intLen,
     "n" = n, "alpha" = alpha, "hasStem" = hasStem,
     "includeStem" = F, "runtime_s" = runtime[["elapsed"]],
