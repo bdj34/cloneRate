@@ -82,7 +82,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
@@ -112,7 +112,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
@@ -136,7 +136,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
@@ -167,7 +167,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
@@ -191,7 +191,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
@@ -215,7 +215,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
@@ -255,7 +255,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = fabre[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "fabre"
 )
@@ -357,7 +357,7 @@ cloneTree <- keep.tip(cloneTree, cloneTips)
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -380,7 +380,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -410,7 +410,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -439,7 +439,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -463,7 +463,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -488,7 +488,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -513,7 +513,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -538,7 +538,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -563,7 +563,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -588,7 +588,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -619,7 +619,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -644,7 +644,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -669,7 +669,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -694,7 +694,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -718,7 +718,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = mitchell[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver, "diagnosis.age" = NA,
   "malnorm" = "Normal", "sourcePaper" = "mitchell"
 )
@@ -827,7 +827,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -859,7 +859,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -898,7 +898,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -930,7 +930,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -961,7 +961,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -992,7 +992,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1024,7 +1024,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1057,7 +1057,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1084,7 +1084,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1121,7 +1121,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1153,7 +1153,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1179,7 +1179,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1205,7 +1205,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1237,7 +1237,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1273,7 +1273,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1305,7 +1305,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1336,7 +1336,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1368,7 +1368,7 @@ ggtree(cloneTree) + geom_text(aes(label = node), vjust = -.3) + layout_dendrogra
 # Add metadata df for easier analysis
 cloneTree$metadata <- data.frame(
   "ID" = ID, "age" = williams[[ID]]$age,
-  "cloneName" = cloneName,
+  "cloneName_meta" = cloneName,
   "cloneDriver" = cloneDriver,
   "diagnosis.age" = williams[[ID]]$metadata$diagnosis.age[1],
   "malnorm" = "Malignant", "sourcePaper" = "williams"
@@ -1441,7 +1441,7 @@ ultra_tree2$age <- 63
 # Add metadata df for easier analysis
 ultra_tree1$metadata <- data.frame(
   "ID" = "vanEgerenET1", "age" = 34,
-  "cloneName" = "vanEgerenET1_clone1",
+  "cloneName_meta" = "vanEgerenET1_clone1",
   "cloneDriver" = "JAK2:p.V617F",
   "diagnosis.age" = 34,
   "malnorm" = "Malignant", "sourcePaper" = "van egeren"
@@ -1449,7 +1449,7 @@ ultra_tree1$metadata <- data.frame(
 
 ultra_tree2$metadata <- data.frame(
   "ID" = "vanEgerenET2", "age" = 63,
-  "cloneName" = "vanEgerenET2_clone1",
+  "cloneName_meta" = "vanEgerenET2_clone1",
   "cloneDriver" = "JAK2:p.V617F",
   "diagnosis.age" = 63,
   "malnorm" = "Malignant", "sourcePaper" = "van egeren"
