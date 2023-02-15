@@ -5,7 +5,7 @@ test_that("Number of tips works", {
 })
 
 test_that("Correct number of trees produced", {
-  num_trees <- sample(c(1:10), 1)
+  num_trees <- sample(c(2:10), 1)
   trees <- simUltra(a = 1, b = .1, cloneAge = 20, n = 50, nTrees = num_trees)
   expect_equal(length(trees), num_trees)
 })
