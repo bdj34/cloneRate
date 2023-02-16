@@ -122,3 +122,40 @@
 #' ggtree(cloneRate::exampleMutTrees[[1]]) # Plot first of 100 trees
 #'
 "exampleMutTrees"
+
+
+
+
+
+#' Longitudinal validation data'
+#'
+#' For three individuals with clonal expansions that can be estimated using our methods,
+#' we have longitudinal data to orthogonally validate these estimates, which is provided here.
+#'
+#' @format A \code{data.frame} containing all the information needed
+#' \describe{
+#'  \item{Sample.ID}{The individual's ID}
+#'  \item{Age}{Individual's age at the various sampling times}
+#'  \item{VAF}{The variant allele frequency at the various sampling times for the clone of interest}
+#'  \item{Gene}{Gene or genes with mutation that identifies the clone}
+#'  \item{Protein}{Protein affected by the mutation}
+#'  \item{cellType}{The type of cells used for sequencing}
+#'  \item{cloneName}{The name we use for the clone to match to single cell data}
+#' }
+#'
+#' @references These datasets were generated and annotated in:
+#' [Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
+#' [Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/)
+#'
+#' @keywords longitudinal
+#'
+#' @examples
+#' library(ggplot2)
+#' # Plot longitudinal data from PD9478
+#' ggplot(longitudinalData[longitudinalData$Sample.ID == "PD9478",])+
+#'  geom_point(aes(x = Age, y = VAF))
+"longitudinalData"
+
+
+
+
