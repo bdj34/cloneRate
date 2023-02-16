@@ -239,7 +239,7 @@ ggplot(mal_vs_norm.df, aes(x = malNorm, y = meanEstimate)) +
   geom_boxplot(width=0.3, aes(color = malNorm), outlier.shape = NA)+
   geom_jitter(aes(x = malNorm, y = meanEstimate, color = malNorm), width = .1, size = 2) +
   scale_color_manual(values = c("black", "red"), labels = c("Normal", "MPN"))+
-  theme_bw()+ ylab("Mean net growth rate (per yr.)") + xlab("") + 
+  theme_bw()+ ylab("Mean net growth rate (r)") + xlab("") + 
   theme(legend.position = "none",
         axis.ticks.x = element_blank(), axis.title.x = element_blank())
 
@@ -267,7 +267,7 @@ ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) +
   geom_jitter(aes(x = multiDriver, y = estimate, color = multiDriver), width = .1) +
   scale_color_manual(values = c(colors[4], colors[8]))+
   theme_bw()+ geom_label(label = paste0("p=", round(nonParamTest$p.value, 7)),x = 1.5, y = 2)+
-  ylab("Net growth rate (per yr.)")+xlab("")+ ggtitle("Driver mutations")+
+  ylab("Net growth rate (r)")+xlab("")+ ggtitle("Driver mutations")+
   theme(legend.position = "none", axis.ticks.x = element_blank(), 
         axis.title.x = element_blank(), plot.title = element_text(hjust = .5))
 ```
@@ -329,7 +329,7 @@ survfit2(Surv(time = latency_to_dx, event = status) ~ aboveMean, data = malMax) 
   ggsurvfit() +
   labs(
     y = "Probability diagnosis-free",
-    x = "Time from first coalescence event (yrs.)"
+    x = "Time from clone initiation (yrs.)"
   )+scale_color_manual(values = c(colors[7], colors[3]))+
   theme(legend.position = "none") + 
   geom_label(label=paste0("p = ", round(survivalTest$pvalue, 4)), x = 45, y = .85, color = "black", fill = "white")+
@@ -437,7 +437,7 @@ combine.df <- data.frame("Clone" = "PD9478_1_clone1",
                          "method" = c("longitudinal", "max. likelihood"))
 
 ggplot(combine.df) + geom_pointrange(aes(x = method, y = r, ymin = lowerBound, ymax = upperBound)) +
-  theme_bw() + ylab("Net growth rate estimate (r)")
+  theme_bw() + ylab("Net growth rate (r)")
 
 ```
 
