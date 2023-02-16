@@ -65,7 +65,7 @@ library(ggtree, quietly = T)
 library(ggplot2, quietly = T)
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
-tree <- simUltra(a = 1, b = 0.5, cloneAge = 30, n = 100)
+tree <- simUltra(a = 1, b = 0.5, cloneAge = 40, n = 100)
 ```
 
 Now that we have simulated the tree, let’s plot it:
@@ -88,12 +88,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.521"
+#> [1] "Max. likelihood estimate = 0.568"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.509"
+#> [1] "Internal lengths estimate = 0.526"
 ```
 
 ### Estimate growth rate of many trees
@@ -152,10 +152,12 @@ print(rmse)
 ```
 
 As expected, maximum likelihood performs the best. Note that this may
-change if we regenerate the data. For more details, see our vignettes on
-[simulating trees to validate our estimates](cloneRate-simulate.html)
-and [applying our methods to blood
-data](vignettes/cloneRate-dataAnalysis.html)
+change if we regenerate the data. For more details, see our vignettes:
+
+``` r
+vignettes("cloneRate-dataAnalysis")
+vignettes("cloneRate-simulate")
+```
 
 ## References
 
