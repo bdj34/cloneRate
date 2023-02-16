@@ -28,6 +28,7 @@ Imports:
     Rmpfr (>= 0.8)
 Suggests:
     adephylo,
+    car,
     covr,
     ggplot2,
     ggsurvfit,
