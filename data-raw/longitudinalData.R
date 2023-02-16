@@ -17,7 +17,7 @@ vafVec <- c(0, 0, 0.14, 0.14, 0.24, 0.33, 0.41, 0.41, 0.44, 0.45, 0.46)
 pd9478 <- data.frame("Sample.ID" = patient, "Age" = ageVec, "VAF" = vafVec,
                      "Gene" = driver, "cellType" = cellTypeVec,
                      "Protein" = "Multiple",
-                     "cloneName" = paste0(patient, "_clone1"))
+                     "cloneName" = paste0(patient, "_1_clone1"))
 
 
 
@@ -40,3 +40,4 @@ subset_fabre$cloneName <- paste0(subset_fabre$Sample.ID, "_clone1")
 longitudinalData <- rbind(subset_fabre, pd9478)
 
 usethis::use_data(longitudinalData, overwrite = TRUE)
+
