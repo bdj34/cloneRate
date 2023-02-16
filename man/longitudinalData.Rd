@@ -26,8 +26,8 @@ we have longitudinal data to orthogonally validate these estimates, which is pro
 \examples{
 library(ggplot2)
 # Plot longitudinal data from PD9478
-ggplot(longitudinalData[longitudinalData$Sample.ID == "PD9478",])+
- geom_point(aes(x = Age, y = VAF))
+ggplot(longitudinalData[longitudinalData$Sample.ID == "PD9478", ]) +
+  geom_point(aes(x = Age, y = VAF))
 }
 \references{
 These datasets were generated and annotated in:
