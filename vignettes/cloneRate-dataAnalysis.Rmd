@@ -31,17 +31,16 @@ data, we'll want to be able to visualize the phylogenetic trees.
 library(cloneRate)
 
 # Install ggplot2 if necessary, then load and attach it with library()
-if(! requireNamespace("ggplot2")){
+if (!requireNamespace("ggplot2")) {
   install.packages("ggplot2")
 }
 library(ggplot2)
 
 # Install ggtree if necessary, then load and attach it with library()
-if(! requireNamespace("ggtree")){
+if (!requireNamespace("ggtree")) {
   install.packages("ggtree")
 }
 library(ggtree)
-
 ```
 
 ### Real data
@@ -76,7 +75,7 @@ let's take a look at the full tree "PD9478_1". This data comes from the work of
 ```{r firstTreePlot}
 # Plot the full tree from individual PD9478 at timepoint 1
 PD9478 <- fullTrees.list$PD9478_1
-ggtree(PD9478) + theme_tree2(fgcolor = "blue") + geom_hilight(node = 85, fill = "red", alpha = .1)+ xlab("Time (years)")
+ggtree(PD9478) + theme_tree2(fgcolor = "blue") + geom_hilight(node = 85, fill = "red", alpha = .1) + xlab("Time (years)")
 ```
 
 If you went through the [simulation vignette](cloneRate-simulate.html), you'll notice that this tree looks quite a bit different than the ones we simulated. In the above tree, there is a clear example of a somatic clonal expansion, which we highlight in red. We know from the authors who produced this data (see [Williams et al. Fig. 3 PD9478](https://www.nature.com/articles/s41586-021-04312-6/figures/3)), that all the sampled cells within this clone have a mutation in the JAK2 gene and the DNMT3A gene, both of which are known to be important in clonal expansions in blood. Let's look more closely at the clone in red and see what we can learn from the tree. 
@@ -86,7 +85,7 @@ If you went through the [simulation vignette](cloneRate-simulate.html), you'll n
 PD9478_subClone <- cloneTrees.list[["PD9478_1_clone1"]]
 
 # Plot the clone tree
-ggtree(PD9478_subClone) + theme_tree2(fgcolor = "blue") +xlab("Time (years)") #+ layout_dendrogram()
+ggtree(PD9478_subClone) + theme_tree2(fgcolor = "blue") + xlab("Time (years)") #+ layout_dendrogram()
 ```
 
 Now this tree of the clonal expansion looks a lot more like the trees we simulate! This suggests that the growth rate of each cell within this clone is roughly the same as other cells within the clone. We can now apply our methods to the clone tree shown above. We see that this tree is ultrametric and we know that it's time-based, in units of years, so we should apply our `internalLengths()` and `maxLikelihood()` functions.
@@ -107,7 +106,7 @@ resultsLengths <- internalLengths(cloneTrees.list)
 resultsMaxLike <- maxLikelihood(cloneTrees.list)
 
 # Preview the output
-print(head(resultsMaxLike[,c(1:3)]))
+print(head(resultsMaxLike[, c(1:3)]))
 
 # Check correlation of the estimates from the two methods
 print(stats::cor.test(resultsLengths$estimate, resultsMaxLike$estimate))
@@ -153,7 +152,9 @@ Let's combine all of the `cloneTrees.list` metadata into one data.frame, so we c
 
 ```{r combineMetdata}
 # Combine all metadata into a single data.frame
-metadataAll <- do.call(rbind, lapply(cloneTrees.list, function(x){return(x$metadata)}))
+metadataAll <- do.call(rbind, lapply(cloneTrees.list, function(x) {
+  return(x$metadata)
+}))
 
 # Preview and make sure everything looks right
 print(head(metadataAll))
@@ -193,11 +194,11 @@ results$uniqueCloneID <- paste0(results$patient, "_", results$cloneNumber)
 
 # Find which clone IDs appear twice
 tmp <- table(results$uniqueCloneID)
-repeatsVec <- names(tmp)[tmp==2]
+repeatsVec <- names(tmp)[tmp == 2]
 
 # Remove the duplicate with fewer number of cells sequenced, n
 rowsRemove <- c()
-for (cloneID in repeatsVec){
+for (cloneID in repeatsVec) {
   duplicateRows <- which(results$uniqueCloneID == cloneID)
   removeIndex <- duplicateRows[which.min(results$n[duplicateRows])]
   rowsRemove <- c(rowsRemove, removeIndex)
@@ -218,15 +219,17 @@ uniqueIndividuals <- unique(uniqueResults$patient)
 individualMeans <- c()
 malNorm <- c()
 
-for(ind in uniqueIndividuals){
+for (ind in uniqueIndividuals) {
   individualMeans <- c(individualMeans, mean(uniqueResults$estimate[uniqueResults$patient == ind]))
   malNorm <- c(malNorm, uniqueResults$malnorm[uniqueResults$patient == ind][1])
 }
 
 # Combine results into a data.frame
-mal_vs_norm.df <- data.frame("Patient" = uniqueIndividuals,
-                             "meanEstimate" = individualMeans,
-                             "malNorm" = malNorm)
+mal_vs_norm.df <- data.frame(
+  "Patient" = uniqueIndividuals,
+  "meanEstimate" = individualMeans,
+  "malNorm" = malNorm
+)
 
 # Run a non-parametric Mann-whitney test to see if they're significantly different
 nonparamTest <- wilcox.test(meanEstimate ~ malNorm, data = mal_vs_norm.df)
@@ -234,15 +237,18 @@ print(nonparamTest)
 
 # Set ordering for plot and plot using ggplot (re-make Fig. 5E)
 mal_vs_norm.df$malNorm <- factor(mal_vs_norm.df$malNorm, levels = c("Normal", "Malignant"))
-ggplot(mal_vs_norm.df, aes(x = malNorm, y = meanEstimate)) + 
-  geom_label(label = paste0("p = ", round(nonparamTest$p.value, 3)), x = 1.2, y = 1.2)+
-  geom_boxplot(width=0.3, aes(color = malNorm), outlier.shape = NA)+
+ggplot(mal_vs_norm.df, aes(x = malNorm, y = meanEstimate)) +
+  geom_label(label = paste0("p = ", round(nonparamTest$p.value, 3)), x = 1.2, y = 1.2) +
+  geom_boxplot(width = 0.3, aes(color = malNorm), outlier.shape = NA) +
   geom_jitter(aes(x = malNorm, y = meanEstimate, color = malNorm), width = .1, size = 2) +
-  scale_color_manual(values = c("black", "red"), labels = c("Normal", "MPN"))+
-  theme_bw()+ ylab("Mean net growth rate (r)") + xlab("") + 
-  theme(legend.position = "none",
-        axis.ticks.x = element_blank(), axis.title.x = element_blank())
-
+  scale_color_manual(values = c("black", "red"), labels = c("Normal", "MPN")) +
+  theme_bw() +
+  ylab("Mean net growth rate (r)") +
+  xlab("") +
+  theme(
+    legend.position = "none",
+    axis.ticks.x = element_blank(), axis.title.x = element_blank()
+  )
 ```
 
 ### Single vs. multi-driver (Fig. 5F)
@@ -262,14 +268,19 @@ uniqueResults$multiDriver <- factor(uniqueResults$multiDriver, levels = c("Singl
 
 # Plot
 colors <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) + 
-  geom_boxplot(width=0.3, aes(color = multiDriver), outlier.shape = NA)+
+ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) +
+  geom_boxplot(width = 0.3, aes(color = multiDriver), outlier.shape = NA) +
   geom_jitter(aes(x = multiDriver, y = estimate, color = multiDriver), width = .1) +
-  scale_color_manual(values = c(colors[4], colors[8]))+
-  theme_bw()+ geom_label(label = paste0("p=", round(nonParamTest$p.value, 7)),x = 1.5, y = 2)+
-  ylab("Net growth rate (r)")+xlab("")+ ggtitle("Driver mutations")+
-  theme(legend.position = "none", axis.ticks.x = element_blank(), 
-        axis.title.x = element_blank(), plot.title = element_text(hjust = .5))
+  scale_color_manual(values = c(colors[4], colors[8])) +
+  theme_bw() +
+  geom_label(label = paste0("p=", round(nonParamTest$p.value, 7)), x = 1.5, y = 2) +
+  ylab("Net growth rate (r)") +
+  xlab("") +
+  ggtitle("Driver mutations") +
+  theme(
+    legend.position = "none", axis.ticks.x = element_blank(),
+    axis.title.x = element_blank(), plot.title = element_text(hjust = .5)
+  )
 ```
 
 ### Time from clone initiation to diagnosis ([Fig. 5G](https://www.biorxiv.org/))
@@ -284,14 +295,14 @@ With that out of the way, let's see if the growth rate tells us anything about t
 
 ```{r getMax}
 # Get the clone IDs of the fittest clone in each patient
-cloneIDs_max <- sapply(unique(uniqueResults$patient), function(x){
+cloneIDs_max <- sapply(unique(uniqueResults$patient), function(x) {
   patient.df <- uniqueResults[uniqueResults$patient == x, ]
   cloneID <- patient.df$cloneName_result[which.max(patient.df$estimate)]
   cloneID
 })
 
 # Get the clone IDs of the youngest clone in each patient
-cloneIDs_youngest <- sapply(unique(uniqueResults$patient), function(x){
+cloneIDs_youngest <- sapply(unique(uniqueResults$patient), function(x) {
   patient.df <- uniqueResults[uniqueResults$patient == x, ]
   cloneID <- patient.df$cloneName_result[which.min(patient.df$cloneAgeEstimate)]
   cloneID
@@ -308,10 +319,10 @@ library(survival)
 library(ggsurvfit)
 
 # Subset the results to only have the fittest clone for each patient
-maxResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_max,]
+maxResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_max, ]
 
 # Subset to the MPN patients
-malMax <- maxResults[maxResults$malnorm == "Malignant",]
+malMax <- maxResults[maxResults$malnorm == "Malignant", ]
 
 # Determine time from clone initiation to diagnosis
 malMax$latency_to_dx <- malMax$cloneAgeEstimate - (malMax$age - malMax$diagnosis.age)
@@ -330,25 +341,23 @@ survfit2(Surv(time = latency_to_dx, event = status) ~ aboveMean, data = malMax) 
   labs(
     y = "Probability diagnosis-free",
     x = "Time from clone initiation (yrs.)"
-  )+scale_color_manual(values = c(colors[7], colors[3]))+
-  theme(legend.position = "none") + 
-  geom_label(label=paste0("p = ", round(survivalTest$pvalue, 4)), x = 45, y = .85, color = "black", fill = "white")+
-  geom_label(label="r < mean", x = 40, y = .375, color = colors[7], fill = "white")+
-  geom_label(label="r > mean", x = 12, y = .35, color = colors[3], fill = "white")
-  
+  ) + scale_color_manual(values = c(colors[7], colors[3])) +
+  theme(legend.position = "none") +
+  geom_label(label = paste0("p = ", round(survivalTest$pvalue, 4)), x = 45, y = .85, color = "black", fill = "white") +
+  geom_label(label = "r < mean", x = 40, y = .375, color = colors[7], fill = "white") +
+  geom_label(label = "r > mean", x = 12, y = .35, color = colors[3], fill = "white")
 ```
 
 Because we don't fully understand clonal hematopoiesis and MPN, it's reasonable to wonder whether using the fittest clone is the best way to compare time to diagnosis. As an alternative, let's compare the youngest clones, seeing if our growth rate estimates still stratify the time to diagnosis.
 
 ```{r youngestStratify}
-youngestResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_youngest,]
+youngestResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_youngest, ]
 
 # Subset to the MPN patients
-malYoungest <- youngestResults[youngestResults$malnorm == "Malignant",]
+malYoungest <- youngestResults[youngestResults$malnorm == "Malignant", ]
 
 # Check how much overlap there is between youngest clone and fittest clone in the MPN dataset
 table(malYoungest$cloneName_result == malMax$cloneName_result)
-
 ```
 
 As it turns out, the youngest clone is the fittest clone in all 13 individuals diagnosed with MPN. We saw before that this was the case in 15 of the 19 individuals when including MPN and healthy. 
@@ -360,16 +369,20 @@ Remember when we said that there were three cases of duplicate clones? Well, if 
 ```{r consistency}
 # From before, we can find which clone IDs appear twice
 tmp <- table(results$uniqueCloneID)
-repeatsVec <- names(tmp)[tmp==2]
+repeatsVec <- names(tmp)[tmp == 2]
 
 # Subset the results to include only repeated clones
-repeatResults <- results[results$uniqueCloneID %in% repeatsVec,]
+repeatResults <- results[results$uniqueCloneID %in% repeatsVec, ]
 
 # Plot the repeated clones
-ggplot(repeatResults) + 
-  geom_pointrange(data = repeatResults, aes(x = cloneName_result, y = estimate, ymin = lowerBound, 
-                      ymax = upperBound, color = uniqueCloneID))+
-  scale_color_manual(values = colors[c(1, 6, 7)]) + theme_bw()+ ylab("Net growth rate estimate (r)")+
+ggplot(repeatResults) +
+  geom_pointrange(data = repeatResults, aes(
+    x = cloneName_result, y = estimate, ymin = lowerBound,
+    ymax = upperBound, color = uniqueCloneID
+  )) +
+  scale_color_manual(values = colors[c(1, 6, 7)]) +
+  theme_bw() +
+  ylab("Net growth rate estimate (r)") +
   theme(axis.text.x = element_blank(), axis.title.x = element_blank(), legend.title = element_blank())
 ```
 
@@ -381,64 +394,67 @@ Let's now fit a logistic curve to the longitudinal data and estimate the growth 
 library(car, quietly = T)
 
 # Fit PD9478
-PD9478_long <- longitudinalData[longitudinalData$Sample.ID == "PD9478",]
+PD9478_long <- longitudinalData[longitudinalData$Sample.ID == "PD9478", ]
 
 # Get a rough estimate for starting params
-startingParams <- suppressWarnings(coef(lm(logit(VAF/.5) ~ Age, data=PD9478_long)))
+startingParams <- suppressWarnings(coef(lm(logit(VAF / .5) ~ Age, data = PD9478_long)))
 
 # Fit to a three parameter logistic curve
-fit <- nls(VAF ~ K/(1+exp(-(phi2 + r*Age))),
-               start=list(K = 0.2, phi2=min(c(-0.000001, startingParams[1])), r=max(c(0.00001, startingParams[2]))), 
-           data=PD9478_long, trace=F, algorithm = "port", lower = c(0, -500, 0.00001), upper = c(0.5, 0, 5))
+fit <- nls(VAF ~ K / (1 + exp(-(phi2 + r * Age))),
+  start = list(K = 0.2, phi2 = min(c(-0.000001, startingParams[1])), r = max(c(0.00001, startingParams[2]))),
+  data = PD9478_long, trace = F, algorithm = "port", lower = c(0, -500, 0.00001), upper = c(0.5, 0, 5)
+)
 
 # Set output equal to summary of longitudinal models
 output <- summary(fit)
 
 # Assign fitted params
-r <- output$coefficients["r",1]
-t_m <- -output$coefficients["phi2",1]/r # Get midpoint time by dividing by -1/r
-K <- output$coefficients["K",1]
+r <- output$coefficients["r", 1]
+t_m <- -output$coefficients["phi2", 1] / r # Get midpoint time by dividing by -1/r
+K <- output$coefficients["K", 1]
 
 # Get CI for growth rate of longitudinal/logistic model
 stdError <- output$coefficients["r", "Std. Error"]
-lb <- r - 1.96*stdError
-ub <- r + 1.96*stdError
+lb <- r - 1.96 * stdError
+ub <- r + 1.96 * stdError
 
 # Prepare a df for plotting the fit line along with the data
-x <- c((min(PD9478_long$Age)-10):(max(PD9478_long$Age)+10)) #construct a range of x values bounded by the data
-y <- K/(1+exp(-(x-t_m)*r)) # curve VAF (3 param model)
+x <- c((min(PD9478_long$Age) - 10):(max(PD9478_long$Age) + 10)) # construct a range of x values bounded by the data
+y <- K / (1 + exp(-(x - t_m) * r)) # curve VAF (3 param model)
 
 predict.df <- data.frame("x" = x, "y" = y)
 
 fitColor <- colors[6]
 
-ggplot(PD9478_long, aes(x=Age,y=VAF))+
-              theme_bw()+
-              coord_cartesian(xlim = c(min(x), max(x)), ylim = c(-0.01, 0.52), expand = 0) +
-              labs(x='Person Age (yr)', y='Variant Allele Frequency (VAF)')+
-              ggtitle(gsub("_", " & ", paste0(PD9478_long$Sample.ID[1], " ", PD9478_long$Gene[1])))+
-              geom_line(data=predict.df, aes(x=x, y=y), color = fitColor, size=1, show.legend=T) +
-              geom_point(color='#808080', shape = 18)+
-              geom_vline(xintercept = t_m, linetype = "dotted", color = fitColor, linewidth = .6)+
-              geom_hline(yintercept = K, linetype = "dotted", color = fitColor, linewidth = .6)
-
+ggplot(PD9478_long, aes(x = Age, y = VAF)) +
+  theme_bw() +
+  coord_cartesian(xlim = c(min(x), max(x)), ylim = c(-0.01, 0.52), expand = 0) +
+  labs(x = "Person Age (yr)", y = "Variant Allele Frequency (VAF)") +
+  ggtitle(gsub("_", " & ", paste0(PD9478_long$Sample.ID[1], " ", PD9478_long$Gene[1]))) +
+  geom_line(data = predict.df, aes(x = x, y = y), color = fitColor, size = 1, show.legend = T) +
+  geom_point(color = "#808080", shape = 18) +
+  geom_vline(xintercept = t_m, linetype = "dotted", color = fitColor, linewidth = .6) +
+  geom_hline(yintercept = K, linetype = "dotted", color = fitColor, linewidth = .6)
 ```
 
 Now, let's see how the estimate compares with our maximum likelihood estimate:
 
 ```{r validateLong}
 # Get the single cell estimate from PD9478 clone 1
-scPD9478 <- results[results$cloneName_result == "PD9478_1_clone1",]
+scPD9478 <- results[results$cloneName_result == "PD9478_1_clone1", ]
 
-combine.df <- data.frame("Clone" = "PD9478_1_clone1",
-                         "r"= c(r, scPD9478$estimate),
-                         "lowerBound" = c(lb, scPD9478$lowerBound),
-                         "upperBound" = c(ub, scPD9478$upperBound),
-                         "method" = c("longitudinal", "max. likelihood"))
+combine.df <- data.frame(
+  "Clone" = "PD9478_1_clone1",
+  "r" = c(r, scPD9478$estimate),
+  "lowerBound" = c(lb, scPD9478$lowerBound),
+  "upperBound" = c(ub, scPD9478$upperBound),
+  "method" = c("longitudinal", "max. likelihood")
+)
 
-ggplot(combine.df) + geom_pointrange(aes(x = method, y = r, ymin = lowerBound, ymax = upperBound)) +
-  theme_bw() + ylab("Net growth rate (r)")
-
+ggplot(combine.df) +
+  geom_pointrange(aes(x = method, y = r, ymin = lowerBound, ymax = upperBound)) +
+  theme_bw() +
+  ylab("Net growth rate (r)")
 ```
 
 All in all, not too bad! For now, we'll leave the others for you to explore. This vignette has already been a bit long. But now you should have the tools to reproduce all of our analyses relating to the real data aspect of [our paper](https://www.biorxiv.org/). Hopefully you were able to do this in minutes and hours, which is much better than the months it took me!

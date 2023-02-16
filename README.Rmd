@@ -79,7 +79,7 @@ Now that we have simulated the tree, let's plot it:
 
 ```{r plotTree}
 # Plot the tree (see ggtree docs for more advanced plotting)
-ggtree(tree) + theme_tree2(fgcolor = "blue") +xlab("Time (years)")
+ggtree(tree) + theme_tree2(fgcolor = "blue") + xlab("Time (years)")
 ```
 
 The `theme_tree2()` function in `ggtree` allows for a time scale to be added to the tree.
@@ -111,7 +111,6 @@ which in this case is 1. Let's apply our methods to all 100 trees.
 # Here we are applying two methods to all of the ultrametric trees
 resultsUltraMaxLike <- maxLikelihood(exampleUltraTrees)
 resultsUltraLengths <- internalLengths(exampleUltraTrees)
-
 ```
 
 Notice how the functions `maxLikelihood()` and `internalLengths()` can take as input either a single tree or a list of trees. Either way, the output is a `data.frame` containing the results.

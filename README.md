@@ -72,7 +72,7 @@ Now that we have simulated the tree, let’s plot it:
 
 ``` r
 # Plot the tree (see ggtree docs for more advanced plotting)
-ggtree(tree) + theme_tree2(fgcolor = "blue") +xlab("Time (years)")
+ggtree(tree) + theme_tree2(fgcolor = "blue") + xlab("Time (years)")
 ```
 
 <img src="man/figures/README-plotTree-1.png" width="100%" />
@@ -88,12 +88,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.502"
+#> [1] "Max. likelihood estimate = 0.423"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.511"
+#> [1] "Internal lengths estimate = 0.405"
 ```
 
 ### Estimate growth rate of many trees

@@ -75,7 +75,7 @@ internalLengths <- function(subtree, alpha = 0.05) {
   }
 
   # Estimate clone age
-  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1/growthRate
+  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
 
   # Get runtime (including all tests)
   runtime <- proc.time() - ptm
@@ -115,7 +115,7 @@ sharedMuts <- function(subtree, nu = NULL, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, sharedMuts))
-    return.df$cloneName_result  <- names(subtree)
+    return.df$cloneName_result <- names(subtree)
     return(return.df)
   }
 
@@ -195,7 +195,7 @@ sharedMuts <- function(subtree, nu = NULL, alpha = 0.05) {
   }
 
   # Estimate clone age
-  cloneAgeEstimate <- max(ape::branching.times(subtree))/nu + 1/growthRate
+  cloneAgeEstimate <- max(ape::branching.times(subtree)) / nu + 1 / growthRate
 
   # Get runtime (including all tests)
   runtime <- proc.time() - ptm
@@ -240,7 +240,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, maxLikelihood))
-    return.df$cloneName_result  <- names(subtree)
+    return.df$cloneName_result <- names(subtree)
     return(return.df)
   }
 
@@ -288,7 +288,7 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   growthRate_ub <- growthRate * (1 - c * stats::qnorm(alpha / 2) / sqrt(n))
 
   # Estimate clone age
-  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1/growthRate
+  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
 
   runtime <- proc.time() - ptm
 
@@ -367,7 +367,7 @@ moments <- function(subtree, alpha = 0.05) {
   if (inherits(subtree, "list") & !inherits(subtree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
     return.df <- do.call(rbind, lapply(subtree, moments))
-    return.df$cloneName_result  <- names(subtree)
+    return.df$cloneName_result <- names(subtree)
     return(return.df)
   }
 
@@ -402,7 +402,7 @@ moments <- function(subtree, alpha = 0.05) {
   }
 
   # Estimate clone age
-  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1/growthRate
+  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
 
   runtime <- proc.time() - ptm
 
