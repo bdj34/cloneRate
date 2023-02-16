@@ -62,7 +62,7 @@ install.packages(setdiff(c("ggplot2", "ggtree", "ggsurvfit", "survival", "car"),
 
 We'll walk through simulating a single tree and plotting it, then apply our growth rate methods. 
 
-### Simulate data
+### Simulate data 
 
 We can simulate a sample of size n from a birth-death tree as follows:
 
