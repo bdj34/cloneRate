@@ -52,6 +52,7 @@ data to reproduce our analysis.
 ```{r dataPreview}
 summary(cloneRate::realCloneData)
 ```
+
 There are two lists contained in this dataset, one which contains the full 
 reconstructed tree for each individual at each timepoint (named `fullTrees`), 
 and one which contains specific clones from the full trees (named `cloneTrees`).
@@ -96,9 +97,9 @@ print(round(maxLikelihood(PD9478_subClone)$estimate, 3))
 print(round(internalLengths(PD9478_subClone)$estimate, 3))
 ```
 
-Unfortunately, we don't have a ground truth to compare to when working with real data. However, this individual clone has longitudinal sequencing data, which we can use to estimate an orthogonal growth rate.
+Unfortunately, we don't have a ground truth to compare to when working with real data. However, this individual clone has longitudinal sequencing data, which we can use to estimate an orthogonal growth rate. We'll come back to this at the end of the vignette.
 
-Let's apply our analysis to all of the clone trees!
+First, let's apply our analysis to all of the clone trees!
 
 ```{r applyAll}
 # Apply each of our estimates
@@ -112,7 +113,7 @@ print(head(resultsMaxLike[,c(1:3)]))
 print(stats::cor.test(resultsLengths$estimate, resultsMaxLike$estimate))
 ```
 
-Each of the functions (`maxLikelihood()` and `internalLengths()`) returns a data.frame with the same columns, and we'll walk through what the columns mean here:
+Not bad! Each of the functions (maxLikelihood() and internalLengths()) returns a data.frame with the same columns, and we'll walk through what the columns mean here:
 
 ```{r columnsInfo}
 # Check that column names are the same
@@ -123,13 +124,13 @@ colnames(resultsMaxLike)
 ```
 
 * `lowerBound`, `estimate`, `upperBound`: These are the growth rate estimate and confidence intervals. The default is 95% confidence intervals, but this can be adjusted by setting the `alpha` parameter in the function input.
-* `cloneAgeEstimate` this is the estimate of the time from clone initiation to sampling. The earliest coalescence time in the clone tree gives us a rough estimate of the clone age, and then we add $1/r$ (1 divided by the growth rate estimate) to account for the expected time from initiation to the first surviving division (first coalescence). 
+* `cloneAgeEstimate` this is the estimate of the time from clone initiation to sampling. The earliest coalescence time in the clone tree gives us a rough estimate of the clone age, and then we add $1/r$ (1 divided by the growth rate estimate) to account for the expected time from initiation to the first surviving division (first coalescence). We'll discuss this more later.
 * `sumInternalLengths`, `sumExternalLengths`, `extintRatio`: These are the sum of the internal edge lengths, external edge lengths, and the ratio between the two. We use this ratio to say whether enough time has passed to use our method ([see simulation vignette](cloneRate-simulate.html)). Fortunately, all of our real data has a ratio > 3, so we can apply our methods to all of the clone trees.
 * `n` is the number of tips in the clone tree. In this case, this corresponds to the number of cells sequenced in the clone.
 * `alpha` is the confidence level. We use `1-alpha` confidence intervals.
-* `runtime_s` is the runtime of our method in seconds. Nice and fast!
+* `runtime_s` is the runtime of our method in seconds.
 * `method` is the method used, which helps if we want to combine data.frames output from different methods for plotting.
-* `names` is a unique name for the clone corresponding to the individual ID and clone number. For individuals from the [William's paper](https://pubmed.ncbi.nlm.nih.gov/35058638/), where some individuals were sampled at multiple timepoints, the ID will be followed by "_1", "_2", or "_3" to indicate the timepoint.
+* `names` is a unique name for the clone corresponding to the individual ID and clone number. For individuals from the [Williams paper](https://pubmed.ncbi.nlm.nih.gov/35058638/), where some individuals were sampled at multiple timepoints, the ID will be followed by "_1", "_2", or "_3" to indicate the timepoint.
 
 Now that we have growth rates, let's make some sense of them. If we look inside cloneTrees.list, we realize that we also have metadata. Let's print two examples, one from an individual with a Myeloproliferative Neoplasm (MPN), and one without:
 
@@ -153,10 +154,13 @@ Let's combine all of the `cloneTrees.list` metadata into one data.frame, so we c
 ```{r combineMetdata}
 # Combine all metadata into a single data.frame
 metadataAll <- do.call(rbind, lapply(cloneTrees.list, function(x){return(x$metadata)}))
+
+# Preview and make sure everything looks right
 print(head(metadataAll))
 ```
 
-Let's join the data.frames. We can use cbind from base R because we know the order of the metadata is the same as the order of the results data.frame. We can check this by comparing the `cloneName_result` and `cloneName_meta` columns, which should be (and are) the same.
+Let's join the data.frames containing the metadata and the results. We can use cbind from base R because we know the order of the metadata is the same as the order of the results data.frame. We can check this by comparing the `cloneName_result` and `cloneName_meta` columns, which should be (and are) the same.
+
 ```{r joinMetaResults}
 # Combine metadata with estimates using cbind. Check if cloneNames match
 resultsLengthsMeta <- cbind(resultsLengths, metadataAll)
@@ -169,12 +173,15 @@ stopifnot(resultsLengthsMeta$cloneName_result == resultsLengthsMeta$cloneName_me
 results <- resultsMaxLikeMeta
 ```
 
+We'll go forward with our analysis using the results data.frame, which contains the estimates from the maxLikelihood() function. In the [simulation vignette](cloneRate-simulate.html), we show that the maximum likelihood estimate performs the best.
+
 ## Analysis
 Here, we recreate the analysis in [Figure 5E-G of our work](https://www.biorxiv.org/). These are just a few of many analyses that can be done with this data, so don't be limited by what we do.
 
-If we split the cohort by MPN and normal, we might expect differences in the growth rates. Because the sequencing depth on average is higher in the normals, due to study design, we're more likely to pick up more clones from the normal individuals. To avoid this bias as much as possible, we'll compare the mean growth rate between individuals with and without MPN.
+If we split the cohort by MPN and normal, we might expect differences in the growth rates. Because the number of sampled cells, on average, is higher in the healthy individuals due to study design, we're more likely to pick up more clones from the healthy individuals. To avoid this bias as much as possible, we'll compare the mean growth rate between individuals with and without MPN.
 
-First, we want to avoid double counting the clones which appear twice:
+First, we want to avoid double counting the clones which appear twice. There are three such clones from the [Williams paper](https://pubmed.ncbi.nlm.nih.gov/35058638/):
+
 ```{r splitMalNorm}
 # If patient ID and clone number are the same, even if timepoint differs, then we have a duplicate
 # Make a new column for patient, removing anything after "_" from cloneName_result
@@ -201,8 +208,11 @@ uniqueResults <- results[!c(1:nrow(results)) %in% rowsRemove, ]
 stopifnot(all(table(uniqueResults$uniqueCloneID) == 1))
 ```
 
+For now, our `uniqueResults` dataframe contains the results with only one clone from each duplicated pair. Later on, when we want to validate our estimates, we'll make use of the fact that we have different data on the same clones, showing that our methods make consistent estimates regardless of which sampling time we use. More on that under "Validation".
+
 ### MPN vs. Normal (Fig. 5E)
 Now, let's take the mean for each individual and re-create [Fig. 5E](https://www.biorxiv.org/)
+
 ```{r meanInd}
 uniqueIndividuals <- unique(uniqueResults$patient)
 individualMeans <- c()
@@ -251,36 +261,36 @@ print(nonParamTest)
 uniqueResults$multiDriver <- factor(uniqueResults$multiDriver, levels = c("Single or unknown", "Multiple"))
 
 # Plot
-colors <- c("#000000", "#56B4E9", "#009E73", "#D55E00", "#CC79A7")
+colors <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) + 
   geom_boxplot(width=0.3, aes(color = multiDriver), outlier.shape = NA)+
   geom_jitter(aes(x = multiDriver, y = estimate, color = multiDriver), width = .1) +
-  scale_color_manual(values = c(colors[3], colors[5]), labels = c("MPN", "Normal"))+
+  scale_color_manual(values = c(colors[4], colors[8]))+
   theme_bw()+ geom_label(label = paste0("p=", round(nonParamTest$p.value, 7)),x = 1.5, y = 2)+
   ylab("Net growth rate (per yr.)")+xlab("")+ ggtitle("Driver mutations")+
   theme(legend.position = "none", axis.ticks.x = element_blank(), 
         axis.title.x = element_blank(), plot.title = element_text(hjust = .5))
 ```
 
-### Time from clone initiation to diagnosis
+### Time from clone initiation to diagnosis ([Fig. 5G](https://www.biorxiv.org/))
 
-We discussed before that our results data.frame (the output of [internalLengths()] or [maxLikelihood()]) came with a clone age, which was $1/r$ + the time from sampling back to the first coalescence. If the birth rate of a clone is $a$  and the death rate is $b$, then the net growth rate is $r=a-b$. The first coalescence represents the first surviving division because, if neither of the offspring of a division die out, they'll account for, on average, half the cells in the clone. This means that even if we sample only 10 cells, we're very likely to sample at least one descendant from each of the two offspring, meaning that first surviving division should be the earliest coalescence, relative to the time of sampling. How do we know when the first surviving division occurs? Well, we know:
+We discussed before that our results data.frame (the output of internalLengths() or maxLikelihood()) came with a clone age estimate, which was $1/r$ + the time from sampling back to the first coalescence. If the birth rate of a clone is $a$  and the death rate is $b$, then the net growth rate is $r=a-b$. The first coalescence represents the first surviving division because, if neither of the offspring of a division die out, they'll account for, on average, half the cells in the clone. This means that even if we sample only 10 cells, we're very likely to sample at least one descendant from each of the two offspring, meaning that first surviving division should be the earliest coalescence, relative to the time of sampling. How do we know when the first surviving division occurs? Well, we know:
 
 * the birth rate is $a$
 * the probability of survival of a given individual is $(a-b)/a$ or $r/a$
-* This leads to a rate of surviving divisions equal to $a*r/a = r$. Therefore, the expected waiting time from clone initiation to first division is $1/r$. 
+* This leads to a rate of surviving divisions equal to $a*r/a = r$. Therefore, the expected waiting time from clone initiation to first surviving division is $1/r$. 
 
-With that out of the way, let's see if the growth rate tells us anything about the time from clone initiation to diagnosis. For this, we want to use the max. growth rate from each patient, as that's the one which we'd assume to be most likely to drive MPN initiation. We don't understand MPN very well though, so an alternative could be to use the most recently emerged clone previous to diagnosis. We'll do both here, showing that either approach gives similar results because any clone which arises later in life must be fit enough to outcompete other potential clones which have already expanded.
+With that out of the way, let's see if the growth rate tells us anything about the time from clone initiation to diagnosis. For this, we want to use the max. growth rate from each patient, as that's the one which we'd assume to be most likely to drive MPN initiation. We don't understand MPN very well though, so an alternative could be to use the most recently emerged clone prior to diagnosis. We'll do both here, showing that they actually give the same results, probably because any clone which arises later in life must be fit enough to out-compete other clones which have already expanded.
 
 ```{r getMax}
-
-# Get the index telling us the max 
+# Get the clone IDs of the fittest clone in each patient
 cloneIDs_max <- sapply(unique(uniqueResults$patient), function(x){
   patient.df <- uniqueResults[uniqueResults$patient == x, ]
   cloneID <- patient.df$cloneName_result[which.max(patient.df$estimate)]
   cloneID
 })
 
+# Get the clone IDs of the youngest clone in each patient
 cloneIDs_youngest <- sapply(unique(uniqueResults$patient), function(x){
   patient.df <- uniqueResults[uniqueResults$patient == x, ]
   cloneID <- patient.df$cloneName_result[which.min(patient.df$cloneAgeEstimate)]
@@ -291,7 +301,13 @@ cloneIDs_youngest <- sapply(unique(uniqueResults$patient), function(x){
 table(cloneIDs_max == cloneIDs_youngest)
 ```
 
+We see that in 15/19 cases, the youngest clone (with >= 10 tips)  is also the most fit. First, let's use the most fit clones and stratify by the mean, reproducing [our result in Figure 5G.](https://www.biorxiv.org/)
+
 ```{r maxStratify}
+library(survival)
+library(ggsurvfit)
+
+# Subset the results to only have the fittest clone for each patient
 maxResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_max,]
 
 # Subset to the MPN patients
@@ -300,44 +316,29 @@ malMax <- maxResults[maxResults$malnorm == "Malignant",]
 # Determine time from clone initiation to diagnosis
 malMax$latency_to_dx <- malMax$cloneAgeEstimate - (malMax$age - malMax$diagnosis.age)
 
-# Stratify by mean net growth rate
-corCheck <- cor.test(malMax$estimate, malMax$latency_to_dx)
-print(corCheck)
-print(corCheck$estimate^2)
-
-# Let's plot the growth rate and the age estimate, and the mean of the maximum growth rate
-ggplot(malMax) + geom_point(aes(x = estimate, y = latency_to_dx)) + theme_bw() +
-  geom_vline(xintercept = mean(malMax$estimate), linetype = "dashed")
-
-# Stratify the population by the mean growth rate and see if time to diagnosis is signficantly different
+# Stratify the population by the mean growth rate, adding a column "aboveMean"
 malMax$aboveMean <- malMax$estimate > mean(malMax$estimate)
 
-# Because there is no censored data, we can just compare the times using the wilcox test
-wilcox.test(latency_to_dx ~ aboveMean, data = malMax)
-```
-
-```{r survival}
-library(survival)
-library(ggsurvfit)
-
-# If you have the survival package, compare this to the result using these functions
+# Use the survival package to see if differences are significant
 malMax$status <- 1
 survivalTest <- survival::survdiff(survival::Surv(time = latency_to_dx, event = status) ~ aboveMean, data = malMax)
 print(survivalTest$pvalue)
 
-# If the ggsurvfit package is present, we
+# Plot survival curves
 survfit2(Surv(time = latency_to_dx, event = status) ~ aboveMean, data = malMax) %>%
   ggsurvfit() +
   labs(
     y = "Probability diagnosis-free",
     x = "Time from first coalescence event (yrs.)"
-  )+scale_color_manual(values = c(colors[4], colors[2]))+
-  theme(axis.text = element_text(size = 16),
-        axis.title = element_text(size = 16),
-        legend.position = "none") + 
-  ggplot2::geom_label(label=paste0("p = ", round(survivalTest$pvalue, 4)), x = 45, y = .85, color = "black", fill = "white")
+  )+scale_color_manual(values = c(colors[7], colors[3]))+
+  theme(legend.position = "none") + 
+  geom_label(label=paste0("p = ", round(survivalTest$pvalue, 4)), x = 45, y = .85, color = "black", fill = "white")+
+  geom_label(label="r < mean", x = 40, y = .375, color = colors[7], fill = "white")+
+  geom_label(label="r > mean", x = 12, y = .35, color = colors[3], fill = "white")
+  
 ```
 
+Because we don't fully understand clonal hematopoiesis and MPN, it's reasonable to wonder whether using the fittest clone is the best way to compare time to diagnosis. As an alternative, let's compare the youngest clones, seeing if our growth rate estimates still stratify the time to diagnosis.
 
 ```{r youngestStratify}
 youngestResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_youngest,]
@@ -345,40 +346,116 @@ youngestResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_yo
 # Subset to the MPN patients
 malYoungest <- youngestResults[youngestResults$malnorm == "Malignant",]
 
-# Determine time from clone initiation to diagnosis
-malYoungest$latency_to_dx <- malYoungest$cloneAgeEstimate - (malYoungest$age - malYoungest$diagnosis.age)
-
-# Stratify by mean net growth rate
-corCheck <- cor.test(malYoungest$estimate, malYoungest$latency_to_dx)
-print(corCheck)
-print(corCheck$estimate^2)
-
-# Let's plot the growth rate and the age estimate, and the mean of the maximum growth rate
-ggplot(malYoungest) + geom_point(aes(x = estimate, y = latency_to_dx)) + theme_bw() +
-  geom_vline(xintercept = mean(malYoungest$estimate), linetype = "dashed")
-
-# Stratify the population by the mean growth rate and see if time to diagnosis is signficantly different
-malYoungest$aboveMean <- malYoungest$estimate > mean(malYoungest$estimate)
-
-# Because there is no censored data, we can just compare the times using the wilcox test
-wilcox.test(latency_to_dx ~ aboveMean, data = malYoungest)
-
-# If you have the survival, compare this to the result using these functions
-if(requireNamespace("survival")){
-  malYoungest$status <- 1
-  survivalTest <- survival::survdiff(survival::Surv(latency_to_dx, status) ~ aboveMean, data = malYoungest)
-  print(survivalTest$pvalue)
-}
+# Check how much overlap there is between youngest clone and fittest clone in the MPN dataset
+table(malYoungest$cloneName_result == malMax$cloneName_result)
 
 ```
 
-Our package comes with 42 clones annotated from four distinct publications, which are the ones we use in our analysis. Note that there are three clones profiled at two different timepoints, meaning there are 39 unique clones. 
+As it turns out, the youngest clone is the fittest clone in all 13 individuals diagnosed with MPN. We saw before that this was the case in 15 of the 19 individuals when including MPN and healthy. 
+
+## Validation
+
+Remember when we said that there were three cases of duplicate clones? Well, if our estimates are worth anything, they must be consistent. This means that, in these three clones, we should expect that the estimates are similar at both timepoints. Let's check this:
+
+```{r consistency}
+# From before, we can find which clone IDs appear twice
+tmp <- table(results$uniqueCloneID)
+repeatsVec <- names(tmp)[tmp==2]
+
+# Subset the results to include only repeated clones
+repeatResults <- results[results$uniqueCloneID %in% repeatsVec,]
+
+# Plot the repeated clones
+ggplot(repeatResults) + 
+  geom_pointrange(data = repeatResults, aes(x = cloneName_result, y = estimate, ymin = lowerBound, 
+                      ymax = upperBound, color = uniqueCloneID))+
+  scale_color_manual(values = colors[c(1, 6, 7)]) + theme_bw()+ ylab("Net growth rate estimate (r)")+
+  theme(axis.text.x = element_blank(), axis.title.x = element_blank(), legend.title = element_blank())
+```
+
+Not too bad! It's good to be consistent, but it's better to be consistent and accurate. For that, we need a completely orthogonal way to measure clonal growth rates, which comes from longitudinal data. One of the clones from the [Williams paper](https://pubmed.ncbi.nlm.nih.gov/35058638/) and two of the clones from the [Fabre paper](https://pubmed.ncbi.nlm.nih.gov/35650444/) have matching longitudinal data. We have formatted this nicely and it comes with the package!
+
+Let's now fit a logistic curve to the longitudinal data and estimate the growth rate for one of these clones, from individual PD9478, which is the tree we showed at the beginning of this vignette. Here, we are recreating some of the analysis from [our Figure 6.](https://www.biorxiv.org/)
+
+```{r loadLong}
+library(car, quietly = T)
+
+# Fit PD9478
+PD9478_long <- longitudinalData[longitudinalData$Sample.ID == "PD9478",]
+
+# Get a rough estimate for starting params
+startingParams <- suppressWarnings(coef(lm(logit(VAF/.5) ~ Age, data=PD9478_long)))
+
+# Fit to a three parameter logistic curve
+fit <- nls(VAF ~ K/(1+exp(-(phi2 + r*Age))),
+               start=list(K = 0.2, phi2=min(c(-0.000001, startingParams[1])), r=max(c(0.00001, startingParams[2]))), 
+           data=PD9478_long, trace=F, algorithm = "port", lower = c(0, -500, 0.00001), upper = c(0.5, 0, 5))
+
+# Set output equal to summary of longitudinal models
+output <- summary(fit)
+
+# Assign fitted params
+r <- output$coefficients["r",1]
+t_m <- -output$coefficients["phi2",1]/r # Get midpoint time by dividing by -1/r
+K <- output$coefficients["K",1]
+
+# Get CI for growth rate of longitudinal/logistic model
+stdError <- output$coefficients["r", "Std. Error"]
+lb <- r - 1.96*stdError
+ub <- r + 1.96*stdError
+
+# Prepare a df for plotting the fit line along with the data
+x <- c((min(PD9478_long$Age)-10):(max(PD9478_long$Age)+10)) #construct a range of x values bounded by the data
+y <- K/(1+exp(-(x-t_m)*r)) # curve VAF (3 param model)
+
+predict.df <- data.frame("x" = x, "y" = y)
+
+fitColor <- colors[6]
+
+ggplot(PD9478_long, aes(x=Age,y=VAF))+
+              theme_bw()+
+              coord_cartesian(xlim = c(min(x), max(x)), ylim = c(-0.01, 0.52), expand = 0) +
+              labs(x='Person Age (yr)', y='Variant Allele Frequency (VAF)')+
+              ggtitle(gsub("_", " & ", paste0(PD9478_long$Sample.ID[1], " ", PD9478_long$Gene[1])))+
+              geom_line(data=predict.df, aes(x=x, y=y), color = fitColor, size=1, show.legend=T) +
+              geom_point(color='#808080', shape = 18)+
+              geom_vline(xintercept = t_m, linetype = "dotted", color = fitColor, linewidth = .6)+
+              geom_hline(yintercept = K, linetype = "dotted", color = fitColor, linewidth = .6)
+
+```
+
+Now, let's see how the estimate compares with our maximum likelihood estimate:
+
+```{r validateLong}
+# Get the single cell estimate from PD9478 clone 1
+scPD9478 <- results[results$cloneName_result == "PD9478_1_clone1",]
+
+combine.df <- data.frame("Clone" = "PD9478_1_clone1",
+                         "r"= c(r, scPD9478$estimate),
+                         "lowerBound" = c(lb, scPD9478$lowerBound),
+                         "upperBound" = c(ub, scPD9478$upperBound),
+                         "method" = c("longitudinal", "max. likelihood"))
+
+ggplot(combine.df) + geom_pointrange(aes(x = method, y = r, ymin = lowerBound, ymax = upperBound)) +
+  theme_bw() + ylab("Net growth rate estimate (r)")
+
+```
+
+All in all, not too bad! For now, we'll leave the others for you to explore. This vignette has already been a bit long. But now you should have the tools to reproduce all of our analyses relating to the real data aspect of [our paper](https://www.biorxiv.org/). Hopefully you were able to do this in minutes and hours, which is much better than the months it took me!
 
 ## References / Data sources:
 
-*[Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
-*[Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/) 
-*[Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/) 
-*[Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
+Any real world data we include is produced and annotated in these fascinating papers, which have advanced the capabilities of single-cell DNA sequencing. They also provide excellent analysis in addition to what we provide here and in our work.
 
-If you enjoyed the color palette for the plotting, we tried to use colorblind friendly colors, specifically pulling colors from a palette designed by [Bang Wong](https://www.nature.com/articles/nmeth.1618) and available from [this great resource.](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)
+* [Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
+* [Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/) 
+* [Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/) 
+* [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
+
+The mathematical methods for estimating growth rates build in large part from the work of Amaury Lambert in:
+
+* [Lambert, 2018](https://pubmed.ncbi.nlm.nih.gov/29704514/)
+
+And here's a final link to [our paper](https://www.biorxiv.org/) for more of the details of the methods and data analysis.
+
+If you enjoyed the color palette for the plotting, we tried to use colorblind friendly colors, specifically pulling colors from a palette designed by [Bang Wong](https://www.nature.com/articles/nmeth.1618) and available [here.](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)
