@@ -38,10 +38,10 @@ devtools::install_github("bdj34/cloneRate")
 For this basic tutorial and our vignettes, we will also use several
 other packages, which can all be installed from CRAN. Because these are
 listed as packages we suggest, running the following command will
-install them.
+install them along with the vignettes.
 
 ``` r
-devtools::install_github("bdj34/cloneRate", dependencies = T)
+devtools::install_github("bdj34/cloneRate", build_vignettes = TRUE, dependencies = TRUE)
 ```
 
 Alternatively, you can install them manually:
@@ -88,12 +88,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.504"
+#> [1] "Max. likelihood estimate = 0.463"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.503"
+#> [1] "Internal lengths estimate = 0.474"
 ```
 
 ### Estimate growth rate of many trees
@@ -155,8 +155,8 @@ As expected, maximum likelihood performs the best. Note that this may
 change if we regenerate the data. For more details, see our vignettes:
 
 ``` r
-vignettes("cloneRate-dataAnalysis")
-vignettes("cloneRate-simulate")
+vignette("cloneRate-dataAnalysis")
+vignette("cloneRate-simulate")
 ```
 
 ## References
