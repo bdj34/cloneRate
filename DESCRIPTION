@@ -30,11 +30,13 @@ Suggests:
     adephylo,
     covr,
     ggplot2,
+    ggsurvfit,
     ggtree,
     knitr,
     parallel,
     rmarkdown,
     spelling,
+    survival,
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr

@@ -123,7 +123,7 @@ colnames(resultsMaxLike)
 ```
 
 * `lowerBound`, `estimate`, `upperBound`: These are the growth rate estimate and confidence intervals. The default is 95% confidence intervals, but this can be adjusted by setting the `alpha` parameter in the function input.
-* `cloneAgeEstimate` this is the estimate of the time from clone initiation to sampling. The earliest coalescence time in the clone tree gives us a rough estimate of the clone age, and then we add 1/r (1 divided by the growth rate estimate) to account for the expected time from initiation to the first surviving division (first coalescence). 
+* `cloneAgeEstimate` this is the estimate of the time from clone initiation to sampling. The earliest coalescence time in the clone tree gives us a rough estimate of the clone age, and then we add $1/r$ (1 divided by the growth rate estimate) to account for the expected time from initiation to the first surviving division (first coalescence). 
 * `sumInternalLengths`, `sumExternalLengths`, `extintRatio`: These are the sum of the internal edge lengths, external edge lengths, and the ratio between the two. We use this ratio to say whether enough time has passed to use our method ([see simulation vignette](cloneRate-simulate.html)). Fortunately, all of our real data has a ratio > 3, so we can apply our methods to all of the clone trees.
 * `n` is the number of tips in the clone tree. In this case, this corresponds to the number of cells sequenced in the clone.
 * `alpha` is the confidence level. We use `1-alpha` confidence intervals.
@@ -225,18 +225,17 @@ print(nonparamTest)
 # Set ordering for plot and plot using ggplot (re-make Fig. 5E)
 mal_vs_norm.df$malNorm <- factor(mal_vs_norm.df$malNorm, levels = c("Normal", "Malignant"))
 ggplot(mal_vs_norm.df, aes(x = malNorm, y = meanEstimate)) + 
-  geom_text(aes(label = paste0("p = ", round(nonparamTest$p.value, 3))), x = 1.2, y = 1.2, size = 8)+
+  geom_label(label = paste0("p = ", round(nonparamTest$p.value, 3)), x = 1.2, y = 1.2)+
   geom_boxplot(width=0.3, aes(color = malNorm), outlier.shape = NA)+
   geom_jitter(aes(x = malNorm, y = meanEstimate, color = malNorm), width = .1, size = 2) +
   scale_color_manual(values = c("black", "red"), labels = c("Normal", "MPN"))+
   theme_bw()+ ylab("Mean net growth rate (per yr.)") + xlab("") + 
   theme(legend.position = "none",
-        axis.ticks.x = element_blank(), axis.title.x = element_blank(),
-        axis.text = element_text(size=16), axis.title.y = element_text(size=16))
+        axis.ticks.x = element_blank(), axis.title.x = element_blank())
 
 ```
 
-### Single vs. multi-driver
+### Single vs. multi-driver (Fig. 5F)
 Taking our results from unique clones, `uniqueResults`, let's compare growth rates from clones with either an unknown driver or a single driver to those with multiple drivers. For this, we'll notice a handy convention: drivers are separated with "_AND_", so any clone with "_AND_" in the driver column, has multiple drivers:
 
 ```{r multiDriver}
@@ -257,13 +256,121 @@ ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) +
   geom_boxplot(width=0.3, aes(color = multiDriver), outlier.shape = NA)+
   geom_jitter(aes(x = multiDriver, y = estimate, color = multiDriver), width = .1) +
   scale_color_manual(values = c(colors[3], colors[5]), labels = c("MPN", "Normal"))+
-  theme_bw()+ geom_text(aes(label = paste0("p=", round(nonParamTest$p.value, 7))),x = 1.5, y = 2, size = 6)+
+  theme_bw()+ geom_label(label = paste0("p=", round(nonParamTest$p.value, 7)),x = 1.5, y = 2)+
   ylab("Net growth rate (per yr.)")+xlab("")+ ggtitle("Driver mutations")+
   theme(legend.position = "none", axis.ticks.x = element_blank(), 
-        axis.title.x = element_blank(), axis.text = element_text(size=16), 
-        axis.title.y = element_text(size=16), plot.title = element_text(size = 18, hjust = .5))
+        axis.title.x = element_blank(), plot.title = element_text(hjust = .5))
 ```
 
+### Time from clone initiation to diagnosis
+
+We discussed before that our results data.frame (the output of [internalLengths()] or [maxLikelihood()]) came with a clone age, which was $1/r$ + the time from sampling back to the first coalescence. If the birth rate of a clone is $a$  and the death rate is $b$, then the net growth rate is $r=a-b$. The first coalescence represents the first surviving division because, if neither of the offspring of a division die out, they'll account for, on average, half the cells in the clone. This means that even if we sample only 10 cells, we're very likely to sample at least one descendant from each of the two offspring, meaning that first surviving division should be the earliest coalescence, relative to the time of sampling. How do we know when the first surviving division occurs? Well, we know:
+
+* the birth rate is $a$
+* the probability of survival of a given individual is $(a-b)/a$ or $r/a$
+* This leads to a rate of surviving divisions equal to $a*r/a = r$. Therefore, the expected waiting time from clone initiation to first division is $1/r$. 
+
+With that out of the way, let's see if the growth rate tells us anything about the time from clone initiation to diagnosis. For this, we want to use the max. growth rate from each patient, as that's the one which we'd assume to be most likely to drive MPN initiation. We don't understand MPN very well though, so an alternative could be to use the most recently emerged clone previous to diagnosis. We'll do both here, showing that either approach gives similar results because any clone which arises later in life must be fit enough to outcompete other potential clones which have already expanded.
+
+```{r getMax}
+
+# Get the index telling us the max 
+cloneIDs_max <- sapply(unique(uniqueResults$patient), function(x){
+  patient.df <- uniqueResults[uniqueResults$patient == x, ]
+  cloneID <- patient.df$cloneName_result[which.max(patient.df$estimate)]
+  cloneID
+})
+
+cloneIDs_youngest <- sapply(unique(uniqueResults$patient), function(x){
+  patient.df <- uniqueResults[uniqueResults$patient == x, ]
+  cloneID <- patient.df$cloneName_result[which.min(patient.df$cloneAgeEstimate)]
+  cloneID
+})
+
+# See how much overlap there is between the most recent clone and the highest growth rate
+table(cloneIDs_max == cloneIDs_youngest)
+```
+
+```{r maxStratify}
+maxResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_max,]
+
+# Subset to the MPN patients
+malMax <- maxResults[maxResults$malnorm == "Malignant",]
+
+# Determine time from clone initiation to diagnosis
+malMax$latency_to_dx <- malMax$cloneAgeEstimate - (malMax$age - malMax$diagnosis.age)
+
+# Stratify by mean net growth rate
+corCheck <- cor.test(malMax$estimate, malMax$latency_to_dx)
+print(corCheck)
+print(corCheck$estimate^2)
+
+# Let's plot the growth rate and the age estimate, and the mean of the maximum growth rate
+ggplot(malMax) + geom_point(aes(x = estimate, y = latency_to_dx)) + theme_bw() +
+  geom_vline(xintercept = mean(malMax$estimate), linetype = "dashed")
+
+# Stratify the population by the mean growth rate and see if time to diagnosis is signficantly different
+malMax$aboveMean <- malMax$estimate > mean(malMax$estimate)
+
+# Because there is no censored data, we can just compare the times using the wilcox test
+wilcox.test(latency_to_dx ~ aboveMean, data = malMax)
+```
+
+```{r survival}
+library(survival)
+library(ggsurvfit)
+
+# If you have the survival package, compare this to the result using these functions
+malMax$status <- 1
+survivalTest <- survival::survdiff(survival::Surv(time = latency_to_dx, event = status) ~ aboveMean, data = malMax)
+print(survivalTest$pvalue)
+
+# If the ggsurvfit package is present, we
+survfit2(Surv(time = latency_to_dx, event = status) ~ aboveMean, data = malMax) %>%
+  ggsurvfit() +
+  labs(
+    y = "Probability diagnosis-free",
+    x = "Time from first coalescence event (yrs.)"
+  )+scale_color_manual(values = c(colors[4], colors[2]))+
+  theme(axis.text = element_text(size = 16),
+        axis.title = element_text(size = 16),
+        legend.position = "none") + 
+  ggplot2::geom_label(label=paste0("p = ", round(survivalTest$pvalue, 4)), x = 45, y = .85, color = "black", fill = "white")
+```
+
+
+```{r youngestStratify}
+youngestResults <- uniqueResults[uniqueResults$cloneName_result %in% cloneIDs_youngest,]
+
+# Subset to the MPN patients
+malYoungest <- youngestResults[youngestResults$malnorm == "Malignant",]
+
+# Determine time from clone initiation to diagnosis
+malYoungest$latency_to_dx <- malYoungest$cloneAgeEstimate - (malYoungest$age - malYoungest$diagnosis.age)
+
+# Stratify by mean net growth rate
+corCheck <- cor.test(malYoungest$estimate, malYoungest$latency_to_dx)
+print(corCheck)
+print(corCheck$estimate^2)
+
+# Let's plot the growth rate and the age estimate, and the mean of the maximum growth rate
+ggplot(malYoungest) + geom_point(aes(x = estimate, y = latency_to_dx)) + theme_bw() +
+  geom_vline(xintercept = mean(malYoungest$estimate), linetype = "dashed")
+
+# Stratify the population by the mean growth rate and see if time to diagnosis is signficantly different
+malYoungest$aboveMean <- malYoungest$estimate > mean(malYoungest$estimate)
+
+# Because there is no censored data, we can just compare the times using the wilcox test
+wilcox.test(latency_to_dx ~ aboveMean, data = malYoungest)
+
+# If you have the survival, compare this to the result using these functions
+if(requireNamespace("survival")){
+  malYoungest$status <- 1
+  survivalTest <- survival::survdiff(survival::Surv(latency_to_dx, status) ~ aboveMean, data = malYoungest)
+  print(survivalTest$pvalue)
+}
+
+```
 
 Our package comes with 42 clones annotated from four distinct publications, which are the ones we use in our analysis. Note that there are three clones profiled at two different timepoints, meaning there are 39 unique clones. 
 
