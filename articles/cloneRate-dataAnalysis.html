@@ -299,8 +299,8 @@ already conveyed in <code>diagnosis.age</code>, but it’s sometimes
 easier to work with in this format.</li>
 </ul>
 <p>Let’s combine all of the <code>cloneTrees.list</code> metadata into
-one data.frame, so we can analyze it together with th results of running
-our functions.</p>
+one data.frame, so we can analyze it together with the results of
+running our functions.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Combine all metadata into a single data.frame</span></span>
 <span><span class="va">metadataAll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">cloneTrees.list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
