@@ -148,7 +148,7 @@ For a biological and/or clinical analysis, the most important of these are:
 * `diagnosis.age` which tells us when the individual was diagnosed with Myeloproliferative Neoplasm (MPN). If the individual doesn't have MPN, `diagnosis.age` is `NA`. 
 * `malnorm` which tells us whether the individual has been diagnosed with a Myeloproliferative Neoplasm (MPN). This information is already conveyed in `diagnosis.age`, but it's sometimes easier to work with in this format.
 
-Let's combine all of the `cloneTrees.list` metadata into one data.frame, so we can analyze it together with th results of running our functions.
+Let's combine all of the `cloneTrees.list` metadata into one data.frame, so we can analyze it together with the results of running our functions.
 
 ```{r combineMetdata}
 # Combine all metadata into a single data.frame
