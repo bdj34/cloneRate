@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# cloneRate
+# cloneRate <a href="https://bdj34.github.io/cloneRate/"><img src="man/figures/logo.png" align="right" height="137" /></a>
 
 <!-- badges: start -->
 
@@ -88,12 +88,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.463"
+#> [1] "Max. likelihood estimate = 0.52"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.474"
+#> [1] "Internal lengths estimate = 0.468"
 ```
 
 ### Estimate growth rate of many trees
