@@ -3,7 +3,7 @@
 \docType{data}
 \name{longitudinalData}
 \alias{longitudinalData}
-\title{Longitudinal validation data'}
+\title{Longitudinal validation data}
 \format{
 A \code{data.frame} containing all the information needed
 \describe{

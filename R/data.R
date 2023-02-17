@@ -127,7 +127,7 @@
 
 
 
-#' Longitudinal validation data'
+#' Longitudinal validation data
 #'
 #' For three individuals with clonal expansions that can be estimated using our methods,
 #' we have longitudinal data to orthogonally validate these estimates, which is provided here.
