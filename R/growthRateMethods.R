@@ -74,8 +74,12 @@ internalLengths <- function(subtree, alpha = 0.05) {
             which means internal lengths method may not be applicable.")
   }
 
-  # Estimate clone age
-  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
+  # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
+  if (hasStem){
+    cloneAgeEstimate <- max(ape::branching.times(subtree))
+  } else {
+    cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
+  }
 
   # Get runtime (including all tests)
   runtime <- proc.time() - ptm
@@ -194,8 +198,12 @@ sharedMuts <- function(subtree, nu = NULL, alpha = 0.05) {
             which means shared mutations method may not be applicable.")
   }
 
-  # Estimate clone age
-  cloneAgeEstimate <- max(ape::branching.times(subtree)) / nu + 1 / growthRate
+  # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
+  if (hasStem){
+    cloneAgeEstimate <- max(ape::branching.times(subtree)) / nu
+  }else{
+    cloneAgeEstimate <- max(ape::branching.times(subtree)) / nu + 1 / growthRate
+  }
 
   # Get runtime (including all tests)
   runtime <- proc.time() - ptm
@@ -250,8 +258,8 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   # Get number of tips
   n <- ape::Ntip(subtree)
 
-  # Get coalescence times
-  coal_times <- ape::branching.times(subtree)
+  # Get coalescence times. Only take n-1 coal times to avoid using "branching time" from stem node
+  coal_times <- sort(ape::branching.times(subtree))[c(1:(n-1))]
 
   # Log-likelihood function using the approximation for T large
   # params[1]=a, params[2]=r=1/b
@@ -287,8 +295,12 @@ maxLikelihood <- function(subtree, alpha = 0.05) {
   growthRate_lb <- growthRate * (1 + c * stats::qnorm(alpha / 2) / sqrt(n))
   growthRate_ub <- growthRate * (1 - c * stats::qnorm(alpha / 2) / sqrt(n))
 
-  # Estimate clone age
-  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
+  # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
+  if (hasStem){
+    cloneAgeEstimate <- max(ape::branching.times(subtree))
+  } else {
+    cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
+  }
 
   runtime <- proc.time() - ptm
 
