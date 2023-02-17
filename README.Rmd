@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# cloneRate <a href="https://bdj34.github.io/cloneRate/"><img src="man/figures/logo.png" align="right" height="136" /></a> 
+# cloneRate <a href="https://bdj34.github.io/cloneRate/"><img src="man/figures/logo.png" align="right" height="136" /></a>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/bdj34/cloneRate/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bdj34/cloneRate/actions/workflows/R-CMD-check.yaml)
