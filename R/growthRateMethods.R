@@ -389,8 +389,11 @@ moments <- function(subtree, alpha = 0.05) {
   # Basic check on input formatting and alpha value
   inputCheck(subtree, alpha)
 
+  # Get coalescence times. Only take n-1 coal times to avoid using "branching time" from stem node
+  coal_times <- sort(ape::branching.times(subtree))[c(1:(n-1))]
+
   # Calculate the growth rate
-  growthRate <- (pi / sqrt(3)) * 1 / (stats::sd(ape::branching.times(subtree)))
+  growthRate <- (pi / sqrt(3)) * 1 / (stats::sd(coal_times))
   growthRate_lb <- growthRate * suppressWarnings(sqrt(1 + 4 * stats::qnorm(alpha / 2) / sqrt(5 * n)))
   if (growthRate_lb == "NaN") {
     growthRate_lb <- 0
@@ -413,8 +416,12 @@ moments <- function(subtree, alpha = 0.05) {
             which means internal lengths method may not be applicable.")
   }
 
-  # Estimate clone age
-  cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
+  # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
+  if (hasStem){
+    cloneAgeEstimate <- max(ape::branching.times(subtree))
+  } else {
+    cloneAgeEstimate <- max(ape::branching.times(subtree)) + 1 / growthRate
+  }
 
   runtime <- proc.time() - ptm
 
