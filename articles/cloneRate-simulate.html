@@ -88,11 +88,175 @@
 
     
     
+<p>In this vignette, we’ll walk through how we simulated a birth-death
+branching process to validate our growth rate methods. The simulation
+procedure is a direct implementation of results by <a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Amaury Lambert in a
+recent paper</a>. We’ll show here that these results allow for extremely
+fast generation of a sampled tree of size n from a birth-death process
+of time T with fixed birth and death rates. The key point here is that
+we don’t have to simulate this using computationally intensive
+algorithms (gillespie etc.); the math provides a shortcut which allows
+us to generate the results on a single core in under a second for a tree
+with 100 tips or about 8 seconds for a tree with 1000 tips! And that’s
+with my average programming skills in R!</p>
+<p>The applications of this fast generation of sampled trees are
+countless. For us, this results allowed us to simulate thousands of
+trees to check our methods for growth rate estimation from phylogenetic
+tree reconstruction, which is detailed in <a href="https://www.biorxiv.org/" class="external-link">our recent preprint.</a> We’ll reproduce
+this validation here!</p>
+<div class="section level3">
+<h3 id="packages">Packages<a class="anchor" aria-label="anchor" href="#packages"></a>
+</h3>
+<p>First, we’ll have to load the packages we want to use. To help
+understand what we’re simulating, we’ll want to be able to visualize the
+trees. <code>ggtree</code> is a package which will help us do this.
+<code>ggtree</code> is built using <code>ggplot2</code> so we’ll use
+that as well.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bdj34/cloneRate" class="external-link">cloneRate</a></span><span class="op">)</span></span></code></pre></div>
-<p>The ape documentation describing the class <code>phylo</code> can be
-found <a href="http://ape-package.ird.fr/misc/FormatTreeR_24Oct2012.pdf" class="external-link">here</a></p>
-  </main>
+<code class="sourceCode R"><span><span class="co"># Load and attach our package cloneRate</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bdj34/cloneRate" class="external-link">cloneRate</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install ggplot2 if necessary, then load and attach it with library()</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install ggtree if necessary, then load and attach it with library()</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggtree"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggtree"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.amazon.com/Integration-Manipulation-Visualization-Phylogenetic-Computational-ebook/dp/B0B5NLZR1Z/" class="external-link">ggtree</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="simulating-ultrametric-trees">Simulating ultrametric trees<a class="anchor" aria-label="anchor" href="#simulating-ultrametric-trees"></a>
+</h3>
+<p>We’ll be generating trees of class <code>phylo</code>, which is a
+fairly straightforward encoding of phylogenetic trees in R. The ape
+documentation describing the class <code>phylo</code> can be found <a href="http://ape-package.ird.fr/misc/FormatTreeR_24Oct2012.pdf" class="external-link">here.</a></p>
+<p>First, let’s simulate a single tree and have a look at the class
+<code>phylo</code>. We’ll use the function [simUltra()] from our package
+to do this, which simulates an ultrametric tree. Ultrametric means that
+the tips are all equidistant from the root. We’ll set a birth rate
+<code>a</code>, a death rate <code>b</code>, an age for the tree
+<code>cloneAge</code>, and the number of tips <code>n</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Generate the tree</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># We see that the tree is of class phylo</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "phylo"</span></span>
+<span></span>
+<span><span class="co"># Preview the tree</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Phylogenetic tree with 100 tips and 100 internal nodes.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Tip labels:</span></span>
+<span><span class="co">#&gt;   t8, t24, t29, t50, t68, t95, ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Rooted; includes branch lengths.</span></span></code></pre></div>
+<p>Again, the best place to get more info about the class
+<code>phylo</code> is <a href="http://ape-package.ird.fr/misc/FormatTreeR_24Oct2012.pdf" class="external-link">here.</a>
+Our functions for simulating trees will include metadata. Let’s take a
+look at the metadata included in the tree.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   r a b cloneAge   n runtime_seconds addStem</span></span>
+<span><span class="co">#&gt; 1 1 1 0       20 100           0.566    TRUE</span></span></code></pre></div>
+<p>We see that the columns are:</p>
+<ul>
+<li>
+<code>r</code>, <code>a</code>, <code>b</code>: The growth rate
+params. <code>r</code> is the net growth rate, <code>a</code> is birth
+rate and <code>b</code> is death rate, so <code>r=a-b</code>
+</li>
+<li>
+<code>cloneAge</code>: The time that passes, in the same units as
+<code>r</code>, <code>a</code>, and <code>b</code>.</li>
+<li>
+<code>n</code>: The number of tips that are sampled from the
+birth-death process, producing a tree with <code>n</code> tips.</li>
+<li>
+<code>runtime_seconds</code>: The elapsed time to generate the
+tree.</li>
+<li>
+<code>addStem</code>: Tells us whether the tree has a root edge
+preceding the first split. We’ll show the “stem” in plots below.</li>
+</ul>
+<p>Now let’s plot the tree.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html" class="external-link">ggtree</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html" class="external-link">theme_tree2</a></span><span class="op">(</span>fgcolor <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Time"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cloneRate-simulate_files/figure-html/plotOne-1.png" width="700"></p>
+<p>In the tree we plotted above, we see that the “stem” is the edge
+extending from time 0 to the first split. We call these splits
+coalescence times and they’ll be very important for our methods of
+growth rate estimation.</p>
+<p>Also, we see that the tips are ultrametric, meaning that they all are
+sampled at the same time, in this case 20 units of time after the
+birth-death process began. As a default, we’ll talk about units of time
+in years, but that is arbitrary. Just make sure the units of the growth
+rate (per year) are the same as the time units (years).</p>
+<p>Let’s apply our growth rate estimates to this tree, seeing if our
+estimates are close to the value of <code>r</code> that we used to
+generate the tree. We have two functions for estimating the growth rate
+of an ultrametric tree, and we’ll compare their performance later
+on:</p>
+<ul>
+<li>[internalLengths()]: This function sums the edge lengths of the
+internal edges of the tree (excluding the stem). We call this sum <span class="math inline">\(L_i\)</span>. The growth rate is calculated as
+<span class="math inline">\(r = L_i / n\)</span> where <span class="math inline">\(n\)</span> is the number of sampled tips.</li>
+<li>
+</ul>
+<p>Both methods are detailed in <a href="https://www.biorxiv.org/" class="external-link">our
+preprint.</a></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
+<span><span class="co">#&gt; 1  0.7819396 0.9352259   1.088512               20           111.4954</span></span>
+<span><span class="co">#&gt;   sumExternalLengths extIntRatio   n alpha runtime_s  method</span></span>
+<span><span class="co">#&gt; 1           1365.624    12.24825 100  0.05      0.06 maxLike</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
+<span><span class="co">#&gt; 1  0.7211091 0.8968978   1.072687               20           111.4954</span></span>
+<span><span class="co">#&gt;   sumExternalLengths extIntRatio   n alpha runtime_s  method</span></span>
+<span><span class="co">#&gt; 1           1365.624    12.24825 100  0.05     0.005 lengths</span></span></code></pre></div>
+<p>We know that our actual growth rate is 1, so that is our comparison
+to judge how our estimates are doing. One estimate doesn’t really tell
+us much though. Let’s try 100. To do this, we just set the
+<code>nTrees</code> param equal to 100 in our <code><a href="../reference/simUltra.html">simUltra()</a></code>
+function. You can parallelize this process if you have the
+<code>parallel</code> package installed by simply setting
+<code>nCores</code>, but we’ll leave this at 1 for now.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tree.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span>, nTrees <span class="op">=</span> <span class="fl">100</span>, nCores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s apply our methods to these trees</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">resultsMaxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree.list</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">resultsLengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree.list</span><span class="op">)</span></span></code></pre></div>
+<p>We gave each method 100 trees to estimate, let’s plot these estimates
+and see how they perform. Remember that all the input trees had a growth
+rate of 1, so we want these estimates to be close to 1. We’ll use
+ggplot’s density plot for this:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">combineResults</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">resultsLengths</span>, <span class="va">resultsMaxLike</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">combineResults</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">estimate</span>, color <span class="op">=</span> <span class="va">method</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cloneRate-simulate_files/figure-html/plotEstimates-1.png" width="700"></p>
+<p>Not bad, but we’ll want to test this more formally over a large range
+of parameter values. More on that later in this vignette. For now, let’s
+shift our attention to mutation trees.</p>
+</div>
+<div class="section level3">
+<h3 id="mutation-trees">Mutation trees<a class="anchor" aria-label="anchor" href="#mutation-trees"></a>
+</h3>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
