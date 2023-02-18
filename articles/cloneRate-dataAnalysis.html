@@ -186,7 +186,32 @@ We’ll come back to this at the end of the vignette.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Apply each of our estimates</span></span>
 <span><span class="va">resultsLengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">cloneTrees.list</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): Tree is not binary. Birth-death branching trees should be binary,</span></span>
+<span><span class="co">#&gt;        but tree resonstruction from data may lead to  3+ descendants from</span></span>
+<span><span class="co">#&gt;        a single parent node. Proceed with caution! Input tree has</span></span>
+<span><span class="co">#&gt;       3 nodes directly descending from a single</span></span>
+<span><span class="co">#&gt;        parent node. A binary tree would only have 2 descendant nodes</span></span>
+<span><span class="co">#&gt;        from each parent node. Tree throwing warning is PD5847_1_clone1</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): Tree is not binary. Birth-death branching trees should be binary,</span></span>
+<span><span class="co">#&gt;        but tree resonstruction from data may lead to  3+ descendants from</span></span>
+<span><span class="co">#&gt;        a single parent node. Proceed with caution! Input tree has</span></span>
+<span><span class="co">#&gt;       3 nodes directly descending from a single</span></span>
+<span><span class="co">#&gt;        parent node. A binary tree would only have 2 descendant nodes</span></span>
+<span><span class="co">#&gt;        from each parent node. Tree throwing warning is PD4781_1_clone1</span></span>
 <span><span class="va">resultsMaxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">cloneTrees.list</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): Tree is not binary. Birth-death branching trees should be binary,</span></span>
+<span><span class="co">#&gt;        but tree resonstruction from data may lead to  3+ descendants from</span></span>
+<span><span class="co">#&gt;        a single parent node. Proceed with caution! Input tree has</span></span>
+<span><span class="co">#&gt;       3 nodes directly descending from a single</span></span>
+<span><span class="co">#&gt;        parent node. A binary tree would only have 2 descendant nodes</span></span>
+<span><span class="co">#&gt;        from each parent node. Tree throwing warning is PD5847_1_clone1</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): Tree is not binary. Birth-death branching trees should be binary,</span></span>
+<span><span class="co">#&gt;        but tree resonstruction from data may lead to  3+ descendants from</span></span>
+<span><span class="co">#&gt;        a single parent node. Proceed with caution! Input tree has</span></span>
+<span><span class="co">#&gt;       3 nodes directly descending from a single</span></span>
+<span><span class="co">#&gt;        parent node. A binary tree would only have 2 descendant nodes</span></span>
+<span><span class="co">#&gt;        from each parent node. Tree throwing warning is PD4781_1_clone1</span></span>
 <span></span>
 <span><span class="co"># Preview the output</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">resultsMaxLike</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
@@ -204,13 +229,13 @@ We’ll come back to this at the end of the vignette.</p>
 <span><span class="co">#&gt;  Pearson's product-moment correlation</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; data:  resultsLengths$estimate and resultsMaxLike$estimate</span></span>
-<span><span class="co">#&gt; t = 33.945, df = 40, p-value &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt; t = 33.822, df = 40, p-value &lt; 2.2e-16</span></span>
 <span><span class="co">#&gt; alternative hypothesis: true correlation is not equal to 0</span></span>
 <span><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span><span class="co">#&gt;  0.9685400 0.9909329</span></span>
+<span><span class="co">#&gt;  0.9683185 0.9908684</span></span>
 <span><span class="co">#&gt; sample estimates:</span></span>
 <span><span class="co">#&gt;       cor </span></span>
-<span><span class="co">#&gt; 0.9830819</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.9829619</span></span></code></pre></div>
 <p>Not bad! Each of the functions (maxLikelihood() and
 internalLengths()) returns a data.frame with the same columns, and we’ll
 walk through what the columns mean here:</p>
