@@ -39,10 +39,11 @@ internalLengths <- function(tree, alpha = 0.05) {
     hasStem <- F
   }
 
+  # Get the number of direct descendants from a node, identifying the nodes with > 2
+  countChildren <- table(tree$edge[, 1])
+
   # Check if tree is binary branching
-  if (!ape::is.binary(tree)) {
-    # Get the number of direct descendants from a node, identifying the nodes with 3 instead of 2
-    countChildren <- table(tree$edge[, 1])
+  if (max(countChildren) > 2) {
 
     # Throw warning to user
     warningMessage <- paste0(
@@ -57,7 +58,7 @@ internalLengths <- function(tree, alpha = 0.05) {
     if (!is.null(tree$metadata$cloneName_meta)) {
       warningMessage <- paste0(warningMessage, " Tree throwing warning is ", tree$metadata$cloneName_meta[1])
     }
-    warning(warningMessage)
+    warning(paste0(warningMessage, "\n"))
   }
 
   # Get list of descendants from each internal node
@@ -182,10 +183,11 @@ sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
     hasStem <- F
   }
 
+  # Get the number of direct descendants from a node, identifying the nodes with > 2
+  countChildren <- table(tree$edge[, 1])
+
   # Check if tree is binary branching
-  if (!ape::is.binary(tree)) {
-    # Get the number of direct descendants from a node, identifying the nodes with 3 instead of 2
-    countChildren <- table(tree$edge[, 1])
+  if (max(countChildren) > 2) {
 
     # Throw warning to user
     warningMessage <- paste0(
@@ -200,7 +202,7 @@ sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
     if (!is.null(tree$metadata$cloneName_meta)) {
       warningMessage <- paste0(warningMessage, " Tree throwing warning is ", tree$metadata$cloneName_meta[1])
     }
-    warning(warningMessage)
+    warning(paste0(warningMessage, "\n"))
   }
 
   # Get list of descendants from each internal node
@@ -300,16 +302,16 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   # Get number of tips
   n <- ape::Ntip(tree)
 
+  # Get the number of direct descendants from a node, identifying the nodes with > 2
+  countChildren <- table(tree$edge[, 1])
+
   # Check if tree is binary branching
-  if (ape::is.binary(tree)) {
+    if (max(countChildren) == 2) {
     # Only take n-1 coal times to avoid using "branching time" from stem node
     coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
   } else {
     # If not binary, duplicate coalescence times of nodes with 3 direct descendants
     branchTimes <- ape::branching.times(tree)
-
-    # Get the number of direct descendants from a node, identifying the nodes with 3 instead of 2
-    countChildren <- table(tree$edge[, 1])
 
     # Throw warning to user
     warningMessage <- paste0(
@@ -324,7 +326,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
     if (!is.null(tree$metadata$cloneName_meta)) {
       warningMessage <- paste0(warningMessage, " Tree throwing warning is ", tree$metadata$cloneName_meta)
     }
-    warning(warningMessage)
+    warning(paste0(warningMessage, "\n"))
 
     # For each non-binary node type (3, 4, 5, etc.), add coal times as appropriate
     nodeTypes <- countChildren[countChildren > 2]
@@ -467,8 +469,11 @@ moments <- function(tree, alpha = 0.05) {
   # Basic check on input formatting and alpha value
   inputCheck(tree, alpha)
 
+  # Get the number of direct descendants from a node, identifying the nodes with > 2
+  countChildren <- table(tree$edge[, 1])
+
   # Check if tree is binary branching
-  if (ape::is.binary(tree)) {
+  if (max(countChildren) == 2) {
     # Only take n-1 coal times to avoid using "branching time" from stem node
     coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
   } else {
@@ -491,7 +496,7 @@ moments <- function(tree, alpha = 0.05) {
     if (!is.null(tree$metadata$cloneName_meta)) {
       warningMessage <- paste0(warningMessage, " Tree throwing warning is ", tree$metadata$cloneName_meta)
     }
-    warning(warningMessage)
+    warning(paste0(warningMessage, "\n"))
 
     # For each non-binary node type (3, 4, 5, etc.), add coal times as appropriate
     nodeTypes <- countChildren[countChildren > 2]
