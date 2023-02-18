@@ -98,12 +98,26 @@ print(round(internalLengths(PD9478_subClone)$estimate, 3))
 
 Unfortunately, we don't have a ground truth to compare to when working with real data. However, this individual clone has longitudinal sequencing data, which we can use to estimate an orthogonal growth rate. We'll come back to this at the end of the vignette.
 
-First, let's apply our analysis to all of the clone trees!
+First, let's apply our analysis to all of the clone trees. If we give a list of `phylo` objects, our growth rate functions will estimate the growth rate of all of them separately, returning a dataframe with each row telling us the result from each tree.
 
-```{r applyAll}
+```{r applyLengths}
 # Apply each of our estimates
 resultsLengths <- internalLengths(cloneTrees.list)
-resultsMaxLike <- maxLikelihood(cloneTrees.list)
+```
+
+Oof! Looks like we have an error...
+
+It says that two of the trees we input "PD5847_1_clone1" and "PD4781_1_clone1" are not binary branching trees. This means that one node has more than 2 direct descendants. In this case, it's not a big deal. We know that these trees are resconstructed from mutation data, so this could just mean that we picked up two divisions which happened without mutations occurring between the two divisions. Let's plot one of them so we can see where this happens
+
+```{r plotNonBinary}
+ggtree(cloneTrees.list$PD5847_1_clone1) + layout_dendrogram() + geom_point2(aes(subset=(node==76)), shape=21, fill='red')
+```
+
+We can see the three descendants from node 76, which is identified by the red circle. We see that there are a lot of places where there are multiple splits (coalescence events) in quick succession, but this is the only place where 1 node appears to split into 3. Well, it's okay, mutations are an imperfect way to keep track of time. If we saw more of these events where one node splits into 3, or cases where on node splits into 4+, we might be more concerned. In this case, we can move on. Our functions for growth rate estimation are equipped to handle trees like this, but they throw warnings so we know what's happening. Let's continue, applying our `maxLikelihood()` function to the trees.
+
+
+```{r applyMaxLike}
+resultsMaxLike <- suppressWarnings(maxLikelihood(cloneTrees.list))
 
 # Preview the output
 print(head(resultsMaxLike[, c(1:3)]))
