@@ -4,10 +4,10 @@
 \alias{internalLengths}
 \title{Growth rate estimate using the sum of internal lengths}
 \usage{
-internalLengths(subtree, alpha = 0.05)
+internalLengths(tree, alpha = 0.05)
 }
 \arguments{
-\item{subtree}{An ultrametric tree subset to include only the clone of
+\item{tree}{An ultrametric tree subset to include only the clone of
 interest. Alternatively, a list with several such trees.}
 
 \item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)}

@@ -4,10 +4,10 @@
 \alias{sharedMuts}
 \title{Growth rate estimate using the sum of shared mutations assuming a mutation tree}
 \usage{
-sharedMuts(subtree, nu = NULL, alpha = 0.05)
+sharedMuts(tree, nu = NULL, alpha = 0.05)
 }
 \arguments{
-\item{subtree}{A non-ultrametric ape tree subset to include only the clone of interest}
+\item{tree}{A non-ultrametric ape tree subset to include only the clone of interest}
 
 \item{nu}{The mutation rate. If none given, sharedMuts() will first look for a \code{nu} column in a \code{metadata} data.frame of the tree, and then look for a \code{nu} in the tree itself. Will throw error if no \code{nu} given or found.}
 

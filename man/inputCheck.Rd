@@ -4,10 +4,10 @@
 \alias{inputCheck}
 \title{Check the inputs to growth rate functions}
 \usage{
-inputCheck(subtree, alpha)
+inputCheck(tree, alpha)
 }
 \arguments{
-\item{subtree}{An ape tree subset to include only the clone of interest}
+\item{tree}{An ape tree subset to include only the clone of interest}
 
 \item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence
 intervals used with default of alpha = 0.05 (95 percent confidence intervals)}

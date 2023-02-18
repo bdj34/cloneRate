@@ -76,3 +76,13 @@ test_that("Ultra fns. throw error or warning for unreasonable alpha", {
   expect_warning(maxLikelihood(ultraTree, alpha = .95), regexp = "1-alpha confidence intervals")
   expect_warning(moments(ultraTree, alpha = .95), regexp = "1-alpha confidence intervals")
 })
+
+test_that("all growth rate functions throw warning with non-binary trees", {
+  nonBinaryTree <- cloneRate::realCloneData$cloneTrees$PD5847_1_clone1
+  expect_warning(internalLengths(nonBinaryTree), regexp = "Tree is not binary.")
+  expect_warning(maxLikelihood(nonBinaryTree), regexp = "Tree is not binary.")
+  expect_warning(moments(nonBinaryTree), regexp = "Tree is not binary.")
+
+  nonBinaryMutTree <- cloneRate::ultra2mut(nonBinaryTree, nu = 10)
+  expect_warning(sharedMuts(nonBinaryMutTree), regexp = "Tree is not binary.")
+})
