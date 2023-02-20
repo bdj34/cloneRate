@@ -306,21 +306,16 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   countChildren <- table(tree$edge[, 1])
 
   # Check if tree is binary branching
-    if (max(countChildren) == 2) {
-    # Only take n-1 coal times to avoid using "branching time" from stem node
-    coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
-  } else {
-    # If not binary, duplicate coalescence times of nodes with 3 direct descendants
-    branchTimes <- ape::branching.times(tree)
+  if (! max(countChildren) == 2) {
 
     # Throw warning to user
     warningMessage <- paste0(
       "Tree is not binary. Birth-death branching trees should be binary,
        but tree resonstruction from data may lead to  3+ descendants from
-       a single parent node. Proceed with caution! Input tree has
-      ", max(countChildren), " nodes directly descending from a single
-       parent node. A binary tree would only have 2 descendant nodes
-       from each parent node."
+       a single parent node. Converting tree to binary, but PROCEED WITH CAUTION!
+       Input tree has ", max(countChildren), " nodes directly descending
+       from a single parent node. A binary tree would only have 2 descendant
+       nodes from each parent node."
     )
 
     if (!is.null(tree$metadata$cloneName_meta)) {
@@ -328,18 +323,12 @@ maxLikelihood <- function(tree, alpha = 0.05) {
     }
     warning(paste0(warningMessage, "\n"))
 
-    # For each non-binary node type (3, 4, 5, etc.), add coal times as appropriate
-    nodeTypes <- countChildren[countChildren > 2]
-    addCoalTimes <- c()
-    for (i in nodeTypes) {
-      nodes <- names(countChildren)[which(countChildren == i)]
-      addCoalTimes <- c(addCoalTimes, rep(branchTimes[nodes], i - 2))
-    }
-
-    # Get the coal times used for our purpose of growth rate estimation.
-    # Only take n-1 coal times to avoid using "branching time" from stem node
-    coal_times <- sort(c(branchTimes, addCoalTimes))[c(1:(n - 1))]
+    # Convert tree to binary
+    tree <- ape::multi2di(tree)
   }
+
+  # Only take n-1 coal times to avoid using "branching time" from stem node
+  coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
 
   # Log-likelihood function using the approximation for T large
   # params[1]=a, params[2]=r=1/b
@@ -473,24 +462,16 @@ moments <- function(tree, alpha = 0.05) {
   countChildren <- table(tree$edge[, 1])
 
   # Check if tree is binary branching
-  if (max(countChildren) == 2) {
-    # Only take n-1 coal times to avoid using "branching time" from stem node
-    coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
-  } else {
-    # If not binary, duplicate coalescence times of nodes with 3 direct descendants
-    branchTimes <- ape::branching.times(tree)
-
-    # Get the number of direct descendants from a node, identifying the nodes with 3 instead of 2
-    countChildren <- table(tree$edge[, 1])
+  if (! max(countChildren) == 2) {
 
     # Throw warning to user
     warningMessage <- paste0(
       "Tree is not binary. Birth-death branching trees should be binary,
        but tree resonstruction from data may lead to  3+ descendants from
-       a single parent node. Proceed with caution! Input tree has
-      ", max(countChildren), " nodes directly descending from a single
-       parent node. A binary tree would only have 2 descendant nodes
-       from each parent node."
+       a single parent node. Converting tree to binary, but PROCEED WITH CAUTION!
+       Input tree has ", max(countChildren), " nodes directly descending
+       from a single parent node. A binary tree would only have 2 descendant
+       nodes from each parent node."
     )
 
     if (!is.null(tree$metadata$cloneName_meta)) {
@@ -498,18 +479,12 @@ moments <- function(tree, alpha = 0.05) {
     }
     warning(paste0(warningMessage, "\n"))
 
-    # For each non-binary node type (3, 4, 5, etc.), add coal times as appropriate
-    nodeTypes <- countChildren[countChildren > 2]
-    addCoalTimes <- c()
-    for (i in nodeTypes) {
-      nodes <- names(countChildren)[which(countChildren == i)]
-      addCoalTimes <- c(addCoalTimes, rep(branchTimes[nodes], i - 2))
-    }
-
-    # Get the coal times used for our purpose of growth rate estimation.
-    # Only take n-1 coal times to avoid using "branching time" from stem node
-    coal_times <- sort(c(branchTimes, addCoalTimes))[c(1:(n - 1))]
+    # Convert tree to binary
+    tree <- ape::multi2di(tree)
   }
+
+  # Only take n-1 coal times to avoid using "branching time" from stem node
+  coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
 
 
   # Calculate the growth rate
