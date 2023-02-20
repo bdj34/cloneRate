@@ -48,7 +48,7 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/cloneRate-dataAnalysis.html">cloneRate Analysis of human blood data</a>
+    <a class="dropdown-item" href="../articles/cloneRate-dataAnalysis.html">Analysis of human blood data</a>
     <a class="dropdown-item" href="../articles/cloneRate-simulate.html">cloneRate-simulate</a>
   </div>
 </li>
@@ -154,7 +154,7 @@ the tips are all equidistant from the root. We’ll set a birth rate
 <span><span class="co">#&gt; Phylogenetic tree with 100 tips and 100 internal nodes.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tip labels:</span></span>
-<span><span class="co">#&gt;   t16, t32, t47, t86, t60, t36, ...</span></span>
+<span><span class="co">#&gt;   t90, t46, t86, t45, t62, t87, ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Rooted; includes branch lengths.</span></span></code></pre></div>
 <p>Again, the best place to get more info about the class
@@ -164,7 +164,7 @@ look at the metadata included in the tree.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   r a b cloneAge   n runtime_seconds addStem</span></span>
-<span><span class="co">#&gt; 1 1 1 0       20 100           0.725    TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 1 1 0       20 100           1.139    TRUE</span></span></code></pre></div>
 <p>We see that the columns are:</p>
 <ul>
 <li>
@@ -214,15 +214,15 @@ preprint.</a></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   lowerBound estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1  0.8728841 1.043999   1.215113               20           91.82062</span></span>
+<span><span class="co">#&gt; 1  0.8607959 1.029541   1.198285               20           104.1832</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio   n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           1469.808    16.00738 100  0.05     0.069 maxLike</span></span>
+<span><span class="co">#&gt; 1           1467.936    14.08995 100  0.05     0.091 maxLike</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   lowerBound estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1  0.8756243  1.08908   1.302536               20           91.82062</span></span>
+<span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
+<span><span class="co">#&gt; 1  0.7717208 0.9598474   1.147974               20           104.1832</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio   n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           1469.808    16.00738 100  0.05     0.006 lengths</span></span></code></pre></div>
+<span><span class="co">#&gt; 1           1467.936    14.08995 100  0.05     0.007 lengths</span></span></code></pre></div>
 <p>We know that our actual growth rate is 1, so that is our comparison
 to judge how our estimates are doing. One estimate doesn’t really tell
 us much though. Let’s try 100. To do this, we just set the
