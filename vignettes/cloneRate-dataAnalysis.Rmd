@@ -1,11 +1,11 @@
 ---
-title: "cloneRate Analysis of human blood data"
+title: "Analysis of human blood data"
 output: 
   rmarkdown::html_vignette:
     toc: true
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{cloneRate Analysis of human blood data}
+  %\VignetteIndexEntry{Analysis of human blood data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
