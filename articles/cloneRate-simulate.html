@@ -154,7 +154,7 @@ the tips are all equidistant from the root. We’ll set a birth rate
 <span><span class="co">#&gt; Phylogenetic tree with 100 tips and 100 internal nodes.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tip labels:</span></span>
-<span><span class="co">#&gt;   t8, t24, t29, t50, t68, t95, ...</span></span>
+<span><span class="co">#&gt;   t7, t61, t16, t22, t86, t76, ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Rooted; includes branch lengths.</span></span></code></pre></div>
 <p>Again, the best place to get more info about the class
@@ -164,7 +164,7 @@ look at the metadata included in the tree.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   r a b cloneAge   n runtime_seconds addStem</span></span>
-<span><span class="co">#&gt; 1 1 1 0       20 100           0.566    TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 1 1 0       20 100           1.077    TRUE</span></span></code></pre></div>
 <p>We see that the columns are:</p>
 <ul>
 <li>
@@ -213,16 +213,16 @@ internal edges of the tree (excluding the stem). We call this sum <span class="m
 preprint.</a></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1  0.7819396 0.9352259   1.088512               20           111.4954</span></span>
+<span><span class="co">#&gt;   lowerBound estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
+<span><span class="co">#&gt; 1  0.9778225 1.169508   1.361194               20           91.49417</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio   n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           1365.624    12.24825 100  0.05      0.06 maxLike</span></span>
+<span><span class="co">#&gt; 1            1413.66    15.45082 100  0.05     0.089 maxLike</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1  0.7211091 0.8968978   1.072687               20           111.4954</span></span>
+<span><span class="co">#&gt;   lowerBound estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
+<span><span class="co">#&gt; 1  0.8787484 1.092966   1.307183               20           91.49417</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio   n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           1365.624    12.24825 100  0.05     0.005 lengths</span></span></code></pre></div>
+<span><span class="co">#&gt; 1            1413.66    15.45082 100  0.05     0.008 lengths</span></span></code></pre></div>
 <p>We know that our actual growth rate is 1, so that is our comparison
 to judge how our estimates are doing. One estimate doesn’t really tell
 us much though. Let’s try 100. To do this, we just set the
