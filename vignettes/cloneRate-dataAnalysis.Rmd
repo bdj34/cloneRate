@@ -1,6 +1,9 @@
 ---
 title: "cloneRate Analysis of human blood data"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{cloneRate Analysis of human blood data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,7 +13,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  out.width = '100%',
+  dpi = 300
 )
 ```
 
@@ -21,7 +26,7 @@ included everything needed to reproduce this analysis, which consists of
 reconstructed phylogenetic trees and de-identified metadata about the donors 
 who were sequenced. 
 
-### Packages
+## Packages {-}
 First, we'll have to load the packages we want to use. To help understand the
 data, we'll want to be able to visualize the phylogenetic trees. 
 `ggtree` is a package which will help us do this, and it's built on `ggplot2` so we'll use that as well.
@@ -36,14 +41,9 @@ if (!requireNamespace("ggplot2")) {
 }
 library(ggplot2)
 
-# Install ggtree if necessary, then load and attach it with library()
-if (!requireNamespace("ggtree")) {
-  install.packages("ggtree")
-}
-library(ggtree)
 ```
 
-### Real data
+# Real data exploration
 
 First, let's examine `realCloneData`, which contains all of the necessary 
 data to reproduce our analysis.
@@ -72,20 +72,32 @@ tree from `fullTrees.list`. In this case, the only timepoint is timepoint 1, so
 let's take a look at the full tree "PD9478_1". This data comes from the work of 
 [Williams et al., and more details can be found in their paper, linked here.](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 
-```{r firstTreePlot}
+```{r firstTreePlot, fig.asp = 0.8, fig.width = 7}
 # Plot the full tree from individual PD9478 at timepoint 1
 PD9478 <- fullTrees.list$PD9478_1
-ggtree(PD9478) + theme_tree2(fgcolor = "blue") + geom_hilight(node = 85, fill = "red", alpha = .1) + xlab("Time (years)")
+
+# Plot, then add scale and title
+ape::plot.phylo(PD9478, direction = "downwards", 
+            show.tip.label = F, edge.width = 2,
+            edge.color = c(rep("black", 2), "red", "#0070C0", rep("black", (200))))
+ape::axisPhylo(side = 2, backward = F, las = 1)
+title(main="PD9478 full tree", ylab="Time (years)")
 ```
 
-If you went through the [simulation vignette](cloneRate-simulate.html), you'll notice that this tree looks quite a bit different than the ones we simulated. In the above tree, there is a clear example of a somatic clonal expansion, which we highlight in red. We know from the authors who produced this data (see [Williams et al. Fig. 3 PD9478](https://www.nature.com/articles/s41586-021-04312-6/figures/3)), that all the sampled cells within this clone have a mutation in the JAK2 gene and the DNMT3A gene, both of which are known to be important in clonal expansions in blood. Let's look more closely at the clone in red and see what we can learn from the tree. 
+If you went through the [simulation vignette](cloneRate-simulate.html), you'll notice that this tree looks quite a bit different than the ones we simulated. In the above tree, there is a clear example of a somatic clonal expansion. We know from the authors who produced this data (see [Williams et al. Fig. 3 PD9478](https://www.nature.com/articles/s41586-021-04312-6/figures/3)), that all the sampled cells within this clone have a mutation in the JAK2 gene (which occurs along the red edge) and the DNMT3A gene (which occurs along the blue edge). Both of these mutations are known to be important in clonal expansions in blood. Let's look more closely at the clone and see what we can learn from the tree. 
 
-```{r getSubclone}
+```{r getSubclone, fig.asp = 0.8, fig.width = 7}
 # Load the red clone from our cloneTrees.list
 PD9478_subClone <- cloneTrees.list[["PD9478_1_clone1"]]
 
+# Plot, then add scale and title
+ape::plot.phylo(PD9478_subClone, direction = "downwards", 
+                show.tip.label = F, edge.width = 2,)
+ape::axisPhylo(side = 2, backward = F, las = 1)
+title(main="PD9478 JAK2 & DNMT3A clone tree", ylab="Time (years)")
+
 # Plot the clone tree
-ggtree(PD9478_subClone) + theme_tree2(fgcolor = "blue") + xlab("Time (years)") #+ layout_dendrogram()
+#ggtree(PD9478_subClone) + theme_tree2(fgcolor = "blue") + xlab("Time (years)") #+ layout_dendrogram()
 ```
 
 Now this tree of the clonal expansion looks a lot more like the trees we simulate! This suggests that the growth rate of each cell within this clone is roughly the same as other cells within the clone. We can now apply our methods to the clone tree shown above. We see that this tree is ultrametric and we know that it's time-based, in units of years, so we should apply our `internalLengths()` and `maxLikelihood()` functions.
@@ -105,15 +117,21 @@ First, let's apply our analysis to all of the clone trees. If we give a list of 
 resultsLengths <- internalLengths(cloneTrees.list)
 ```
 
-Oof! Looks like we have an error...
+Oof! Looks like we have a warning...
 
-It says that two of the trees we input "PD5847_1_clone1" and "PD4781_1_clone1" are not binary branching trees. This means that one node has more than 2 direct descendants. In this case, it's not a big deal. We know that these trees are resconstructed from mutation data, so this could just mean that we picked up two divisions which happened without mutations occurring between the two divisions. Let's plot one of them so we can see where this happens
+It says that two of the trees we input "PD5847_1_clone1" and "PD4781_1_clone1" are not binary branching trees. This means that one node has more than 2 direct descendants. In this case, it's not a big deal. We know that these trees are resconstructed from mutation data, so this could just mean that we picked up two divisions which happened without mutations occurring in between. Let's plot one of them so we can see where this happens
 
-```{r plotNonBinary}
-ggtree(cloneTrees.list$PD5847_1_clone1) + layout_dendrogram() + geom_point2(aes(subset=(node==76)), shape=21, fill='red')
+```{r plotNonBinary, fig.asp = 0.8, fig.width = 7}
+# Plot, highlighting the 3 descendants of node 76. Then add scale and title
+ape::plot.phylo(cloneTrees.list$PD5847_1_clone1, edge.width = 2,
+                direction = "downwards", show.tip.label = F, 
+                edge.color = c(rep(1, 4), "orange", rep(1, 34), 
+                               "orange", rep(1, 6), "orange", rep(1, 1000)))
+ape::axisPhylo(side = 2, backward = F, las = 1)
+title(main="PD5847 clone 1 tree (multi-branching)", ylab="Time (years)")
 ```
 
-We can see the three descendants from node 76, which is identified by the red circle. We see that there are a lot of places where there are multiple splits (coalescence events) in quick succession, but this is the only place where 1 node appears to split into 3. Well, it's okay, mutations are an imperfect way to keep track of time. If we saw more of these events where one node splits into 3, or cases where on node splits into 4+, we might be more concerned. In this case, we can move on. Our functions for growth rate estimation are equipped to handle trees like this, but they throw warnings so we know what's happening. Let's continue, applying our `maxLikelihood()` function to the trees.
+We can see the three descendants from a single node (node 76), which is identified by the edges in orange. We see that there are a lot of places where there are multiple splits (coalescence events) in quick succession, but this is the only place where 1 node appears to split into 3. Well, it's okay, mutations are an imperfect way to keep track of time. If we saw more of these events where one node splits into 3, or cases where on node splits into 4+, we might be more concerned. In this case, we can move on. Our functions for growth rate estimation are equipped to handle trees like this, but they throw warnings so we know what's happening. Let's continue, applying our `maxLikelihood()` function to the trees.
 
 
 ```{r applyMaxLike}
@@ -190,7 +208,7 @@ results <- resultsMaxLikeMeta
 
 We'll go forward with our analysis using the results data.frame, which contains the estimates from the maxLikelihood() function. In the [simulation vignette](cloneRate-simulate.html), we show that the maximum likelihood estimate performs the best.
 
-## Analysis
+# Analysis
 Here, we recreate the analysis in [Figure 5E-G of our work](https://www.biorxiv.org/). These are just a few of many analyses that can be done with this data, so don't be limited by what we do.
 
 If we split the cohort by MPN and normal, we might expect differences in the growth rates. Because the number of sampled cells, on average, is higher in the healthy individuals due to study design, we're more likely to pick up more clones from the healthy individuals. To avoid this bias as much as possible, we'll compare the mean growth rate between individuals with and without MPN.
@@ -225,10 +243,10 @@ stopifnot(all(table(uniqueResults$uniqueCloneID) == 1))
 
 For now, our `uniqueResults` dataframe contains the results with only one clone from each duplicated pair. Later on, when we want to validate our estimates, we'll make use of the fact that we have different data on the same clones, showing that our methods make consistent estimates regardless of which sampling time we use. More on that under "Validation".
 
-### MPN vs. Normal (Fig. 5E)
+## MPN vs. Normal (Fig. 5E)
 Now, let's take the mean for each individual and re-create [Fig. 5E](https://www.biorxiv.org/)
 
-```{r meanInd}
+```{r meanInd, out.width = '50%'}
 uniqueIndividuals <- unique(uniqueResults$patient)
 individualMeans <- c()
 malNorm <- c()
@@ -252,7 +270,7 @@ print(nonparamTest)
 # Set ordering for plot and plot using ggplot (re-make Fig. 5E)
 mal_vs_norm.df$malNorm <- factor(mal_vs_norm.df$malNorm, levels = c("Normal", "Malignant"))
 ggplot(mal_vs_norm.df, aes(x = malNorm, y = meanEstimate)) +
-  geom_label(label = paste0("p = ", round(nonparamTest$p.value, 3)), x = 1.2, y = 1.2) +
+  geom_label(label = paste0("p = ", round(nonparamTest$p.value, 3)), x = 1.5, y = 1.2) +
   geom_boxplot(width = 0.3, aes(color = malNorm), outlier.shape = NA) +
   geom_jitter(aes(x = malNorm, y = meanEstimate, color = malNorm), width = .1, size = 2) +
   scale_color_manual(values = c("black", "red"), labels = c("Normal", "MPN")) +
@@ -265,10 +283,10 @@ ggplot(mal_vs_norm.df, aes(x = malNorm, y = meanEstimate)) +
   )
 ```
 
-### Single vs. multi-driver (Fig. 5F)
+## Single vs. multi-driver (Fig. 5F)
 Taking our results from unique clones, `uniqueResults`, let's compare growth rates from clones with either an unknown driver or a single driver to those with multiple drivers. For this, we'll notice a handy convention: drivers are separated with "_AND_", so any clone with "_AND_" in the driver column, has multiple drivers:
 
-```{r multiDriver}
+```{r multiDriver, out.width = '50%'}
 # Set the multi driver variable according to whether multiple drivers are annotated
 uniqueResults$multiDriver <- "Single or unknown"
 uniqueResults$multiDriver[grepl("AND", uniqueResults$cloneDriver)] <- "Multiple"
@@ -297,7 +315,7 @@ ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) +
   )
 ```
 
-### Time from clone initiation to diagnosis ([Fig. 5G](https://www.biorxiv.org/))
+## Time from clone initiation to diagnosis ([Fig. 5G](https://www.biorxiv.org/))
 
 We discussed before that our results data.frame (the output of internalLengths() or maxLikelihood()) came with a clone age estimate, which was $1/r$ + the time from sampling back to the first coalescence. If the birth rate of a clone is $a$  and the death rate is $b$, then the net growth rate is $r=a-b$. The first coalescence represents the first surviving division because, if neither of the offspring of a division die out, they'll account for, on average, half the cells in the clone. This means that even if we sample only 10 cells, we're very likely to sample at least one descendant from each of the two offspring, meaning that first surviving division should be the earliest coalescence, relative to the time of sampling. How do we know when the first surviving division occurs? Well, we know:
 
@@ -328,7 +346,7 @@ table(cloneIDs_max == cloneIDs_youngest)
 
 We see that in 15/19 cases, the youngest clone (with >= 10 tips)  is also the most fit. First, let's use the most fit clones and stratify by the mean, reproducing [our result in Figure 5G.](https://www.biorxiv.org/)
 
-```{r maxStratify}
+```{r maxStratify, out.width = '50%'}
 library(survival)
 library(ggsurvfit)
 
@@ -376,11 +394,11 @@ table(malYoungest$cloneName_result == malMax$cloneName_result)
 
 As it turns out, the youngest clone is the fittest clone in all 13 individuals diagnosed with MPN. We saw before that this was the case in 15 of the 19 individuals when including MPN and healthy. 
 
-## Validation
+# Validation
 
 Remember when we said that there were three cases of duplicate clones? Well, if our estimates are worth anything, they must be consistent. This means that, in these three clones, we should expect that the estimates are similar at both timepoints. Let's check this:
 
-```{r consistency}
+```{r consistency, out.width = '50%'}
 # From before, we can find which clone IDs appear twice
 tmp <- table(results$uniqueCloneID)
 repeatsVec <- names(tmp)[tmp == 2]
@@ -404,7 +422,7 @@ Not too bad! It's good to be consistent, but it's better to be consistent and ac
 
 Let's now fit a logistic curve to the longitudinal data and estimate the growth rate for one of these clones, from individual PD9478, which is the tree we showed at the beginning of this vignette. Here, we are recreating some of the analysis from [our Figure 6.](https://www.biorxiv.org/)
 
-```{r loadLong}
+```{r loadLong, out.width = '50%'}
 library(car, quietly = T)
 
 # Fit PD9478
@@ -445,7 +463,7 @@ ggplot(PD9478_long, aes(x = Age, y = VAF)) +
   coord_cartesian(xlim = c(min(x), max(x)), ylim = c(-0.01, 0.52), expand = 0) +
   labs(x = "Person Age (yr)", y = "Variant Allele Frequency (VAF)") +
   ggtitle(gsub("_", " & ", paste0(PD9478_long$Sample.ID[1], " ", PD9478_long$Gene[1]))) +
-  geom_line(data = predict.df, aes(x = x, y = y), color = fitColor, size = 1, show.legend = T) +
+  geom_line(data = predict.df, aes(x = x, y = y), color = fitColor, linewidth = 1, show.legend = T) +
   geom_point(color = "#808080", shape = 18) +
   geom_vline(xintercept = t_m, linetype = "dotted", color = fitColor, linewidth = .6) +
   geom_hline(yintercept = K, linetype = "dotted", color = fitColor, linewidth = .6)
@@ -453,7 +471,7 @@ ggplot(PD9478_long, aes(x = Age, y = VAF)) +
 
 Now, let's see how the estimate compares with our maximum likelihood estimate:
 
-```{r validateLong}
+```{r validateLong, out.width = '50%'}
 # Get the single cell estimate from PD9478 clone 1
 scPD9478 <- results[results$cloneName_result == "PD9478_1_clone1", ]
 
@@ -473,7 +491,7 @@ ggplot(combine.df) +
 
 All in all, not too bad! For now, we'll leave the others for you to explore. This vignette has already been a bit long. But now you should have the tools to reproduce all of our analyses relating to the real data aspect of [our paper](https://www.biorxiv.org/). Hopefully you were able to do this in minutes and hours, which is much better than the months it took me!
 
-## References / Data sources:
+# References / Data sources:
 
 Any real world data we include is produced and annotated in these fascinating papers, which have advanced the capabilities of single-cell DNA sequencing. They also provide excellent analysis in addition to what we provide here and in our work.
 
