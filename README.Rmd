@@ -93,6 +93,8 @@ intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
 ```
 
+Because we're simulating a new tree each time, the estimate will change with each run, so don't be worried if your results don't match exactly.
+
 ### Estimate growth rate of many trees
 
 In our [paper](https://www.biorxiv.org), we use simulated trees to test
