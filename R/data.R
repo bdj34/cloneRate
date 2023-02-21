@@ -25,7 +25,8 @@
 #' @keywords phylogenetics, hematopoiesis
 #' @examples
 #' # Plot full reconstructed tree from donor PD34493
-#' plot(cloneRate::realCloneData[["fullTrees"]][["PD34493"]])
+#' ape::plot.phylo(cloneRate::realCloneData[["fullTrees"]][["PD34493"]],
+#'  direction = "downwards", show.tip.label = F)
 #'
 #' @source <https://pubmed.ncbi.nlm.nih.gov/35058638/>
 #' @source <https://pubmed.ncbi.nlm.nih.gov/35650442/>
@@ -71,9 +72,9 @@
 #' binary branching process", Lambert A., Theor. Pop. Bio. 2018.
 #' @keywords phylogenetics, birth-death trees, Coalescent Point Process.
 #' @examples
-#' library(ggtree) # Package for plotting phylogenetic trees by extending ggplot2
-#' ggtree(cloneRate::exampleUltraTrees[[1]]) # Plot first of 100 trees
-#'
+#' # Plot first of 100 trees
+#' ape::plot.phylo(cloneRate::exampleUltraTrees[[1]],
+#'   direction = "downwards", show.tip.label = F)
 "exampleUltraTrees"
 
 
@@ -118,8 +119,9 @@
 #' binary branching process", Lambert A., Theor. Pop. Bio. 2018.
 #' @keywords phylogenetics, birth-death trees, Coalescent Point Process
 #' @examples
-#' library(ggtree) # Package for plotting phylogenetic trees by extending ggplot2
-#' ggtree(cloneRate::exampleMutTrees[[1]]) # Plot first of 100 trees
+#' # Plot first of 100 trees
+#' ape::plot.phylo(cloneRate::exampleMutTrees[[1]],
+#'  direction = "downwards", show.tip.label = F))
 #'
 "exampleMutTrees"
 
