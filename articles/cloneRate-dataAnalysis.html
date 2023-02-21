@@ -89,18 +89,22 @@
     
     
 <p>In this vignette, we’ll walk through our data analysis corresponding
-to <a href="https://www.biorxiv.org/" class="external-link">our work</a> analyzing single-cell
-Whole Genome Sequencing (scWGS) data from four different papers. As part
-of this package, we have included everything needed to reproduce this
-analysis, which consists of reconstructed phylogenetic trees and
-de-identified metadata about the donors who were sequenced.</p>
+to <a href="https://www.biorxiv.org/" class="external-link">our recent preprint</a> analyzing
+single-cell Whole Genome Sequencing (scWGS) data from four different
+papers. As part of this package, we have included everything needed to
+reproduce this analysis, which consists of reconstructed phylogenetic
+trees and de-identified metadata about the donors who were sequenced. We
+also include some longitudinal bulk Whole Genome Sequencing (bulk WGS)
+data which we use for validation.</p>
 <div class="section level3">
 <h3 class="unnumbered" id="packages">Packages<a class="anchor" aria-label="anchor" href="#packages"></a>
 </h3>
-<p>First, we’ll have to load the packages we want to use. To help
-understand the data, we’ll want to be able to visualize the phylogenetic
-trees. <code>ggtree</code> is a package which will help us do this, and
-it’s built on <code>ggplot2</code> so we’ll use that as well.</p>
+<p>First, we’ll have to load the packages we want to use. We’ll be
+plotting the trees using the <code>ape</code> package function
+<code><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">ape::plot.phylo()</a></code> along with some other <code>ape</code>
+functions. If you have <code>cloneRate</code> installed, you already
+have <code>ape</code>. We’ll also be using <code>ggplot2</code> to make
+our plots, and you can install from CRAN as shown below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load and attach our package cloneRate</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bdj34/cloneRate" class="external-link">cloneRate</a></span><span class="op">)</span></span>
