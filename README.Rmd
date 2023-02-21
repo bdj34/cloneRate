@@ -9,7 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  dpi = 300
 )
 ```
 
@@ -120,9 +121,7 @@ Notice how the functions `maxLikelihood()` and `internalLengths()` can take as i
 Now that we have 100 estimates on 100 different trees from 2 different
 methods, let's plot the distributions
 
-```{r plotExample}
-library(ggplot2, quietly = T)
-
+```{r plotExample, fig.asp = 0.8, fig.width = 7}
 # Combine all into one df for plotting. This works because the columns are the same
 resultsCombined <- rbind(resultsUltraMaxLike, resultsUltraLengths)
 
