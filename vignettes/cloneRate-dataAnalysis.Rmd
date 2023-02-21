@@ -45,9 +45,6 @@ library(cloneRate)
 # Load and attach ape
 library(ape)
 
-library(survival)
-library(ggsurvfit)
-
 # Install ggplot2 if necessary, then load and attach it with library()
 if (!requireNamespace("ggplot2")) {
   install.packages("ggplot2")
