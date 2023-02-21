@@ -14,13 +14,16 @@ The goal of cloneRate is to provide easily accessible methods for
 estimating the growth rate of clones. The input should either be an
 ultrametric phylogenetic tree with edge lengths corresponding to time,
 or a non-ultrametric phylogenetic tree with edge lengths corresponding
-to mutation counts. In the case of mutation-based edge lengths, a
-mutation rate estimate should also be provided. This package provides
-the internal lengths and maximum likelihood methods for ultrametric
-trees and the shared mutations method for mutation-based trees, all of
-which are from our recent preprint [Estimating single cell clonal
-dynamics in human blood using coalescent
-theory](https://www.biorxiv.org)
+to mutation counts. This package provides the internal lengths and
+maximum likelihood methods for ultrametric trees and the shared
+mutations method for mutation-based trees, all of which are from our
+recent preprint [Estimating single cell clonal dynamics in human blood
+using coalescent theory](https://www.biorxiv.org).
+
+As a bonus, we provide a fast way to simulate the coalescent (tree) of a
+sample from a birth-death branching tree. A direct result of [Amaury
+Lambert’s work](https://pubmed.ncbi.nlm.nih.gov/29704514/), we use this
+fast simulation technique to validate our growth rate estimates.
 
 ## Installation
 
@@ -47,7 +50,7 @@ devtools::install_github("bdj34/cloneRate", build_vignettes = TRUE, dependencies
 Alternatively, you can install them manually:
 
 ``` r
-install.packages(setdiff(c("ggplot2", "ggtree", "ggsurvfit", "survival", "car"), rownames(installed.packages())))
+install.packages(setdiff(c("ggplot2", "ggsurvfit", "survival", "car"), rownames(installed.packages())))
 ```
 
 ## Example
@@ -60,9 +63,9 @@ our growth rate methods.
 We can simulate a sample of size n from a birth-death tree as follows:
 
 ``` r
-library(cloneRate, quietly = T)
-library(ggtree, quietly = T)
-library(ggplot2, quietly = T)
+library(cloneRate)
+library(ape)
+library(ggplot2)
 
 # Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5
 tree <- simUltra(a = 1, b = 0.5, cloneAge = 40, n = 100)
@@ -71,14 +74,14 @@ tree <- simUltra(a = 1, b = 0.5, cloneAge = 40, n = 100)
 Now that we have simulated the tree, let’s plot it:
 
 ``` r
-# Plot the tree (see ggtree docs for more advanced plotting)
-ggtree(tree) + theme_tree2(fgcolor = "blue") + xlab("Time (years)")
+# Plot, then add scale and title
+plot.phylo(tree, direction = "downwards", 
+            show.tip.label = F, edge.width = 2)
+axisPhylo(side = 2, backward = F, las = 1)
+title(main="Simulated ultrametric tree", ylab="Time (years)")
 ```
 
 <img src="man/figures/README-plotTree-1.png" width="100%" />
-
-The `theme_tree2()` function in `ggtree` allows for a time scale to be
-added to the tree.
 
 ### Estimate growth rate of one tree
 
@@ -88,12 +91,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.468"
+#> [1] "Max. likelihood estimate = 0.558"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.481"
+#> [1] "Internal lengths estimate = 0.545"
 ```
 
 ### Estimate growth rate of many trees
@@ -105,7 +108,6 @@ trees. In the “metadata” data.frame we will find the ground truth growth
 rate, which in this case is 1. Let’s apply our methods to all 100 trees.
 
 ``` r
-
 # Here we are applying two methods to all of the ultrametric trees
 resultsUltraMaxLike <- maxLikelihood(exampleUltraTrees)
 resultsUltraLengths <- internalLengths(exampleUltraTrees)
@@ -127,14 +129,17 @@ resultsCombined <- rbind(resultsUltraMaxLike, resultsUltraLengths)
 ggplot(resultsCombined) +
   geom_density(aes(x = estimate, color = method)) +
   geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
-  theme_bw()
+  theme_bw() + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+                     legend.title = element_blank())+
+  xlab("Net growth rate estimate (r)") + ylab("Density")+
+  scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), values = c("black", "#009E73"))
 ```
 
 <img src="man/figures/README-plotExample-1.png" width="100%" />
 
 Finally, let’s compute the root mean square error (RMSE) of the
-estimates. We expect maximum likelihhod to perform the best by RMSE, but
-100 is a small sample size so anything could happen…
+estimates. We expect maximum likelihood to perform the best by RMSE, but
+100 is a relatively small sample size so anything could happen…
 
 ``` r
 # Calculate the RMSE
@@ -148,15 +153,16 @@ rmse <- unlist(lapply(
 
 print(rmse)
 #>    lengths    maxLike 
-#> 0.10049503 0.08869756
+#> 0.09823356 0.09333771
 ```
 
 As expected, maximum likelihood performs the best. Note that this may
-change if we regenerate the data. For more details, see our vignettes:
+change if we regenerate the data. For more details, see the [cloneRate
+website](https://bdj34.github.io/cloneRate/) or vignettes:
 
 ``` r
-vignette("cloneRate-dataAnalysis")
-vignette("cloneRate-simulate")
+vignette("cloneRate-dataAnalysis", package = "cloneRate")
+vignette("cloneRate-simulate", package = "cloneRate")
 ```
 
 ## References
@@ -164,9 +170,7 @@ vignette("cloneRate-simulate")
 Our package comes with 42 clones annotated from four distinct
 publications, which are the ones we use in our analysis. Note that there
 are three clones profiled at two different timepoints, meaning there are
-39 unique clones. More vignettes and code to reproduce our full analysis
-from our recent [preprint](biorxiv.org) are coming soon! The papers
-which generate this data are:
+39 unique clones. The papers which generate this data are:
 
 - [Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 - [Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/)

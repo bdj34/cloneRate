@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  out.width = '100%',
+  dpi = 300
 )
 ```
 
@@ -31,12 +33,12 @@ if (!requireNamespace("ggplot2")) {
   install.packages("ggplot2")
 }
 library(ggplot2)
-
+library(ape)
 # Install ggtree if necessary, then load and attach it with library()
-if (!requireNamespace("ggtree")) {
-  install.packages("ggtree")
-}
-library(ggtree)
+#if (!requireNamespace("ggtree")) {
+#  install.packages("ggtree")
+#}
+#library(ggtree)
 ```
 
 
@@ -75,8 +77,8 @@ We see that the columns are:
 
 Now let's plot the tree.
 
-```{r plotOne}
-ggtree(tree) + theme_tree2(fgcolor = "blue") + xlab("Time")
+```{r plotOne, fig.asp = 0.8, fig.width = 7}
+plot(tree, direction = "downwards", show.tip.label = F); ape::axisPhylo(side = 2, backward = F, las = 1); title(main="Simulated tree", ylab="Time")
 ```
 
 In the tree we plotted above, we see that the "stem" is the edge extending from time 0 to the first split. We call these splits coalescence times and they'll be very important for our methods of growth rate estimation. 
@@ -99,7 +101,7 @@ internalLengths(tree)
 We know that our actual growth rate is 1, so that is our comparison to judge how our estimates are doing. One estimate doesn't really tell us much though. Let's try 100. To do this, we just set the `nTrees` param equal to 100 in our `simUltra()` function. You can parallelize this process if you have the `parallel` package installed by simply setting `nCores`, but we'll leave this at 1 for now.
 
 ```{r check}
-tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nCores = 1)
+tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nCores = 6, addStem = T)
 ```
 
 Let's apply our methods to these trees
@@ -112,14 +114,27 @@ resultsLengths <- internalLengths(tree.list)
 
 We gave each method 100 trees to estimate, let's plot these estimates and see how they perform. Remember that all the input trees had a growth rate of 1, so we want these estimates to be close to 1. We'll use ggplot's density plot for this:
 
-```{r plotEstimates}
-combineResults <- rbind(resultsLengths, resultsMaxLike)
+```{r plotEstimates, fig.asp = 0.8, fig.width = 7}
+resultsCombined <- rbind(resultsLengths, resultsMaxLike)
 
-ggplot(combineResults) + geom_density(aes(x = estimate, color = method)) + 
+ggplot(resultsCombined) + geom_density(aes(x = estimate, color = method)) + 
   theme_bw() + geom_vline(xintercept = 1)
 ```
 
 Not bad, but we'll want to test this more formally over a large range of parameter values. More on that later in this vignette. For now, let's shift our attention to mutation trees.
+
+```{r simRMSE}
+# Calculate the RMSE
+groundTruth <- 1
+rmse <- unlist(lapply(
+  split(resultsCombined, resultsCombined$method),
+  function(x) {
+    sqrt(sum((x$estimate - groundTruth)^2) / length(x$estimate))
+  }
+))
+
+print(rmse)
+```
 
 ### Mutation trees
 

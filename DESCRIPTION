@@ -32,7 +32,6 @@ Suggests:
     covr,
     ggplot2,
     ggsurvfit,
-    ggtree,
     knitr,
     parallel,
     rmarkdown,
