@@ -20,16 +20,18 @@ knitr::opts_chunk$set(
 ```
 
 In this vignette, we'll walk through our data analysis corresponding to [our 
-work](https://www.biorxiv.org/) analyzing single-cell Whole Genome Sequencing 
+recent preprint](https://www.biorxiv.org/) analyzing single-cell Whole Genome Sequencing 
 (scWGS) data from four different papers. As part of this package, we have 
 included everything needed to reproduce this analysis, which consists of 
 reconstructed phylogenetic trees and de-identified metadata about the donors 
-who were sequenced. 
+who were sequenced. We also include some longitudinal bulk Whole Genome Sequencing (bulk WGS)
+data which we use for validation.
 
 ## Packages {-}
-First, we'll have to load the packages we want to use. To help understand the
-data, we'll want to be able to visualize the phylogenetic trees. 
-`ggtree` is a package which will help us do this, and it's built on `ggplot2` so we'll use that as well.
+First, we'll have to load the packages we want to use. We'll be plotting the trees 
+using the `ape` package function `ape::plot.phylo()` along with some other `ape` functions.
+If you have `cloneRate` installed, you already have `ape`. We'll also be using
+`ggplot2` to make our plots, and you can install from CRAN as shown below:
 
 ```{r setup, results=FALSE, message = FALSE}
 # Load and attach our package cloneRate
