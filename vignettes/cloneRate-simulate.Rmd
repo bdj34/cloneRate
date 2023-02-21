@@ -207,10 +207,83 @@ We want to know which estimate is the best. Let's simulate a whole bunch of tree
 Let's keep the net growth rate, `r` at 1, to make comparing estimates easy. However, we can vary `a` (and, subsequently `b`).
 
 ```{r drawa}
-a_vec <- stats::runif(1000, min = 1, max = 3)
+# Draw a (birth rate), then set b (death rate), so that net growth rate is 1
+a_vec <- stats::runif(500, min = 1, max = 3)
+b_vec <- a_vec - 1
 ```
 
-## Varying the number of samples
+We'll keep the clone age at 20 years and the number of samples at `n=100` for now. We'll discuss the impact of changing the growth rate and/or time in [Varying r], and the impact of changing the number of samples in [Varying n]. Note that we have to explicitly set the `nTrees` parameter to be equal to the number of trees we want, which is 500 and equal to the length of the `a_vec` we just created.
+
+```{r sim500}
+# Generate 500 trees and see how long it takes
+ptm <- proc.time()
+manyTrees <- simUltra(a = a_vec, b = b_vec, cloneAge = 20, n = 100, nTrees = length(a_vec), nCores = 1)
+print(proc.time()[["elapsed"]] - ptm[["elapsed"]])
+```
+
+Now, we can simply apply the ultrametric growth rate estimates
+
+```{r applyThousand}
+# Estimate growth rate using maximum likelihood
+resultsML_500 <- maxLikelihood(manyTrees)
+
+# Estimate growth rate using internal lengths
+resultsLengths_500 <- internalLengths(manyTrees)
+```
+
+Let's plot just like above
+
+```{r plotThousand}
+combine500 <- rbind(resultsML_500, resultsLengths_500)
+
+# Plot, adding a vertical line at r=1 because that's the true growth rate
+ggplot(combine500) +
+  geom_density(aes(x = estimate, color = method)) +
+  geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
+  theme_bw() + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+                     legend.title = element_blank())+
+  xlab("Net growth rate estimate (r)") + ylab("Density")+ggtitle("Estimates from 500 simulated trees")
+  scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), values = c("black", "#009E73"))
+```
+
+```{r simRMSE}
+# Calculate the RMSE
+groundTruth <- 1
+rmse <- unlist(lapply(
+  split(combine1000, combine1000$method),
+  function(x) {
+    sqrt(sum((x$estimate - groundTruth)^2) / length(x$estimate))
+  }
+))
+
+print(rmse)
+```
+
+```{r simMean}
+# Calculate the mean
+simMean <- unlist(lapply(
+  split(combine1000, combine1000$method),
+  function(x) {
+    mean(x$estimate)
+  }
+))
+
+print(simMean)
+```
+
+```{r simRuntime}
+# Calculate the runtime for making the trees
+treeSimRuntime <- unlist(lapply(
+  thousandTrees,
+  function(x) {
+    x$metadata$runtime
+  }
+))
+
+print(sum(treeSimRuntime)/60)
+```
+
+## Varying n
 
 ## Varying r
 
