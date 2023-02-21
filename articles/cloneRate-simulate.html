@@ -121,12 +121,7 @@ that as well.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://ape-package.ird.fr/" class="external-link">ape</a></span><span class="op">)</span></span>
-<span><span class="co"># Install ggtree if necessary, then load and attach it with library()</span></span>
-<span><span class="co">#if (!requireNamespace("ggtree")) {</span></span>
-<span><span class="co">#  install.packages("ggtree")</span></span>
-<span><span class="co">#}</span></span>
-<span><span class="co">#library(ggtree)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://ape-package.ird.fr/" class="external-link">ape</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="simulating-ultrametric-trees">Simulating ultrametric trees<a class="anchor" aria-label="anchor" href="#simulating-ultrametric-trees"></a>
@@ -154,7 +149,7 @@ the tips are all equidistant from the root. We’ll set a birth rate
 <span><span class="co">#&gt; Phylogenetic tree with 100 tips and 100 internal nodes.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tip labels:</span></span>
-<span><span class="co">#&gt;   t95, t82, t74, t8, t11, t18, ...</span></span>
+<span><span class="co">#&gt;   t46, t34, t68, t77, t79, t83, ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Rooted; includes branch lengths.</span></span></code></pre></div>
 <p>Again, the best place to get more info about the class
@@ -164,7 +159,7 @@ look at the metadata included in the tree.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   r a b cloneAge   n runtime_seconds addStem</span></span>
-<span><span class="co">#&gt; 1 1 1 0       20 100           0.644    TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 1 1 0       20 100           0.802    TRUE</span></span></code></pre></div>
 <p>We see that the columns are:</p>
 <ul>
 <li>
@@ -187,7 +182,9 @@ preceding the first split. We’ll show the “stem” in plots below.</li>
 </ul>
 <p>Now let’s plot the tree.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree</span>, direction <span class="op">=</span> <span class="st">"downwards"</span>, show.tip.label <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>; <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/axisPhylo.html" class="external-link">axisPhylo</a></span><span class="op">(</span>side <span class="op">=</span> <span class="fl">2</span>, backward <span class="op">=</span> <span class="cn">F</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main<span class="op">=</span><span class="st">"Simulated tree"</span>, ylab<span class="op">=</span><span class="st">"Time"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">tree</span>, direction <span class="op">=</span> <span class="st">"downwards"</span>, show.tip.label <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/axisPhylo.html" class="external-link">axisPhylo</a></span><span class="op">(</span>side <span class="op">=</span> <span class="fl">2</span>, backward <span class="op">=</span> <span class="cn">FALSE</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main<span class="op">=</span><span class="st">"Simulated tree"</span>, ylab<span class="op">=</span><span class="st">"Time"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="cloneRate-simulate_files/figure-html/plotOne-1.png" width="100%"></p>
 <p>In the tree we plotted above, we see that the “stem” is the edge
 extending from time 0 to the first split. We call these splits
@@ -214,15 +211,15 @@ preprint.</a></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   lowerBound estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1  0.9556259  1.14296   1.330295               20           74.76725</span></span>
+<span><span class="co">#&gt; 1  0.9250601 1.106403   1.287745               20           99.31296</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio   n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           1573.199    21.04129 100  0.05     0.066 maxLike</span></span>
+<span><span class="co">#&gt; 1            1283.01    12.91886 100  0.05     0.072 maxLike</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   lowerBound estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1   1.075342 1.337484   1.599626               20           74.76725</span></span>
+<span><span class="co">#&gt; 1  0.8095656 1.006918    1.20427               20           99.31296</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio   n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           1573.199    21.04129 100  0.05     0.006 lengths</span></span></code></pre></div>
+<span><span class="co">#&gt; 1            1283.01    12.91886 100  0.05     0.006 lengths</span></span></code></pre></div>
 <p>We know that our actual growth rate is 1, so that is our comparison
 to judge how our estimates are doing. One estimate doesn’t really tell
 us much though. Let’s try 100. To do this, we just set the
@@ -231,7 +228,7 @@ function. You can parallelize this process if you have the
 <code>parallel</code> package installed by simply setting
 <code>nCores</code>, but we’ll leave this at 1 for now.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tree.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span>, nTrees <span class="op">=</span> <span class="fl">100</span>, nCores <span class="op">=</span> <span class="fl">1</span>, addStem <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tree.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span>, nTrees <span class="op">=</span> <span class="fl">100</span>, nCores <span class="op">=</span> <span class="fl">1</span>, addStem <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s apply our methods to these trees</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">resultsMaxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree.list</span><span class="op">)</span></span>
@@ -262,7 +259,7 @@ shift our attention to mutation trees.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rmse</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike </span></span>
-<span><span class="co">#&gt; 0.10741389 0.09479348</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.11046505 0.09606127</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="mutation-trees">Mutation trees<a class="anchor" aria-label="anchor" href="#mutation-trees"></a>

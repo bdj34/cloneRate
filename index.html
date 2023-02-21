@@ -130,8 +130,8 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot, then add scale and title</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">tree</span>, direction <span class="op">=</span> <span class="st">"downwards"</span>, </span>
-<span>            show.tip.label <span class="op">=</span> <span class="cn">F</span>, edge.width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/axisPhylo.html" class="external-link">axisPhylo</a></span><span class="op">(</span>side <span class="op">=</span> <span class="fl">2</span>, backward <span class="op">=</span> <span class="cn">F</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>            show.tip.label <span class="op">=</span> <span class="cn">FALSE</span>, edge.width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/axisPhylo.html" class="external-link">axisPhylo</a></span><span class="op">(</span>side <span class="op">=</span> <span class="fl">2</span>, backward <span class="op">=</span> <span class="cn">FALSE</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main<span class="op">=</span><span class="st">"Simulated ultrametric tree"</span>, ylab<span class="op">=</span><span class="st">"Time (years)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plotTree-1.png" width="100%"></p>
 </div>
@@ -143,12 +143,12 @@
 <code class="sourceCode R"><span><span class="co"># Estimate the growth rate r=a-b=0.5 using maximum likelihood</span></span>
 <span><span class="va">maxLike.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Max. likelihood estimate = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">maxLike.df</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Max. likelihood estimate = 0.573"</span></span>
+<span><span class="co">#&gt; [1] "Max. likelihood estimate = 0.509"</span></span>
 <span></span>
 <span><span class="co"># Estimate the growth rate r=a-b=0.5 using internal lengths</span></span>
 <span><span class="va">intLengths.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Internal lengths estimate = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">intLengths.df</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Internal lengths estimate = 0.54"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Internal lengths estimate = 0.51"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="estimate-growth-rate-of-many-trees">Estimate growth rate of many trees<a class="anchor" aria-label="anchor" href="#estimate-growth-rate-of-many-trees"></a>
