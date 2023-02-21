@@ -21,7 +21,7 @@ recent preprint [Estimating single cell clonal dynamics in human blood
 using coalescent theory](https://www.biorxiv.org).
 
 As a bonus, we provide a fast way to simulate the coalescent (tree) of a
-sample from a birth-death branching tree. A direct result of [Amaury
+sample from a birth-death branching process. A direct result of [Amaury
 Lambert’s work](https://pubmed.ncbi.nlm.nih.gov/29704514/), we use this
 fast simulation technique to validate our growth rate estimates.
 
@@ -91,12 +91,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.415"
+#> [1] "Max. likelihood estimate = 0.487"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.395"
+#> [1] "Internal lengths estimate = 0.474"
 ```
 
 ### Estimate growth rate of many trees
