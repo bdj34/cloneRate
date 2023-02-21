@@ -101,7 +101,7 @@ internalLengths(tree)
 We know that our actual growth rate is 1, so that is our comparison to judge how our estimates are doing. One estimate doesn't really tell us much though. Let's try 100. To do this, we just set the `nTrees` param equal to 100 in our `simUltra()` function. You can parallelize this process if you have the `parallel` package installed by simply setting `nCores`, but we'll leave this at 1 for now.
 
 ```{r check}
-tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nCores = 6, addStem = T)
+tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nCores = 1, addStem = T)
 ```
 
 Let's apply our methods to these trees
