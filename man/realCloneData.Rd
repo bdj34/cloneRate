@@ -32,7 +32,8 @@ of Myeloproliferative Neoplasm
 }
 \examples{
 # Plot full reconstructed tree from donor PD34493
-plot(cloneRate::realCloneData[["fullTrees"]][["PD34493"]])
+ape::plot.phylo(cloneRate::realCloneData[["fullTrees"]][["PD34493"]],
+ direction = "downwards", show.tip.label = FALSE)
 
 }
 \references{

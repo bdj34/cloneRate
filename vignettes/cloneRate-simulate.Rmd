@@ -34,11 +34,6 @@ if (!requireNamespace("ggplot2")) {
 }
 library(ggplot2)
 library(ape)
-# Install ggtree if necessary, then load and attach it with library()
-#if (!requireNamespace("ggtree")) {
-#  install.packages("ggtree")
-#}
-#library(ggtree)
 ```
 
 
@@ -78,7 +73,9 @@ We see that the columns are:
 Now let's plot the tree.
 
 ```{r plotOne, fig.asp = 0.8, fig.width = 7}
-plot(tree, direction = "downwards", show.tip.label = F); ape::axisPhylo(side = 2, backward = F, las = 1); title(main="Simulated tree", ylab="Time")
+plot.phylo(tree, direction = "downwards", show.tip.label = FALSE)
+axisPhylo(side = 2, backward = FALSE, las = 1)
+title(main="Simulated tree", ylab="Time")
 ```
 
 In the tree we plotted above, we see that the "stem" is the edge extending from time 0 to the first split. We call these splits coalescence times and they'll be very important for our methods of growth rate estimation. 
@@ -101,7 +98,7 @@ internalLengths(tree)
 We know that our actual growth rate is 1, so that is our comparison to judge how our estimates are doing. One estimate doesn't really tell us much though. Let's try 100. To do this, we just set the `nTrees` param equal to 100 in our `simUltra()` function. You can parallelize this process if you have the `parallel` package installed by simply setting `nCores`, but we'll leave this at 1 for now.
 
 ```{r check}
-tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nCores = 1, addStem = T)
+tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nCores = 1, addStem = TRUE)
 ```
 
 Let's apply our methods to these trees

@@ -36,8 +36,9 @@ by the mutation rate, nu, which is drawn from a uniform distribution between
 10 and 20 mutations per year.
 }
 \examples{
-library(ggtree) # Package for plotting phylogenetic trees by extending ggplot2
-ggtree(cloneRate::exampleMutTrees[[1]]) # Plot first of 100 trees
+# Plot first of 100 trees
+ape::plot.phylo(cloneRate::exampleMutTrees[[1]],
+ direction = "downwards", show.tip.label = FALSE)
 
 }
 \references{

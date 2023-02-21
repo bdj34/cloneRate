@@ -84,8 +84,8 @@ Now that we have simulated the tree, let's plot it:
 ```{r plotTree, fig.asp = 0.8, fig.width = 7}
 # Plot, then add scale and title
 plot.phylo(tree, direction = "downwards", 
-            show.tip.label = F, edge.width = 2)
-axisPhylo(side = 2, backward = F, las = 1)
+            show.tip.label = FALSE, edge.width = 2)
+axisPhylo(side = 2, backward = FALSE, las = 1)
 title(main="Simulated ultrametric tree", ylab="Time (years)")
 ```
 

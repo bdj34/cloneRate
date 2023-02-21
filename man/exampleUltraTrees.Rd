@@ -32,9 +32,9 @@ branching process", Lambert A., Theor. Pop. Bio. 2018. Tree construction and
 formatting uses \code{ape} R package \code{\link[ape:rtree]{ape::rcoal()}}.
 }
 \examples{
-library(ggtree) # Package for plotting phylogenetic trees by extending ggplot2
-ggtree(cloneRate::exampleUltraTrees[[1]]) # Plot first of 100 trees
-
+# Plot first of 100 trees
+ape::plot.phylo(cloneRate::exampleUltraTrees[[1]],
+  direction = "downwards", show.tip.label = FALSE)
 }
 \references{
 This data set was created for the cloneRate package using
