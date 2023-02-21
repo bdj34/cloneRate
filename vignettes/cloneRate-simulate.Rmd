@@ -1,8 +1,11 @@
 ---
-title: "cloneRate-simulate"
-output: rmarkdown::html_vignette
+title: "Validating growth rate estimates via simulation"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
 vignette: >
-  %\VignetteIndexEntry{cloneRate-simulate}
+  %\VignetteIndexEntry{Validating growth rate estimates via simulation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,32 +19,46 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this vignette, we'll walk through how we simulated a birth-death branching process to validate our growth rate methods. The simulation procedure is a direct implementation of results by [Amaury Lambert in a recent paper](https://pubmed.ncbi.nlm.nih.gov/29704514/). We'll show here that these results allow for extremely fast generation of a sampled tree of size n from a birth-death process of time T with fixed birth and death rates. The key point here is that we don't have to simulate this using computationally intensive algorithms (gillespie etc.); the math provides a shortcut which allows us to generate the results on a single core in under a second for a tree with 100 tips or about 8 seconds for a tree with 1000 tips! And that's with my average programming skills in R!  
+In this vignette, we'll walk through how we simulated a birth-death branching process to validate our growth rate methods. The simulation procedure is a direct implementation of results by Amaury Lambert in [a recent paper](https://pubmed.ncbi.nlm.nih.gov/29704514/). We'll show here that these results allow for extremely fast generation of a sampled tree of size $n$ from a birth-death process of time $T$ with fixed birth and death rates. The key point here is that we don't have to simulate this using computationally intensive algorithms (gillespie etc.); the math provides a shortcut which allows us to generate the results on a single core in under a second for a tree with 100 tips or about 8 seconds for a tree with 1000 tips! In R! 
 
-The applications of this fast generation of sampled trees are countless. For us, this results allowed us to simulate thousands of trees to check our methods for growth rate estimation from phylogenetic tree reconstruction, which is detailed in [our recent preprint.](https://www.biorxiv.org/) We'll reproduce this validation here!
+The applications of this fast generation of sampled trees are countless. For us, this results allowed us to simulate thousands of trees to check our methods for growth rate estimation from phylogenetic tree reconstruction, which is detailed in [our recent preprint.](https://www.biorxiv.org/) We'll reproduce this validation here.
 
-### Packages
-First, we'll have to load the packages we want to use. To help understand what we're simulating, we'll want to be able to visualize the trees. 
-`ggtree` is a package which will help us do this. `ggtree` is built using `ggplot2` so we'll use that as well.
+## Setup {-}
+First, we'll have to load the packages we want to use. We'll be plotting the trees 
+using the [`ape`](https://rdrr.io/cran/ape/) package function [`ape::plot.phylo()`](https://rdrr.io/cran/ape/man/plot.phylo.html)
+along with some other `ape` functions.
+If you have `cloneRate` installed, you already have the [`ape package`](https://rdrr.io/cran/ape/). We'll also be using
+[`ggplot2`](https://ggplot2.tidyverse.org/) to make our plots, which can be installed from CRAN as shown below:
 
 ```{r setup, results=FALSE, message = FALSE}
 # Load and attach our package cloneRate
 library(cloneRate)
+
+# Load and attach ape, which will be installed if you've installed cloneRate
+library(ape)
 
 # Install ggplot2 if necessary, then load and attach it with library()
 if (!requireNamespace("ggplot2")) {
   install.packages("ggplot2")
 }
 library(ggplot2)
-library(ape)
 ```
 
+We'll also set the color palette which we'll use for most of the plotting. The palette is 
+taken from [here](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)
+```{r setColors}
+colorPal <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+```
 
-### Simulating ultrametric trees
+# Simulating trees
+
+In this section, we'll simulate ultrametric and mutation-based trees. Ultrametric just means that the tips are all the same distance from the root. In our specific case, the ultrametric trees will have edge lengths in units of time, so ultrametric means that the tips are sampled at the same time. Mutation-based trees are those with edge lengths in units of mutations. Mutation-based trees will typically not be ultrametric, because there will be some fluctuations in the number of mutations acquired. 
 
 We'll be generating trees of class `phylo`, which is a fairly straightforward encoding of phylogenetic trees in R. The ape documentation describing the class `phylo` can be found [here.](http://ape-package.ird.fr/misc/FormatTreeR_24Oct2012.pdf)
 
-First, let's simulate a single tree and have a look at the class `phylo`. We'll use the function [simUltra()] from our package to do this, which simulates an ultrametric tree. Ultrametric means that the tips are all equidistant from the root. We'll set a birth rate `a`, a death rate `b`, an age for the tree `cloneAge`, and the number of tips `n`.
+## Ultrametric trees
+
+Let's start with ultrametric trees. First, let's simulate a single tree and have a look at the class `phylo`. We'll use the function `simUltra()` from our package to do this, which simulates an ultrametric tree. We'll set a birth rate `a`, a death rate `b`, an age for the tree `cloneAge`, and the number of sampled tips `n`. Note that we use `cloneAge` instead of $T$ for the time because `T` in R means `TRUE`.
 
 ```{r simOne}
 # Generate the tree
@@ -65,7 +82,7 @@ We see that the columns are:
 
 * `r`, `a`, `b`: The growth rate params. `r` is the net growth rate, `a` is birth rate and `b` is death rate, so `r=a-b`
 * `cloneAge`: The time that passes, in the same units as `r`, `a`, and `b`.
-* `n`: The number of tips that are sampled from the birth-death process, producing a tree with `n` tips.
+* `n`: The number of samples from the birth-death process, producing a tree with `n` tips.
 * `runtime_seconds`: The elapsed time to generate the tree.
 * `addStem`: Tells us whether the tree has a root edge preceding the first split. We'll show the "stem" in plots below.
 
@@ -78,30 +95,30 @@ axisPhylo(side = 2, backward = FALSE, las = 1)
 title(main="Simulated tree", ylab="Time")
 ```
 
-In the tree we plotted above, we see that the "stem" is the edge extending from time 0 to the first split. We call these splits coalescence times and they'll be very important for our methods of growth rate estimation. 
+In the tree we plotted above, we see that the "stem" is the edge extending from time 0 to the first split. We call these splits coalescence events and they'll be very important for our methods of growth rate estimation. 
 
-Also, we see that the tips are ultrametric, meaning that they all are sampled at the same time, in this case 20 units of time after the birth-death process began. As a default, we'll talk about units of time in years, but that is arbitrary. Just make sure the units of the growth rate (per year) are the same as the time units (years).
+Also, we see that the tree is ultrametric, meaning that they all are sampled at the same time, in this case 20 units of time after the birth-death process began. As a default, we'll talk about units of time in years, but that is arbitrary. Just make sure the units of the growth rate (per year) are the same as the time units (years).
 
 Let's apply our growth rate estimates to this tree, seeing if our estimates are close to the value of `r` that we used to generate the tree. We have two functions for estimating the growth rate of an ultrametric tree, and we'll compare their performance later on:
 
-* [internalLengths()]: This function sums the edge lengths of the internal edges of the tree (excluding the stem). We call this sum $L_i$. The growth rate is calculated as $r = L_i / n$ where $n$ is the number of sampled tips.
-* [maxLikelihood()]: This function uses a maximum likelihood estimation of the distribution of coalescence times, using the information about when the tree splits. The distribution of coalescence times is approximated by a standard logistic distribution scaled by $1/r$. Maximizing the likelihood of the observed coalescence times for the $r$ term gives us our estimate.
+* `internalLengths()`: This function sums the edge lengths of the internal edges of the tree (excluding the stem). We call this sum $L_i$. The growth rate is calculated as $r = L_i / n$ where $n$ is the number of sampled tips.
+* `maxLikelihood()`: This function uses a maximum likelihood estimation of the distribution of coalescence times, using the information about when the tree splits. The distribution of coalescence times is approximated by a standard logistic distribution scaled by $1/r$. Maximizing the likelihood of the observed coalescence times for the $r$ term gives us our estimate.
 
-Both methods are detailed in [our preprint.](https://www.biorxiv.org/)
+Both methods are detailed in [our recent preprint.](https://www.biorxiv.org/)
 
 ```{r estimateOne}
-maxLikelihood(tree)
+maxLikelihood(tree)$estimate
 
-internalLengths(tree)
+internalLengths(tree)$estimate
 ```
 
-We know that our actual growth rate is 1, so that is our comparison to judge how our estimates are doing. One estimate doesn't really tell us much though. Let's try 100. To do this, we just set the `nTrees` param equal to 100 in our `simUltra()` function. You can parallelize this process if you have the `parallel` package installed by simply setting `nCores`, but we'll leave this at 1 for now.
+We know that our actual growth rate is 1, so we can evaluate how our estimates are doing. One estimate doesn't really tell us much though. Let's try 100. To do this, we just set the `nTrees` param equal to 100 in our `simUltra()` function. You can parallelize this process if you have the `parallel` package installed by simply setting `nCores`, but we'll leave this at 1 for now.
 
 ```{r check}
 tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nCores = 1, addStem = TRUE)
 ```
 
-Let's apply our methods to these trees
+Let's apply our methods to these trees. We can input either a single `phylo` object, or a list of `phylo` objects to our growth rate functions. Either way, it'll return a `data.frame` which each row corresponding to an estimate for each tree.
 
 ```{r applyAll}
 resultsMaxLike <- maxLikelihood(tree.list)
@@ -114,24 +131,81 @@ We gave each method 100 trees to estimate, let's plot these estimates and see ho
 ```{r plotEstimates, fig.asp = 0.8, fig.width = 7}
 resultsCombined <- rbind(resultsLengths, resultsMaxLike)
 
-ggplot(resultsCombined) + geom_density(aes(x = estimate, color = method)) + 
-  theme_bw() + geom_vline(xintercept = 1)
+# Plot, adding a vertical line at r=1 because that's the true growth rate
+ggplot(resultsCombined) +
+  geom_density(aes(x = estimate, color = method)) +
+  geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
+  theme_bw() + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+                     legend.title = element_blank())+
+  xlab("Net growth rate estimate (r)") + ylab("Density")+
+  scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), values = c("black", "#009E73"))
 ```
 
 Not bad, but we'll want to test this more formally over a large range of parameter values. More on that later in this vignette. For now, let's shift our attention to mutation trees.
 
-```{r simRMSE}
-# Calculate the RMSE
-groundTruth <- 1
-rmse <- unlist(lapply(
-  split(resultsCombined, resultsCombined$method),
-  function(x) {
-    sqrt(sum((x$estimate - groundTruth)^2) / length(x$estimate))
-  }
-))
+## Mutation trees
 
-print(rmse)
+There are two ways to generate mutation trees:
+
+* We can add mutations to a time-based ultrametric tree
+* We can generate a completely new mutation-based tree
+
+Either way, the process of generating mutation trees consists of:
+
+* Generating an ultrametric, time-based tree. This step is only required to generate a new tree
+* For each edge, draw the number of mutations from a poisson distribution with mean equal to the mutation rate `nu` multiplied by the edge length of the time-based tree.
+
+Let's take the ultrametric trees we just generated and convert them to mutation-based trees. For this, we provide the function `ultra2mut()`:
+
+```{r ultra2mut}
+# Set mutation rate equal to 10 muts/year for all trees
+mutTree.list <- ultra2mut(tree.list, nu = 10)
 ```
 
-### Mutation trees
+Alternatively, we can generate a new set of mutation trees using the function `simMut()`:
+
+```{r simMut}
+# Set params for ultra tree + a mutation rate
+mutTree.list2 <- simMut(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nu = 100)
+```
+
+If we want to estimate the growth rate from a mutation tree, we use the `sharedMuts()` function, which works very similarly to the `internalLengths()` function. However, instead of counting the internal edge lengths in units of time, the `sharedMuts()` function counts the internal/shared mutations and uses the mutation rate to scale to time. So, if $M_i$ is the number of internal or shared mutations, $nu$ is the mutation rate, and $n$ is the number of samples, the growth rate estimate is $r = M_i /(\nu  n)$.
+
+Let's apply the `sharedMuts()` function to the trees that we converted to mutation-based. Remember that these mutation-based trees are generated from the ultrametric trees we applied our functions `maxLikelihood()` and `internalLengths()` to.
+
+```{r applyShared}
+resultsShared <- sharedMuts(mutTree.list, nu = 10)
+```
+
+Let's plot the estimates all together. First, we'll combine the data.frames produced. The `sharedMuts()` function outputs an additional column corresponding to the mutation rate `nu`. Because of this, using rbind on the full data.frames will give an error. We only want to look at the estimates for now, so we'll just combine the necessary columns from each data.frame.
+
+```{r plotAll}
+# Combine the columns with the estimates
+colsUse <- c("lowerBound", "estimate", "upperBound", "method")
+resultsAll <- rbind(resultsShared[,colsUse], resultsCombined[,colsUse])
+
+# Plot, adding a vertical line at r=1 because that's the true growth rate
+ggplot(resultsAll) +
+  geom_density(aes(x = estimate, color = method)) +
+  geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
+  theme_bw() + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+                     legend.title = element_blank())+
+  xlab("Net growth rate estimate (r)") + ylab("Density")+
+  scale_color_manual(labels = c("Internal lengths", "Max. likelihood", "Shared Muts."), values = c(colorPal[1], colorPal[4], colorPal[6]))
+```
+
+It looks like we're on the right track. From this, I'd say maximum likelihood looks the best, but 100 trees isn't that many. We'll do more quantiative analysis with more trees now that we have the hang of it. 
+
+# Quantitative comparisons
+
+In this section, we'll use our ability to generate trees in order to test our methods. We'll focus mainly on the ultrametric trees, noting that the mutation-based approach based on shared mutations is analogous to the internal lengths method. We'll see how well our methods perform, where they perform well, and where they fail.
+
+## Varying r
+
+
+
+
+
+
+
 
