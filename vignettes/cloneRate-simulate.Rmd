@@ -186,7 +186,7 @@ resultsAll <- rbind(resultsShared[,colsUse], resultsCombined[,colsUse])
 
 # Plot, adding a vertical line at r=1 because that's the true growth rate
 ggplot(resultsAll) +
-  geom_density(aes(x = estimate, color = method)) +
+  geom_density(aes(x = estimate, color = method), linewidth = 1.5) +
   geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
   theme_bw() + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
                      legend.title = element_blank())+
@@ -200,8 +200,21 @@ It looks like we're on the right track. From this, I'd say maximum likelihood lo
 
 In this section, we'll use our ability to generate trees in order to test our methods. We'll focus mainly on the ultrametric trees, noting that the mutation-based approach based on shared mutations is analogous to the internal lengths method. We'll see how well our methods perform, where they perform well, and where they fail.
 
+## Max likelihood vs. internal lengths
+
+We want to know which estimate is the best. Let's simulate a whole bunch of trees and compare, 1000 should be enough. Note that simulating a thousand trees, while waayyyy quicker than doing 1000 gillespie simulations, still takes some time and can be parallelized by setting the `nCores` param. We won't do this because it's not allowed for CRAN vignettes.
+
+Let's keep the net growth rate, `r` at 1, to make comparing estimates easy. However, we can vary `a` (and, subsequently `b`).
+
+```{r drawa}
+a_vec <- stats::runif()
+```
+
+## Varying the number of samples
+
 ## Varying r
 
+As we noted before, we can simulate many trees at once using `simUltra()` and `simMut()`. Here, we'll use `simUltra()` to generate 100 trees at various growth rates. We do a similar analysis in Figures 3 and 4 of our preprint
 
 
 
