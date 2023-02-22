@@ -92,7 +92,7 @@ internalLengths <- function(tree, alpha = 0.05) {
   # Check ratio of external to internal lengths
   if (extLen / intLen <= 3) {
     warning("External to internal lengths ratio is less than or equal to 3,
-            which means internal lengths method may not be applicable.")
+            which means internal lengths method may not be applicable.\n")
   }
 
   # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
@@ -237,7 +237,7 @@ sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
   # Check ratio of private to shared mutations
   if (privateMuts / sharedMutations <= 3) {
     warning("Private to shared mutations ratio is less than or equal to 3,
-            which means shared mutations method may not be applicable.")
+            which means shared mutations method may not be applicable.\n")
   }
 
   # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
@@ -353,7 +353,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   # Check ratio of external to internal lengths
   if (extLen / intLen <= 3) {
     warning("External to internal lengths ratio is less than or equal to 3,
-            which means internal lengths method may not be applicable.")
+            which means max. likelihood method may not be applicable.\n")
   }
 
   # Calculate 1-alpha confidence intervals
@@ -504,7 +504,7 @@ moments <- function(tree, alpha = 0.05) {
   # Check ratio of external to internal lengths
   if (extLen / intLen <= 3) {
     warning("External to internal lengths ratio is less than or equal to 3,
-            which means internal lengths method may not be applicable.")
+            which means moments method may not be applicable.\n")
   }
 
   # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
