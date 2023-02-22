@@ -93,7 +93,7 @@
 <!-- badges: start -->
 
 <p>The goal of cloneRate is to provide easily accessible methods for estimating the growth rate of clones. The input should either be an ultrametric phylogenetic tree with edge lengths corresponding to time, or a non-ultrametric phylogenetic tree with edge lengths corresponding to mutation counts. This package provides the internal lengths and maximum likelihood methods for ultrametric trees and the shared mutations method for mutation-based trees, all of which are from our recent preprint <a href="https://www.biorxiv.org" class="external-link">Estimating single cell clonal dynamics in human blood using coalescent theory</a>.</p>
-<p>As a bonus, we provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching tree. A direct result of <a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Amaury Lambert’s work</a>, we use this fast simulation technique to validate our growth rate estimates.</p>
+<p>As a bonus, we provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching process. A direct result of <a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Amaury Lambert’s work</a>, we use this fast simulation technique to validate our growth rate estimates.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -143,12 +143,13 @@
 <code class="sourceCode R"><span><span class="co"># Estimate the growth rate r=a-b=0.5 using maximum likelihood</span></span>
 <span><span class="va">maxLike.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Max. likelihood estimate = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">maxLike.df</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Max. likelihood estimate = 0.415"</span></span>
+<span><span class="co">#&gt; [1] "Max. likelihood estimate = 0.529"</span></span>
 <span></span>
 <span><span class="co"># Estimate the growth rate r=a-b=0.5 using internal lengths</span></span>
 <span><span class="va">intLengths.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Internal lengths estimate = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">intLengths.df</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Internal lengths estimate = 0.395"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Internal lengths estimate = 0.512"</span></span></code></pre></div>
+<p>Because we’re simulating a new tree each time, the estimate will change with each run, so don’t be worried if your results don’t match exactly.</p>
 </div>
 <div class="section level3">
 <h3 id="estimate-growth-rate-of-many-trees">Estimate growth rate of many trees<a class="anchor" aria-label="anchor" href="#estimate-growth-rate-of-many-trees"></a>
