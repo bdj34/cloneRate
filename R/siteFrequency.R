@@ -99,6 +99,8 @@ siteFrequency <- function(tree, includeStem = F) {
   return(site_freq)
 }
 
+
+
 #' Get the number of tips that are descendant from an internal node
 #'
 #' @param tree of class 'phylo'
