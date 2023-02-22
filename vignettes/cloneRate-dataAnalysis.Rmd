@@ -14,7 +14,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  out.width = '100%',
+  out.width = "100%",
   dpi = 300
 )
 ```
@@ -124,11 +124,13 @@ Let's plot the tree:
 PD9478 <- fullTrees.list$PD9478_1
 
 # Plot, then add scale and title
-plot.phylo(PD9478, direction = "downwards", 
-            show.tip.label = FALSE, edge.width = 2,
-            edge.color = c(rep("black", 2), "red", "#0070C0", rep("black", (200))))
+plot.phylo(PD9478,
+  direction = "downwards",
+  show.tip.label = FALSE, edge.width = 2,
+  edge.color = c(rep("black", 2), "red", "#0070C0", rep("black", (200)))
+)
 axisPhylo(side = 2, backward = FALSE, las = 1)
-title(main="PD9478 full tree", ylab="Time (years)")
+title(main = "PD9478 full tree", ylab = "Time (years)")
 ```
 
 ## Clone trees
@@ -140,10 +142,12 @@ If you went through the [simulation vignette](cloneRate-simulate.html), you'll n
 PD9478_subClone <- cloneTrees.list[["PD9478_1_clone1"]]
 
 # Plot, then add scale and title
-plot.phylo(PD9478_subClone, direction = "downwards", 
-                show.tip.label = FALSE, edge.width = 2,)
+plot.phylo(PD9478_subClone,
+  direction = "downwards",
+  show.tip.label = FALSE, edge.width = 2,
+)
 axisPhylo(side = 2, backward = FALSE, las = 1)
-title(main="PD9478 JAK2 & DNMT3A clone tree", ylab="Time (years)")
+title(main = "PD9478 JAK2 & DNMT3A clone tree", ylab = "Time (years)")
 ```
 
 Now this tree of the clonal expansion looks a lot more like the trees we simulate! This suggests that the growth rate of each cell within this clone is roughly the same as other cells within the clone. We can now apply our methods to the clone tree shown above!
@@ -174,12 +178,16 @@ It says that two of the trees we input "PD5847_1_clone1" and "PD4781_1_clone1" a
 
 ```{r plotNonBinary, fig.asp = 0.8, fig.width = 7}
 # Plot, highlighting the 3 descendants of node 76. Then add scale and title
-plot.phylo(cloneTrees.list$PD5847_1_clone1, edge.width = 2,
-                direction = "downwards", show.tip.label = FALSE, 
-                edge.color = c(rep(1, 4), "darkorange", rep(1, 34), 
-                               "darkorange", rep(1, 6), "darkorange", rep(1, 1000)))
+plot.phylo(cloneTrees.list$PD5847_1_clone1,
+  edge.width = 2,
+  direction = "downwards", show.tip.label = FALSE,
+  edge.color = c(
+    rep(1, 4), "darkorange", rep(1, 34),
+    "darkorange", rep(1, 6), "darkorange", rep(1, 1000)
+  )
+)
 axisPhylo(side = 2, backward = FALSE, las = 1)
-title(main="PD5847 clone 1 tree (multi-branching)", ylab="Time (years)")
+title(main = "PD5847 clone 1 tree (multi-branching)", ylab = "Time (years)")
 ```
 
 We can see the three descendants from a single node (node 76), which is identified by the edges in orange. We see that there are a lot of places where there are multiple splits (coalescence events) in quick succession, but this is the only place where 1 node appears to split into 3. Well, it's okay, we know mutations are an imperfect way to keep track of time. If we saw more of these events where one node splits into 3, or cases where one node splits into 4+, we might be more concerned. In this case, we can move on. Our functions for growth rate estimation are equipped to handle trees like this, but they throw warnings so we know what's happening. Let's continue, applying our [maxLikelihood()] function to the trees.
@@ -280,13 +288,13 @@ If we split the cohort by MPN and normal, we might expect differences in the gro
 First, we want to avoid double counting the clones which appear twice. There are three such clones from the [Williams paper](https://pubmed.ncbi.nlm.nih.gov/35058638/):
 
 ```{r splitMalNorm}
-# If patient ID and clone number are the same, even if timepoint 
+# If patient ID and clone number are the same, even if timepoint
 # differs, then we have a duplicate.
 # Make a new column for patient, removing anything after "_" from cloneName_result
 results$patient <- gsub("_.*", "", results$cloneName_result)
 results$cloneNumber <- gsub(".*_clone", "", results$cloneName_result)
 
-# Combining patient ID (without timepoint) and clone number 
+# Combining patient ID (without timepoint) and clone number
 # will give us a unique ID for the clone regardless of sampling time
 results$uniqueCloneID <- paste0(results$patient, "_", results$cloneNumber)
 
@@ -552,7 +560,8 @@ combine.df <- data.frame(
 # Plot
 ggplot(combine.df) +
   geom_pointrange(aes(x = method, y = r, ymin = lowerBound, ymax = upperBound)) +
-  theme_bw() + theme(axis.title.x = element_blank())+
+  theme_bw() +
+  theme(axis.title.x = element_blank()) +
   ylab("Net growth rate (r)")
 ```
 

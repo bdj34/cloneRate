@@ -41,12 +41,12 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
   ptm <- proc.time()
 
   # Set nTrees equal to "SKIP_TESTS" on recursive runs to skip repeated checks
-  if (nTrees == "SKIP_TESTS"){
+  if (nTrees == "SKIP_TESTS") {
     nTrees <- 1
-  }else{
+  } else {
     # Make sure length of params is either one or equal to 'nTrees'
     if (!all(unlist(lapply(list(a, b, cloneAge, n), length)) == 1 |
-             unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
+      unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
       stop(paste0("Input parameters must be length 1 or length equal to the value
                 of param 'nTrees', which is ", nTrees))
     }
@@ -116,7 +116,7 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
   coal_times <- suppressWarnings(sapply(coal_times_mpfr, Rmpfr::asNumeric))
 
   # Set number of total edges and initialize edge and edge.length
-  numEdges <- 2*n - 2
+  numEdges <- 2 * n - 2
   edge.length <- rep(0, numEdges)
   edge <- matrix(NA, nrow = numEdges, ncol = 2)
 
@@ -126,16 +126,15 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
   # Sort coalescence times (smallest to largest)
   coal_times_sorted <- sort(coal_times, decreasing = FALSE)
   possibleChildren <- as.integer(c(1:n))
-  currentNode <- as.integer(2*n - 1)
+  currentNode <- as.integer(2 * n - 1)
 
   # Loop through n-1 internal nodes
   for (i in 1:(n - 1)) {
-
     # Sample the children
     children <- sample(possibleChildren, size = 2, replace = FALSE)
 
     # Go to next open row
-    row <- which(is.na(edge[,1]))[c(1,2)]
+    row <- which(is.na(edge[, 1]))[c(1, 2)]
 
     # Fill second column with children and first with node
     edge[row, 2] <- children
@@ -148,14 +147,14 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
     heights[currentNode] <- coal_times_sorted[i]
 
     # Add current node to list of possible children
-    possibleChildren <- c(possibleChildren[! possibleChildren %in% children], currentNode)
+    possibleChildren <- c(possibleChildren[!possibleChildren %in% children], currentNode)
 
     # Move on to the next current node
     currentNode <- currentNode - 1L
   }
 
   # Make tree as list
-  tree <- list(edge = edge, edge.length = edge.length, Nnode = as.integer(n-1))
+  tree <- list(edge = edge, edge.length = edge.length, Nnode = as.integer(n - 1))
   tree$tip.label <- sample(paste0("t", c(1:n)), replace = FALSE)
 
   # Set class
@@ -403,7 +402,7 @@ inputCheck_simTree <- function(a, b, cloneAge, n, precBits, addStem, nTrees,
     warning(paste0("nCores set to ", nCores, " but 'parallel' package is not
                    installed, and simUltra() will run without parallelization."))
   }
-  if(any(n < 4)){
+  if (any(n < 4)) {
     stop("Number of samples, n, must be greater than 3.")
   }
 }

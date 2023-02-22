@@ -34,7 +34,8 @@ formatting uses \code{ape} R package \code{\link[ape:rtree]{ape::rcoal()}}.
 \examples{
 # Plot first of 100 trees
 ape::plot.phylo(cloneRate::exampleUltraTrees[[1]],
-  direction = "downwards", show.tip.label = FALSE)
+  direction = "downwards", show.tip.label = FALSE
+)
 }
 \references{
 This data set was created for the cloneRate package using

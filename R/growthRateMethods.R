@@ -44,7 +44,6 @@ internalLengths <- function(tree, alpha = 0.05) {
 
   # Check if tree is binary branching
   if (max(countChildren) > 2) {
-
     # Throw warning to user
     warningMessage <- paste0(
       "Tree is not binary. Birth-death branching trees should be binary,
@@ -188,7 +187,6 @@ sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
 
   # Check if tree is binary branching
   if (max(countChildren) > 2) {
-
     # Throw warning to user
     warningMessage <- paste0(
       "Tree is not binary. Birth-death branching trees should be binary,
@@ -306,8 +304,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   countChildren <- table(tree$edge[, 1])
 
   # Check if tree is binary branching
-  if (! max(countChildren) == 2) {
-
+  if (!max(countChildren) == 2) {
     # Throw warning to user
     warningMessage <- paste0(
       "Tree is not binary. Birth-death branching trees should be binary,
@@ -462,8 +459,7 @@ moments <- function(tree, alpha = 0.05) {
   countChildren <- table(tree$edge[, 1])
 
   # Check if tree is binary branching
-  if (! max(countChildren) == 2) {
-
+  if (!max(countChildren) == 2) {
     # Throw warning to user
     warningMessage <- paste0(
       "Tree is not binary. Birth-death branching trees should be binary,

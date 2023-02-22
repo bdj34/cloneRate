@@ -38,7 +38,8 @@ by the mutation rate, nu, which is drawn from a uniform distribution between
 \examples{
 # Plot first of 100 trees
 ape::plot.phylo(cloneRate::exampleMutTrees[[1]],
- direction = "downwards", show.tip.label = FALSE)
+  direction = "downwards", show.tip.label = FALSE
+)
 
 }
 \references{

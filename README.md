@@ -75,10 +75,12 @@ Now that we have simulated the tree, let’s plot it:
 
 ``` r
 # Plot, then add scale and title
-plot.phylo(tree, direction = "downwards", 
-            show.tip.label = FALSE, edge.width = 2)
+plot.phylo(tree,
+  direction = "downwards",
+  show.tip.label = FALSE, edge.width = 2
+)
 axisPhylo(side = 2, backward = FALSE, las = 1)
-title(main="Simulated ultrametric tree", ylab="Time (years)")
+title(main = "Simulated ultrametric tree", ylab = "Time (years)")
 ```
 
 <img src="man/figures/README-plotTree-1.png" width="100%" />
@@ -91,12 +93,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.529"
+#> [1] "Max. likelihood estimate = 0.513"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.512"
+#> [1] "Internal lengths estimate = 0.469"
 ```
 
 Because we’re simulating a new tree each time, the estimate will change
@@ -130,9 +132,13 @@ resultsCombined <- rbind(resultsUltraMaxLike, resultsUltraLengths)
 ggplot(resultsCombined) +
   geom_density(aes(x = estimate, color = method)) +
   geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
-  theme_bw() + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-                     legend.title = element_blank())+
-  xlab("Net growth rate estimate (r)") + ylab("Density")+
+  theme_bw() +
+  theme(
+    axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+    legend.title = element_blank()
+  ) +
+  xlab("Net growth rate estimate (r)") +
+  ylab("Density") +
   scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), values = c("black", "#009E73"))
 ```
 
