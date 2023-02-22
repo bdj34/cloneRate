@@ -57,3 +57,12 @@ test_that("n = 3 trees throw error", {
   expect_error(simUltra(a = 1, b = 0, cloneAge = 20, n = 3, nTrees = 5), regexp = "Number of samples")
   expect_error(simMut(a = 1, b = 0, cloneAge = 20, n = 3, nTrees = 1, nu = 1), regexp = "Number of samples")
 })
+
+test_that("precBits too low throws error", {
+  expect_error(simUltra(a = 1, b = 0, cloneAge = 20, n = 20, nTrees = 1, precBits = 20),
+               regexp = "alpha value is equal to 1 due to insufficient machine precision.")
+  expect_error(simUltra(a = 5, b = 0, cloneAge = 100, n = 20, nTrees = 1, precBits = 100),
+               regexp = "alpha value is equal to 1 due to insufficient machine precision.")
+  expect_error(simMut(a = 1, b = 0, cloneAge = 20, n = 20, nu = 10, nTrees = 1, precBits = 20),
+               regexp = "alpha value is equal to 1 due to insufficient machine precision.")
+})
