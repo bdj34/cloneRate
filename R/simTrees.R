@@ -115,37 +115,51 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
   # Convert back to normal numeric (no longer need high precision)
   coal_times <- suppressWarnings(sapply(coal_times_mpfr, Rmpfr::asNumeric))
 
-  ######### BEGIN CODE COPIED FROM ape::rcoal() #########
-  nbr <- 2*n - 2
-  edge <- matrix(NA, nbr, 2)
-  edge.length <- numeric(nbr)
-  h <- numeric(2*n - 1)
-  node.height <- sort(coal_times, decreasing = FALSE)
-  pool <- 1:n
-  nextnode <- 2L*n - 1L
+  # Set number of total edges and initialize edge and edge.length
+  numEdges <- 2*n - 2
+  edge.length <- rep(0, numEdges)
+  edge <- matrix(NA, nrow = numEdges, ncol = 2)
 
+  # Fill heights vec to keep track of height of nodes
+  heights <- rep(0, numEdges - 1)
+
+  # Sort coalescence times (smallest to largest)
+  coal_times_sorted <- sort(coal_times, decreasing = FALSE)
+  possibleChildren <- as.integer(c(1:n))
+  currentNode <- as.integer(2*n - 1)
+
+  # Loop through n-1 internal nodes
   for (i in 1:(n - 1)) {
-    y <- sample(pool, size = 2)
-    ind <- (i - 1)*2 + 1:2
-    edge[ind, 2] <- y
-    edge[ind, 1] <- nextnode
-    edge.length[ind] <- node.height[i] - h[y]
-    h[nextnode] <- node.height[i]
-    pool <- c(pool[! pool %in% y], nextnode)
-    nextnode <- nextnode - 1L
+
+    # Sample the children
+    children <- sample(possibleChildren, size = 2, replace = FALSE)
+
+    # Go to next open row
+    row <- which(is.na(edge[,1]))[c(1,2)]
+
+    # Fill second column with children and first with node
+    edge[row, 2] <- children
+    edge[row, 1] <- currentNode
+
+    # Set edge.length as diff. between coal time and children height
+    edge.length[row] <- coal_times_sorted[i] - heights[children]
+
+    # Set height of current node
+    heights[currentNode] <- coal_times_sorted[i]
+
+    # Add current node to list of possible children
+    possibleChildren <- c(possibleChildren[! possibleChildren %in% children], currentNode)
+
+    # Move on to the next current node
+    currentNode <- currentNode - 1L
   }
 
-  tree <- list(edge = edge, edge.length = edge.length)
-  if (is.null(tree$tip.label)){
-    tip.label <- paste("t", 1:n, sep = "")
-  }
-  tree$tip.label <- sample(tip.label)
-  tree$Nnode <- n - 1L
+  # Make tree as list
+  tree <- list(edge = edge, edge.length = edge.length, Nnode = as.integer(n-1))
+  tree$tip.label <- sample(paste0("t", c(1:n)), replace = FALSE)
+
+  # Set class
   class(tree) <- "phylo"
-  tree <- ape::reorder.phylo(tree)
-  ## to avoid crossings when converting with as.hclust:
-  tree$edge[tree$edge[, 2] <= n, 2] <- 1:n
-  ######### END CODE COPIED FROM ape::rcoal() #########
 
   # Add stem starting the tree from zero, rooting the tree appropriately
   if (addStem) {
@@ -153,6 +167,13 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
     tree$edge <- rbind(c(n + 1, n + 2), tree$edge)
     tree$edge.length <- c(cloneAge - max(coal_times), tree$edge.length)
     tree$Nnode <- tree$Nnode + 1
+  }
+
+  # Sanity checks (coalescence times must match and be less than cloneAge)
+  stopifnot(all(coal_times <= cloneAge))
+  if (!all(round(coal_times, 4) %in% round(ape::branching.times(tree), 4))) {
+    stop("Unexpected error: coalescence times not matching between drawn times
+         and output tree using ape::branching.times()")
   }
 
   # Add metadata for making the tree
