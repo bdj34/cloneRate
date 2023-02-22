@@ -17,7 +17,7 @@ Description: Methods to quickly estimate the net growth rate of a
     edge lengths corresponding to either time or mutations. Based on
     coalescent results in "Estimating single cell clonal dynamics in human
     blood using coalescent theory", Johnson et al. 2023.
-License: MIT + file LICENSE
+License: GPL (>= 3)
 URL: https://github.com/bdj34/cloneRate,
     https://bdj34.github.io/cloneRate/
 BugReports: https://github.com/bdj34/cloneRate/issues
