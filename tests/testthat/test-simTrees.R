@@ -51,3 +51,9 @@ test_that("utrametric tree has right cloneAge time if addStem = TRUE", {
     expect_true(all(suppressWarnings(adephylo::distRoot(ultraTrees[[i]])) == nYears))
   }
 })
+
+test_that("n = 3 trees throw error", {
+  expect_error(simUltra(a = 1, b = 0, cloneAge = 20, n = 2, nTrees = 1), regexp = "Number of samples")
+  expect_error(simUltra(a = 1, b = 0, cloneAge = 20, n = 3, nTrees = 5), regexp = "Number of samples")
+  expect_error(simMut(a = 1, b = 0, cloneAge = 20, n = 3, nTrees = 1, nu = 1), regexp = "Number of samples")
+})

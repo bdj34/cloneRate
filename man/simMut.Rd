@@ -12,7 +12,7 @@ simMut(
   nu,
   nTrees = 1,
   precBits = 1000,
-  addStem = T,
+  addStem = TRUE,
   nCores = 1
 )
 }

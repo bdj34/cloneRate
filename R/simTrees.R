@@ -36,28 +36,33 @@
 #' tree_list <- simUltra(a = 1, b = 0.5, cloneAge = 20, n = 50, nTrees = 10)
 #'
 simUltra <- function(a, b, cloneAge, n, nTrees = 1,
-                     precBits = 1000, addStem = T, nCores = 1) {
+                     precBits = 1000, addStem = TRUE, nCores = 1) {
   # Store runtime for each tree
   ptm <- proc.time()
 
-  # Make sure length of params is either one or equal to 'nTrees'
-  if (!all(unlist(lapply(list(a, b, cloneAge, n), length)) == 1 |
-    unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
-    stop(paste0("Input parameters must be length 1 or length equal to the value
+  # Set nTrees equal to "SKIP_TESTS" on recursive runs to skip repeated checks
+  if (nTrees == "SKIP_TESTS"){
+    nTrees <- 1
+  }else{
+    # Make sure length of params is either one or equal to 'nTrees'
+    if (!all(unlist(lapply(list(a, b, cloneAge, n), length)) == 1 |
+             unlist(lapply(list(a, b, cloneAge, n), length)) == nTrees)) {
+      stop(paste0("Input parameters must be length 1 or length equal to the value
                 of param 'nTrees', which is ", nTrees))
-  }
+    }
 
-  # Check inputs to make sure they make sense
-  inputCheck_simTree(
-    a = a, b = b, cloneAge = cloneAge, n = n,
-    precBits = precBits, addStem = addStem, nTrees = nTrees, nCores = nCores
-  )
+    # Check inputs to make sure they make sense
+    inputCheck_simTree(
+      a = a, b = b, cloneAge = cloneAge, n = n,
+      precBits = precBits, addStem = addStem, nTrees = nTrees, nCores = nCores
+    )
 
-  # If a is length 1, make it a vector of length nTrees for first argument to mapply
-  if (length(a) == 1) {
-    a_vec <- rep(a, nTrees)
-  } else {
-    a_vec <- a
+    # If a is length 1, make it a vector of length nTrees for first argument to mapply
+    if (length(a) == 1) {
+      a <- rep(a, nTrees)
+    } else {
+      a <- a
+    }
   }
 
   # Call recursively to generate nTrees if nTrees > 1
@@ -65,18 +70,18 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
     # Parallelize if "parallel" pkg avail. (user must set nCores > 1 explicitly)
     if (requireNamespace("parallel", quietly = TRUE)) {
       return.list <- parallel::mcmapply(simUltra,
-        a = a_vec,
+        a = a,
         b = b,
         cloneAge = cloneAge, n = n, precBits = precBits,
-        addStem = addStem, nTrees = 1, nCores = 1,
+        addStem = addStem, nTrees = "SKIP_TESTS", nCores = 1,
         mc.cores = nCores, SIMPLIFY = F
       )
     } else {
       return.list <- mapply(
-        FUN = simUltra, a = a_vec,
+        FUN = simUltra, a = a,
         b = b, cloneAge = cloneAge,
         n = n, precBits = precBits, addStem = addStem,
-        nTrees = 1, SIMPLIFY = F
+        nTrees = "SKIP_TESTS", SIMPLIFY = F
       )
     }
     return(return.list)
@@ -110,26 +115,37 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
   # Convert back to normal numeric (no longer need high precision)
   coal_times <- suppressWarnings(sapply(coal_times_mpfr, Rmpfr::asNumeric))
 
-  # Generate the coalescence intervals for input to ape function
-  coal_sorted <- sort(coal_times)
-  coal_intervals <- c()
-  for (j in 1:length(coal_sorted)) {
-    if (j == 1) {
-      coal_intervals <- c(coal_intervals, coal_sorted[j])
-    } else {
-      coal_intervals <- c(coal_intervals, coal_sorted[j] - coal_sorted[j - 1])
-    }
+  ######### BEGIN CODE COPIED FROM ape::rcoal() #########
+  nbr <- 2*n - 2
+  edge <- matrix(NA, nbr, 2)
+  edge.length <- numeric(nbr)
+  h <- numeric(2*n - 1)
+  node.height <- sort(coal_times, decreasing = FALSE)
+  pool <- 1:n
+  nextnode <- 2L*n - 1L
+
+  for (i in 1:(n - 1)) {
+    y <- sample(pool, size = 2)
+    ind <- (i - 1)*2 + 1:2
+    edge[ind, 2] <- y
+    edge[ind, 1] <- nextnode
+    edge.length[ind] <- node.height[i] - h[y]
+    h[nextnode] <- node.height[i]
+    pool <- c(pool[! pool %in% y], nextnode)
+    nextnode <- nextnode - 1L
   }
 
-  # Make tree with ape function rcoal
-  tree <- ape::rcoal(Rmpfr::asNumeric(n_mpfr), rooted = T, br = coal_intervals)
-
-  # Sanity checks (coalescence times must match and be less than cloneAge)
-  stopifnot(all(coal_times <= cloneAge))
-  if (!all(round(coal_times, 4) %in% round(ape::branching.times(tree), 4))) {
-    stop("Unexpected error: coalescence times not matching between input to
-         ape::rcoal() and output tree using ape::branching.times()")
+  tree <- list(edge = edge, edge.length = edge.length)
+  if (is.null(tree$tip.label)){
+    tip.label <- paste("t", 1:n, sep = "")
   }
+  tree$tip.label <- sample(tip.label)
+  tree$Nnode <- n - 1L
+  class(tree) <- "phylo"
+  tree <- ape::reorder.phylo(tree)
+  ## to avoid crossings when converting with as.hclust:
+  tree$edge[tree$edge[, 2] <= n, 2] <- 1:n
+  ######### END CODE COPIED FROM ape::rcoal() #########
 
   # Add stem starting the tree from zero, rooting the tree appropriately
   if (addStem) {
@@ -199,7 +215,7 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
 #' )
 #'
 simMut <- function(a, b, cloneAge, n, nu, nTrees = 1,
-                   precBits = 1000, addStem = T, nCores = 1) {
+                   precBits = 1000, addStem = TRUE, nCores = 1) {
   # Generate ultrametric, time-based trees
   ultraTrees <- simUltra(
     a = a, b = b, cloneAge = cloneAge, n = n,
@@ -365,5 +381,8 @@ inputCheck_simTree <- function(a, b, cloneAge, n, precBits, addStem, nTrees,
   if (any(nCores > 1) & !all(requireNamespace("parallel", quietly = T))) {
     warning(paste0("nCores set to ", nCores, " but 'parallel' package is not
                    installed, and simUltra() will run without parallelization."))
+  }
+  if(any(n < 4)){
+    stop("Number of samples, n, must be greater than 3.")
   }
 }
