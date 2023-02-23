@@ -93,12 +93,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.513"
+#> [1] "Max. likelihood estimate = 0.454"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.469"
+#> [1] "Internal lengths estimate = 0.435"
 ```
 
 Because we’re simulating a new tree each time, the estimate will change
@@ -130,7 +130,7 @@ resultsCombined <- rbind(resultsUltraMaxLike, resultsUltraLengths)
 
 # Plot, adding a vertical line at r=1 because that's the true growth rate
 ggplot(resultsCombined) +
-  geom_density(aes(x = estimate, color = method)) +
+  geom_density(aes(x = estimate, color = method), linewidth = 1.5) +
   geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
   theme_bw() +
   theme(

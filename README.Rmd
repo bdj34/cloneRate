@@ -121,7 +121,7 @@ resultsCombined <- rbind(resultsUltraMaxLike, resultsUltraLengths)
 
 # Plot, adding a vertical line at r=1 because that's the true growth rate
 ggplot(resultsCombined) +
-  geom_density(aes(x = estimate, color = method)) +
+  geom_density(aes(x = estimate, color = method), linewidth = 1.5) +
   geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
   theme_bw() +
   theme(

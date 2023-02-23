@@ -22,6 +22,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+NOTE: Still need to add/install Phylofit for comparison. Simulation numbers need to be increased to match what we've done in our preprint. This is a work in progress at the moment.
+
 In this vignette, we'll walk through how we simulated a birth-death
 branching process to validate our growth rate methods. The simulation
 procedure is a direct implementation of results by Amaury Lambert in [a

@@ -112,11 +112,11 @@ maxLikelihood(tree)$estimate
 internalLengths(tree)$estimate
 ```
 
-We know that our actual growth rate is 1, so we can evaluate how our estimates are doing. One estimate doesn't really tell us much though. Let's try 100. To do this, we just set the `nTrees` param equal to 100 in our `simUltra()` function. You can parallelize this process if you have the `parallel` package installed by simply setting `nCores`, but we'll leave this at 1 for now. By printing the elapsed time, we see that with only one core it takes a few minutes.
+We know that our actual growth rate is 1, so we can evaluate how our estimates are doing. One estimate doesn't really tell us much though. Let's try 100. To do this, we just set the `nTrees` param equal to 100 in our `simUltra()` function. You can parallelize this process if you have the `parallel` package installed by simply setting `nCores`, but we'll leave this at 1 for now. By printing the elapsed time, we see that with only one core it takes about a minute.
 
-```{r sim500}
+```{r sim100}
 ptm <- proc.time()
-tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 500, nCores = 1, addStem = TRUE)
+tree.list <- simUltra(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nCores = 1, addStem = TRUE)
 print(proc.time()[["elapsed"]] - ptm[["elapsed"]])
 ```
 
@@ -128,7 +128,7 @@ resultsMaxLike <- maxLikelihood(tree.list)
 resultsLengths <- internalLengths(tree.list)
 ```
 
-We gave each method 500 trees to estimate, let's plot these estimates. Remember that all the input trees had a growth rate of 1, so we want these estimates to be close to 1. We'll use ggplot's density plot for this:
+We gave each method 100 trees to estimate, let's plot these estimates. Remember that all the input trees had a growth rate of 1, so we want these estimates to be close to 1. We'll use ggplot's density plot for this:
 
 ```{r plotEstimates, fig.asp = 0.8, fig.width = 7}
 # Combine for ggplot formatting
@@ -173,7 +173,7 @@ Alternatively, we can generate a new set of mutation trees using the function `s
 
 ```{r simMut, eval = FALSE}
 # Set params for ultra tree + a mutation rate
-mutTree.list2 <- simMut(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 500, nu = 100, nCores = 1)
+mutTree.list2 <- simMut(a = 1, b = 0, cloneAge = 20, n = 100, nTrees = 100, nu = 100, nCores = 1)
 ```
 
 If we want to estimate the growth rate from a mutation tree, we use the `sharedMuts()` function, which works very similarly to the `internalLengths()` function. However, instead of counting the internal edge lengths in units of time, the `sharedMuts()` function counts the internal/shared mutations and uses the mutation rate to scale to time. So, if $M_i$ is the number of internal or shared mutations, $nu$ is the mutation rate, and $n$ is the number of samples, the growth rate estimate is $r = M_i /(\nu  n)$.
@@ -213,7 +213,7 @@ In this section, we'll use our ability to generate trees in order to test our me
 
 ## Max likelihood vs. internal lengths vs. shared mutations
 
-We want to know which estimate is the best. We'll start by making a quantiative comparison of the 500 estimates we already have from our simulations in the previous section. 500 trees should be enough to get an idea of which estimate is most accurate, but we can always simulate more. We won't do that here though because it'll take a bit longer and, well, we have to stop somewhere.
+We want to know which estimate is the best. We'll start by making a quantiative comparison of the 100 estimates we already have from our simulations in the previous section. 100 trees should be enough to get an idea of which estimate is most accurate, but we can always simulate more. We won't do that here though because it'll take a bit longer and, well, we have to stop somewhere.
 
 ### Root Mean Square Error (RMSE)
 
@@ -258,7 +258,7 @@ simSD <- unlist(lapply(
 print(simSD)
 ```
 
-What we saw in the density plot is reflected in the mean, sd, and rmse. Maximum likelihood performs best by Root Mean Square Error even though it's mean is a bit higher at 1.04. This is likely due to the lower standard deviation. The shared mutations method performs a bit worse than its ultrametric cousin, `internalLengths()`. The randomness of the poissonian mutation accumulation likely leads to a wider spread of estimates in `sharedMuts()`, which probably explains the difference between the two methods.
+What we saw in the density plot is quantified in the mean, sd, and rmse. Maximum likelihood usually performs best by Root Mean Square Error (RMSE) even though it's mean is a bit higher (usually around 1.04). With only 100 trees, there will be larger fluctuations, so maximum likelihood might have a higher RMSE than the other methods. The shared mutations method typically performs a bit worse than its ultrametric cousin, `internalLengths()`. The randomness of the poissonian mutation accumulation likely leads to a wider spread of estimates in `sharedMuts()`, which explains the difference between the two methods.
 
 ### Coverage probability
 
@@ -280,7 +280,7 @@ simCoverage <- unlist(lapply(
 print(simCoverage)
 ```
 
-We're right around 95%, which is great! But you might expect that `maxLikelihood()`, which has the lowest RMSE, might have the best coverage probability. In fact, the confidence interval for the `maxLikelihood()` function accounts for the expectation that maximum likelihood performs a bit better, so its confidence interval is narrower. The opposite is true for `sharedMuts()` which has the widest confidence interval to account for the randomness of mutation accumulation. 
+We're right around 95%, which is great! But you might expect that `maxLikelihood()`, which typically has the lowest RMSE, might have the best coverage probability. In fact, the confidence interval for the `maxLikelihood()` function is narrower. The opposite is true for `sharedMuts()` which has the widest confidence interval to account for the randomness of mutation accumulation. With only 100 trees, the coverage probability will only be a rough estimate. 
 
 # Varying parameters
 
@@ -288,20 +288,20 @@ So far, we've looked at the same parameters. Now, we'll see what happens when we
 
 ## Varying n
 
-One of the most interesting results to explore further is how the accuracy of the estimates depends on the number of samples. For this, we'll look at a few different `n` parameter values. To keep things from running for too long, we can re-use our trees from `n=100` and add 150 more trees at different `n` values. For this, let's show how to run `simUltra()` with a vector input for `n`. First, we'll generate the vector, which we'll call `n_vec`. Let's explore a small `n` value, 10, and an intermediate `n` value, 30.
+One of the most interesting results to explore further is how the accuracy of the estimates depends on the number of samples. For this, we'll look at a few different `n` parameter values. To keep things from running for too long, we can re-use our trees from `n=100` and add 100 more trees at different `n` values. For this, let's show how to run `simUltra()` with a vector input for `n`. First, we'll generate the vector, which we'll call `n_vec`. Let's explore a small `n` value, 10, and an intermediate `n` value, 30.
 
 ```{r gen_n_vec}
-n_vec <- c(rep(10, 150), rep(30, 150))
+n_vec <- c(rep(10, 100), rep(30, 100))
 ```
 
 For now, we'll keep the growth rate `a - b` equal to 1, but again we'll let the actual birth and death rates vary.
 
 ```{r a_vec}
-a_vec <- stats::runif(n=300, min = 1, max = 4)
+a_vec <- stats::runif(n=200, min = 1, max = 4)
 b_vec <- a_vec - 1
 ```
 
-In total, our `n_vec` is of length 300. So we'll want to make sure `a_vec` and `b_vec` are also of length 300. And we'll have to set `nTrees = 300`. If we generate multiple trees, we either set a single value for the parameters, or a vector of length `nTrees`. This applies to both `simUltra()` and `simMut()`. Let's generate some more trees. Note: this will also take a few minutes.
+In total, our `n_vec` is of length 200. So we'll want to make sure `a_vec` and `b_vec` are also of length 200. And we'll have to set `nTrees = 200`. If we generate multiple trees, we either set a single value for the parameters, or a vector of length `nTrees`. This applies to both `simUltra()` and `simMut()`. Let's generate some more trees. Note: this will also take a few minutes.
 
 ```{r vary_n}
 n10_n30_trees <- simUltra(a = a_vec, b= b_vec, cloneAge = 20, n = n_vec, 
@@ -319,7 +319,7 @@ n10_n30_lengths <- internalLengths(n10_n30_trees)
 n10_n30_both <- rbind(n10_n30_maxLike, n10_n30_lengths)
 ```
 
-Finally, we can add our `resultsCombined` data.frame from before, which has the results of applying `maxLikelihood()` and `internalLengths()` to the set of 500 ultrametric trees at `n = 100`.
+Finally, we can add our `resultsCombined` data.frame from before, which has the results of applying `maxLikelihood()` and `internalLengths()` to the set of 100 ultrametric trees at `n = 100`.
 
 ```{r mergeAll}
 # Merge the results data.frames
@@ -390,85 +390,37 @@ Now we can arbitrarily choose whether to vary `r` or `cloneAge`. For consistency
 
 Option 1 is essentially the same as we did in [Varying n], but with `r` instead of `n`, so repeating that here wouldn't be as useful. Option 2 is also more realistic...we can pretend we don't know the ground truth and show how we decide if our methods are relevant before comparing to the ground truth.
 
-Let's simulate 200 trees with 50 samples and various growth rates, ranging from 0.1 to 1 per year, run for 40 years.
+Let's simulate 1000 trees with 50 samples `n` and various growth rates `r`, ranging from 0.1 to 1 per year, run for 40 years. This will take a while, so we won't actually evaluate this as part of this vignette. However, we do a full reproduction of our work from [our recent preprint](https://www.biorxiv.org/) in [an article, "Reproduce simulation results"](https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html) which can be found on [our package website](https://bdj34.github.io/cloneRate/).
 
-```{r vary_r}
+```{r vary_r, eval = FALSE}
 # Uniform ditribution of r used to generate b_vec
-r_vec <- stats::runif(n = 200, min = 0.1, max = 1)
-a_vec <- stats::runif(n = 200, min = 1, max = 3)
+r_vec <- stats::runif(n = 1000, min = 0.1, max = 1)
+a_vec <- stats::runif(n = 1000, min = 1, max = 3)
 b_vec <- a_vec - r_vec
 
 # Input to simUltra()
 vary_r_trees <- simUltra(a = a_vec, b = b_vec, cloneAge = 40, n = 50, nTrees = length(a_vec))
 ```
 
-Apply our `maxLikelihood()` function as usual...
+If we were to run the code above, we could analyze it the same as we have done, with our `internalLengths()` and `maxLikelihood()` functions. However, we'd also have to apply our diagnostic, which tells us which clones are good candidates for our method, and which are not. If we run a clone that's not a good candidate, we'll get a warning. Let's generate a tree with a very low growth rate and plot it.
 
-```{r maxLike_vary_r}
-maxLike_vary_r <- maxLikelihood(vary_r_trees)
+```{r slowClone, fig.asp = 0.8, fig.width = 7}
+# Let's call it slowClone
+slowClone <- simUltra(a = .15, b = .05, n = 50, cloneAge = 40)
+
+# Plot the tree
+ape::plot.phylo(slowClone, direction = "downwards", show.tip.label = F)
 ```
 
-Uh oh... that's a long list of warnings. Let's read through and see what's going on. The ratio of external to internal lengths is a measure of how "supercritical" or star-shaped the birth-death process is. If the internal lengths are at the top of the tree, we consider it star-shaped, and it's a good candidate for our methods, which operate under the assumption of a supercritical process. This means that the growth rate is high enough, and enough time has passed, for the coalescence events to occur well before the sampling time. In practice, using these simulations, we show that an external to internal lengths ratio greater than 3 is good enough to apply our methods. Let's apply our methods and see how they look before and after applying this ratio cutoff. Note that this is what we're doing in Figure 4 of [our preprint](https://www.biorxiv.org/).
+We see that this tree has long internal branches and short external branches. This indicates that the process has not been "supercritical" enough (i.e. the growth rate and time are too low). Quantitatively, this means the ratio of external to internal edge lengths is low. Let's try to apply our methods:
 
-Let's apply the internal lengths method, this time suppressing the warning.
-
-```{r lengths_vary_r}
-lengths_vary_r <- suppressWarnings(internalLengths(vary_r_trees))
+```{r throwWarning}
+# Apply our estimates
+maxLikelihood(slowClone)
+internalLengths(slowClone)
 ```
 
-Because we have different `r` values, we can't do a density plot as before. We'll have to show a density plot with the x axis representing percent error. In this case, good estimates will consolidate around 0. First, we'll calculate error using the `estimate` column and `r_vec` which has our ground truth values.
-
-```{r coverage_vary_r, fig.asp = 0.8, fig.width = 7}
-# Calculate error in lengths, adding columns
-lengths_vary_r$ground_truth <- r_vec
-lengths_vary_r$percent_error <- 100*(lengths_vary_r$estimate - lengths_vary_r$ground_truth)/lengths_vary_r$ground_truth
-
-# Do the same for maxLike
-maxLike_vary_r$ground_truth <- r_vec
-maxLike_vary_r$percent_error <- 100*(maxLike_vary_r$estimate - maxLike_vary_r$ground_truth)/maxLike_vary_r$ground_truth
-
-# Combine for ggplot formatting
-results_vary_r <- rbind(lengths_vary_r, maxLike_vary_r)
-
-# Plot, adding a vertical line at 0 because that's the error free estimate
-ggplot(results_vary_r ) +
-  geom_density(aes(x = percent_error, color = method), linewidth = 1.5) +
-  geom_vline(xintercept = 0) +
-  theme_bw() + xlim(-100, 300)+
-  theme(
-    axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-    legend.title = element_blank()
-  ) +
-  xlab("Estimate percent error") +
-  ylab("Density") +
-  scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), values = c("black", "#009E73"))
-```
-
-Not bad, but we have some rogue estimates with > 200% error! And we have many with > 50% error. Let's apply that cutoff ratio of 3 to exclude the trees which we don't think are good candidates for our methods. Hopefully, this will get rid of the very poor estimates.
-
-```{r applyCutoff, fig.asp = 0.8, fig.width = 7}
-
-# Cut those trees with ratio > 3
-results_vary_r_cut <- results_vary_r[results_vary_r$extIntRatio >= 3,]
-
-# How many did we cut
-print((nrow(results_vary_r) - nrow(results_vary_r_cut))/2)
-
-# Plot, adding a vertical line at 0 because that's the error free estimate
-ggplot(results_vary_r_cut) +
-  geom_density(aes(x = percent_error, color = method), linewidth = 1.5) +
-  geom_vline(xintercept = 0) +
-  theme_bw() + xlim(-100, 300)+
-  theme(
-    axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-    legend.title = element_blank()
-  ) +
-  xlab("Estimate percent error") +
-  ylab("Density") +
-  scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), values = c("black", "#009E73"))
-```
-
-I'd say that's much better. We cut 24 of the 200 trees, eliminating many of the worst estimates. The real advantage here is that we can look at a tree calculate this ratio which will tell us right away if our methods are applicable. Again, if you're interested in the quantitative side of this, you can apply the metrics from the [Quantitative comparisons] section. 
+Our estimates are off by quite a bit (the ground truth estimate is 0.1), and we see a warning. The warning tells us that the external to internal edge length ratio is below 3, so this clone is likely not a good candidate for our methods. For details on how we came up with 3 as a cutoff see Figure 4 of our preprint or the reproduced analysis in [the article, "Reproduce simulation results"](https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html) from [our package website](https://bdj34.github.io/cloneRate/). The real advantage to this diagnostic is that we can look at a tree and calculate this ratio to tell us right away if our methods are applicable. Again, if you're interested in the quantitative side of this, you can apply the metrics from the [Quantitative comparisons] section, which we do in the longer form analysis in [the article](https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html) mentioned above.
 
 # References
 
@@ -476,7 +428,7 @@ The method for simulating the trees is a direct result of the work of Amaury Lam
 
 * [Lambert, 2018](https://pubmed.ncbi.nlm.nih.gov/29704514/)
 
-And here's a final link to [our paper](https://www.biorxiv.org/) for more of the details of the methods and data analysis.
+And here's a final link to [our preprint](https://www.biorxiv.org/) for more of the details of the methods and data analysis.
 
 There aren't too many colors in this vignette, but we tried to use colorblind friendly colors, specifically pulling colors from a palette designed by [Bang Wong](https://www.nature.com/articles/nmeth.1618) and available [here.](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)
 
