@@ -273,7 +273,7 @@ simCoverage <- unlist(lapply(
     # Set insideInterval to TRUE if inside interval and FALSE if outside
     insideInterval <- (x$lowerBound < groundTruth & x$upperBound > groundTruth)
     # Count TRUE as 1 and FALSE as 0. See the fraction inside interval
-    sum(insideInterval)/length(insideInterval)
+    sum(insideInterval) / length(insideInterval)
   }
 ))
 
@@ -297,15 +297,17 @@ n_vec <- c(rep(10, 100), rep(30, 100))
 For now, we'll keep the growth rate `a - b` equal to 1, but again we'll let the actual birth and death rates vary.
 
 ```{r a_vec}
-a_vec <- stats::runif(n=200, min = 1, max = 4)
+a_vec <- stats::runif(n = 200, min = 1, max = 4)
 b_vec <- a_vec - 1
 ```
 
 In total, our `n_vec` is of length 200. So we'll want to make sure `a_vec` and `b_vec` are also of length 200. And we'll have to set `nTrees = 200`. If we generate multiple trees, we either set a single value for the parameters, or a vector of length `nTrees`. This applies to both `simUltra()` and `simMut()`. Let's generate some more trees. Note: this will also take a few minutes.
 
 ```{r vary_n}
-n10_n30_trees <- simUltra(a = a_vec, b= b_vec, cloneAge = 20, n = n_vec, 
-                          nTrees = length(n_vec))
+n10_n30_trees <- simUltra(
+  a = a_vec, b = b_vec, cloneAge = 20, n = n_vec,
+  nTrees = length(n_vec)
+)
 ```
 
 Now, let's apply our estimates and combine the data.frames:
@@ -336,13 +338,17 @@ ggplot(results_vary_n) +
   theme(
     axis.text.y = element_blank(), axis.ticks.y = element_blank(),
     legend.title = element_blank()
-  ) + xlim(0, 3)+
+  ) +
+  xlim(0, 3) +
   xlab("Net growth rate estimate (r)") +
   ylab("Density") +
-  scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), 
-                     values = c("black", "#009E73")) +
-  facet_wrap(~factor(paste0("n = ", n), levels = c("n = 10", "n = 30", "n = 100")),
-             ncol = 1, strip.position="bottom", scales = "free", dir = "v")
+  scale_color_manual(
+    labels = c("Internal lengths", "Max. likelihood"),
+    values = c("black", "#009E73")
+  ) +
+  facet_wrap(~ factor(paste0("n = ", n), levels = c("n = 10", "n = 30", "n = 100")),
+    ncol = 1, strip.position = "bottom", scales = "free", dir = "v"
+  )
 ```
 
 As you can see, both estimates are highly dependent on the number of samples. If you'd like to see the same density values on the y-axis for all three `n` values, set `scales = "fixed"` in the `facet_wrap()` function.
@@ -373,7 +379,7 @@ tree3 <- simUltra(a = 1, b = .5, cloneAge = 120, n = 50)
 Now, let's plot using `par()` to show all three in one plot
 
 ```{r plot_vary_r, fig.asp = 0.4, fig.width = 7}
-par(mfrow=c(1,3))
+par(mfrow = c(1, 3))
 ape::plot.phylo(tree1, direction = "downwards", show.tip.label = F, main = "r = 2, cloneAge = 30")
 ape::plot.phylo(tree2, direction = "downwards", show.tip.label = F, main = "r = 0.5, cloneAge = 30")
 ape::plot.phylo(tree3, direction = "downwards", show.tip.label = F, main = "r = 0.5, cloneAge = 120")
