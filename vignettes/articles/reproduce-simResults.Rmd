@@ -5,7 +5,7 @@ output:
     toc: true
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Validating growth rate estimates via simulation}
+  %\VignetteIndexEntry{Reproduce simulation results}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
