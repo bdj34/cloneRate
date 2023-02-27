@@ -90,13 +90,14 @@
     
     
 <p>In this vignette, we’ll walk through our data analysis corresponding
-to <a href="https://www.biorxiv.org/" class="external-link">our recent preprint</a> analyzing
-single-cell Whole Genome Sequencing (scWGS) data from four different
-papers. As part of this package, we have included everything needed to
-reproduce this analysis, which consists of reconstructed phylogenetic
-trees and de-identified metadata about the donors who were sequenced. We
-also include some longitudinal bulk Whole Genome Sequencing (bulk WGS)
-data which we use for validation.</p>
+to <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/" class="external-link">our
+recent preprint</a> analyzing single-cell Whole Genome Sequencing
+(scWGS) data from four different papers. As part of this package, we
+have included everything needed to reproduce this analysis, which
+consists of reconstructed phylogenetic trees and de-identified metadata
+about the donors who were sequenced. We also include some longitudinal
+bulk Whole Genome Sequencing (bulk WGS) data which we use for
+validation.</p>
 <div class="section level3">
 <h3 class="unnumbered" id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
@@ -451,9 +452,9 @@ best.</p>
 <div class="section level3">
 <h3 id="recreating-figures">Recreating figures<a class="anchor" aria-label="anchor" href="#recreating-figures"></a>
 </h3>
-<p>Here, we recreate the analysis in <a href="https://www.biorxiv.org/" class="external-link">Figure 5E-G of our work</a>. These are
-just a few of many analyses that can be done with this data, so don’t be
-limited by what we do.</p>
+<p>Here, we recreate the analysis in <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/" class="external-link">Figure
+5E-G of our work</a>. These are just a few of many analyses that can be
+done with this data, so don’t be limited by what we do.</p>
 <p>If we split the cohort by MPN and normal, we might expect differences
 in the growth rates. Because the number of sampled cells, on average, is
 higher in the healthy individuals due to study design differences, we’re
@@ -498,7 +499,8 @@ section.</p>
 <div class="section level4">
 <h4 id="mpn-vs--normal-fig--5e">MPN vs. Normal (Fig. 5E)<a class="anchor" aria-label="anchor" href="#mpn-vs--normal-fig--5e"></a>
 </h4>
-<p>Now, let’s take the mean for each individual and re-create <a href="https://www.biorxiv.org/" class="external-link">Fig. 5E</a>.</p>
+<p>Now, let’s take the mean for each individual and re-create <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/" class="external-link">Fig.
+5E</a>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get the unique individuals, and initialize vectors</span></span>
 <span><span class="va">uniqueIndividuals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">uniqueResults</span><span class="op">$</span><span class="va">patient</span><span class="op">)</span></span>
@@ -587,7 +589,8 @@ any clone with “AND” in the driver column, has multiple drivers:</p>
 <p><img src="cloneRate-dataAnalysis_files/figure-html/multiDriver-1.png" width="50%"></p>
 </div>
 <div class="section level4">
-<h4 id="time-from-clone-initiation-to-diagnosis-fig--5g">Time from clone initiation to diagnosis (<a href="https://www.biorxiv.org/" class="external-link">Fig. 5G</a>)<a class="anchor" aria-label="anchor" href="#time-from-clone-initiation-to-diagnosis-fig--5g"></a>
+<h4 id="time-from-clone-initiation-to-diagnosis-fig--5g">Time from clone initiation to diagnosis (<a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/" class="external-link">Fig.
+5G</a>)<a class="anchor" aria-label="anchor" href="#time-from-clone-initiation-to-diagnosis-fig--5g"></a>
 </h4>
 <p>We discussed before that our results data.frame (the output of
 [internalLengths()] or [maxLikelihood()]) came with a clone age
@@ -642,8 +645,8 @@ clones which have already expanded.</p>
 <span><span class="co">#&gt;     4    15</span></span></code></pre></div>
 <p>We see that in 15/19 cases, the youngest clone (with &gt;= 10 tips)
 is also the most fit. First, let’s use the most fit clones and stratify
-by the mean, reproducing <a href="https://www.biorxiv.org/" class="external-link">our result
-in Figure 5G.</a></p>
+by the mean, reproducing <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/" class="external-link">our
+result in Figure 5G.</a></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Subset the results to only have the fittest clone for each patient</span></span>
 <span><span class="va">maxResults</span> <span class="op">&lt;-</span> <span class="va">uniqueResults</span><span class="op">[</span><span class="va">uniqueResults</span><span class="op">$</span><span class="va">cloneName_result</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">cloneIDs_max</span>, <span class="op">]</span></span>
@@ -733,7 +736,8 @@ with the package!</p>
 <p>Let’s now fit a logistic curve to the longitudinal data and estimate
 the growth rate for one of these clones, from individual PD9478, which
 is the tree we showed at the beginning of this vignette. Here, we are
-recreating some of the analysis from <a href="https://www.biorxiv.org/" class="external-link">our Figure 6.</a></p>
+recreating some of the analysis from <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/" class="external-link">our
+Figure 6.</a></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get data from PD9478</span></span>
 <span><span class="va">PD9478_long</span> <span class="op">&lt;-</span> <span class="va">longitudinalData</span><span class="op">[</span><span class="va">longitudinalData</span><span class="op">$</span><span class="va">Sample.ID</span> <span class="op">==</span> <span class="st">"PD9478"</span>, <span class="op">]</span></span>
@@ -804,9 +808,9 @@ estimate:</p>
 <p>All in all, not too bad! For now, we’ll leave the others for you to
 explore. This vignette has already been a bit long. But now you should
 have the tools to reproduce our analysis relating to the real data
-aspect of <a href="https://www.biorxiv.org/" class="external-link">our paper</a>. Hopefully
-you were able to do this in minutes and hours, which is much better than
-the months it took me!</p>
+aspect of <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/" class="external-link">our
+paper</a>. Hopefully you were able to do this in minutes and hours,
+which is much better than the months it took me!</p>
 </div>
 <div class="section level2">
 <h2 id="references-data-sources">References / Data sources:<a class="anchor" aria-label="anchor" href="#references-data-sources"></a>
@@ -831,7 +835,7 @@ part from the work of Amaury Lambert in:</p>
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Lambert,
 2018</a></li>
 </ul>
-<p>And here’s a final link to <a href="https://www.biorxiv.org/" class="external-link">our
+<p>And here’s a final link to <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/" class="external-link">our
 paper</a> for more of the details of the methods and data analysis.</p>
 <p>If you enjoyed the color palette for the plotting, we tried to use
 colorblind friendly colors, specifically pulling colors from a palette
