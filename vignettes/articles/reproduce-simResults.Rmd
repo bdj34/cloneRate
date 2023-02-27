@@ -40,7 +40,7 @@ The applications of this fast generation of sampled trees are countless.
 For us, this results allowed us to simulate thousands of trees to check
 our methods for growth rate estimation from phylogenetic tree
 reconstruction, which is detailed in [our recent
-preprint.](https://www.biorxiv.org/) We'll reproduce this validation
+preprint.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) We'll reproduce this validation
 here.
 
 ## Setup {.unnumbered}
@@ -169,7 +169,7 @@ ultrametric tree, and we'll compare their performance later on:
     observed coalescence times for the $r$ term gives us our estimate.
 
 Both methods are detailed in [our recent
-preprint.](https://www.biorxiv.org/)
+preprint.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/)
 
 ```{r estimateOne}
 maxLikelihood(tree)$estimate
@@ -509,7 +509,7 @@ function.
 If you're interested, you can apply the same quantitative measures to
 this data as we did before in [Quantitative comparisons]. We won't
 repeat that here, but we show this in Figure 2 of [our
-preprint](https://www.biorxiv.org/). This information is also available
+preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/). This information is also available
 in the Supplementary tables, which are also available as .csv files.
 
 ## Varying r (and/or cloneAge)
@@ -517,7 +517,7 @@ in the Supplementary tables, which are also available as .csv files.
 As we noted before, we can simulate many trees at once using
 `simUltra()` and `simMut()`. Here, we'll use `simUltra()` to generate
 100 trees at various growth rates. We do a similar analysis in Figures 3
-and 4 of [our preprint](https://www.biorxiv.org/), noting that our
+and 4 of [our preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/), noting that our
 methods struggle with small growth rates. Let's see if we come to the
 same conclusion here.
 
@@ -568,7 +568,7 @@ certainly different from the tree in the middle.
 
 Now we can arbitrarily choose whether to vary `r` or `cloneAge`. For
 consistency, we'll vary `r`, as we do in Figures 3 and 4 of [our
-preprint](https://www.biorxiv.org/). Here, we have two options:
+preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/). Here, we have two options:
 
 1.  Simulate at fixed `r` values, showing which are good and which are
     problematic
@@ -612,7 +612,7 @@ simulations, we show that an external to internal lengths ratio greater
 than 3 is good enough to apply our methods. Let's apply our methods and
 see how they look before and after applying this ratio cutoff. Note that
 this is what we're doing in Figure 4 of [our
-preprint](https://www.biorxiv.org/).
+preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/).
 
 Let's apply the internal lengths method, this time suppressing the
 warning.
@@ -698,7 +698,7 @@ below:
 
 -   [Lambert, 2018](https://pubmed.ncbi.nlm.nih.gov/29704514/)
 
-And here's a final link to [our paper](https://www.biorxiv.org/) for
+And here's a final link to [our paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) for
 more of the details of the methods and data analysis.
 
 There aren't too many colors in this vignette, but we tried to use

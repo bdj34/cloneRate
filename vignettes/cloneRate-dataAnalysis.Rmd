@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 ```
 
 In this vignette, we'll walk through our data analysis corresponding to [our 
-recent preprint](https://www.biorxiv.org/) analyzing single-cell Whole Genome Sequencing 
+recent preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) analyzing single-cell Whole Genome Sequencing 
 (scWGS) data from four different papers. As part of this package, we have 
 included everything needed to reproduce this analysis, which consists of 
 reconstructed phylogenetic trees and de-identified metadata about the donors 
@@ -280,7 +280,7 @@ estimate performs the best.
 
 ## Recreating figures
 
-Here, we recreate the analysis in [Figure 5E-G of our work](https://www.biorxiv.org/).
+Here, we recreate the analysis in [Figure 5E-G of our work](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/).
 These are just a few of many analyses that can be done with this data, so don't be limited by what we do.
 
 If we split the cohort by MPN and normal, we might expect differences in the growth rates. Because the number of sampled cells, on average, is higher in the healthy individuals due to study design differences, we're likely to pick up more clones from the healthy individuals. To avoid this bias as much as possible, we'll compare the mean growth rate between individuals with and without MPN.
@@ -319,7 +319,7 @@ For now, our `uniqueResults` dataframe contains the results with only one clone 
 
 ### MPN vs. Normal (Fig. 5E)
 
-Now, let's take the mean for each individual and re-create [Fig. 5E](https://www.biorxiv.org/).
+Now, let's take the mean for each individual and re-create [Fig. 5E](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/).
 
 ```{r meanInd, out.width = '50%'}
 # Get the unique individuals, and initialize vectors
@@ -392,7 +392,7 @@ ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) +
   )
 ```
 
-### Time from clone initiation to diagnosis ([Fig. 5G](https://www.biorxiv.org/))
+### Time from clone initiation to diagnosis ([Fig. 5G](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/))
 
 We discussed before that our results data.frame (the output of [internalLengths()] or [maxLikelihood()]) came with a clone age estimate, which was $1/r$ + the time from sampling back to the first coalescence. If the birth rate of a clone is $a$  and the death rate is $b$, then the net growth rate is $r=a-b$. The first coalescence represents the first surviving division because, if neither of the offspring of a division die out, they'll account for, on average, half the cells in the clone. This means that even if we sample only 10 cells, we're very likely to sample at least one descendant from each of the two offspring, meaning that first surviving division should be the earliest coalescence, relative to the time of sampling. How do we know when the first surviving division occurs? Well, we know:
 
@@ -421,7 +421,7 @@ cloneIDs_youngest <- sapply(unique(uniqueResults$patient), function(x) {
 table(cloneIDs_max == cloneIDs_youngest)
 ```
 
-We see that in 15/19 cases, the youngest clone (with >= 10 tips)  is also the most fit. First, let's use the most fit clones and stratify by the mean, reproducing [our result in Figure 5G.](https://www.biorxiv.org/)
+We see that in 15/19 cases, the youngest clone (with >= 10 tips)  is also the most fit. First, let's use the most fit clones and stratify by the mean, reproducing [our result in Figure 5G.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/)
 
 ```{r maxStratify, out.width = '50%'}
 # Subset the results to only have the fittest clone for each patient
@@ -494,7 +494,7 @@ ggplot(repeatResults) +
 
 Not too bad! It's good to be consistent, but it's better to be consistent and accurate. For that, we need a completely orthogonal way to measure clonal growth rates, which comes from longitudinal data. One of the clones from the [Williams paper](https://pubmed.ncbi.nlm.nih.gov/35058638/) and two of the clones from the [Fabre paper](https://pubmed.ncbi.nlm.nih.gov/35650444/) have matching longitudinal data. We have formatted this nicely and it comes with the package!
 
-Let's now fit a logistic curve to the longitudinal data and estimate the growth rate for one of these clones, from individual PD9478, which is the tree we showed at the beginning of this vignette. Here, we are recreating some of the analysis from [our Figure 6.](https://www.biorxiv.org/)
+Let's now fit a logistic curve to the longitudinal data and estimate the growth rate for one of these clones, from individual PD9478, which is the tree we showed at the beginning of this vignette. Here, we are recreating some of the analysis from [our Figure 6.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/)
 
 ```{r loadLong, out.width = '50%'}
 # Get data from PD9478
@@ -565,7 +565,7 @@ ggplot(combine.df) +
   ylab("Net growth rate (r)")
 ```
 
-All in all, not too bad! For now, we'll leave the others for you to explore. This vignette has already been a bit long. But now you should have the tools to reproduce our analysis relating to the real data aspect of [our paper](https://www.biorxiv.org/). Hopefully you were able to do this in minutes and hours, which is much better than the months it took me!
+All in all, not too bad! For now, we'll leave the others for you to explore. This vignette has already been a bit long. But now you should have the tools to reproduce our analysis relating to the real data aspect of [our paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/). Hopefully you were able to do this in minutes and hours, which is much better than the months it took me!
 
 # References / Data sources:
 
@@ -580,6 +580,6 @@ The mathematical methods for estimating growth rates build in large part from th
 
 * [Lambert, 2018](https://pubmed.ncbi.nlm.nih.gov/29704514/)
 
-And here's a final link to [our paper](https://www.biorxiv.org/) for more of the details of the methods and data analysis.
+And here's a final link to [our paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) for more of the details of the methods and data analysis.
 
 If you enjoyed the color palette for the plotting, we tried to use colorblind friendly colors, specifically pulling colors from a palette designed by [Bang Wong](https://www.nature.com/articles/nmeth.1618) and available [here.](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)

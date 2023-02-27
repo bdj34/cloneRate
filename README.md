@@ -18,7 +18,8 @@ to mutation counts. This package provides the internal lengths and
 maximum likelihood methods for ultrametric trees and the shared
 mutations method for mutation-based trees, all of which are from our
 recent preprint [Estimating single cell clonal dynamics in human blood
-using coalescent theory](https://www.biorxiv.org).
+using coalescent
+theory](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1).
 
 As a bonus, we provide a fast way to simulate the coalescent (tree) of a
 sample from a birth-death branching process. A direct result of [Amaury
@@ -93,12 +94,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.454"
+#> [1] "Max. likelihood estimate = 0.574"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.435"
+#> [1] "Internal lengths estimate = 0.576"
 ```
 
 Because we’re simulating a new tree each time, the estimate will change
@@ -106,11 +107,13 @@ with each run, so don’t be worried if your results don’t match exactly.
 
 ### Estimate growth rate of many trees
 
-In our [paper](https://www.biorxiv.org), we use simulated trees to test
-our growth rate estimates. As an example, let’s load some simulated data
-that comes with our package, exampleUltraTrees has 100 ultrametric
-trees. In the “metadata” data.frame we will find the ground truth growth
-rate, which in this case is 1. Let’s apply our methods to all 100 trees.
+In our
+[paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1), we
+use simulated trees to test our growth rate estimates. As an example,
+let’s load some simulated data that comes with our package,
+exampleUltraTrees has 100 ultrametric trees. In the “metadata”
+data.frame we will find the ground truth growth rate, which in this case
+is 1. Let’s apply our methods to all 100 trees.
 
 ``` r
 # Here we are applying two methods to all of the ultrametric trees
@@ -185,7 +188,7 @@ are three clones profiled at two different timepoints, meaning there are
 - [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 
 The mathematical basis for our estimates is detailed in full in [our
-paper](https://www.biorxiv.org/).
+paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/).
 
 Simulating the birth-death trees is a direct result of the work of
 Amaury Lambert in:

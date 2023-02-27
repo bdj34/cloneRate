@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 In this vignette, we'll walk through how we simulated a birth-death branching process to validate our growth rate methods. The simulation procedure is a direct implementation of results by Amaury Lambert in [a recent paper](https://pubmed.ncbi.nlm.nih.gov/29704514/). We'll show here that these results allow for extremely fast generation of a sampled tree of size $n$ from a birth-death process of time $T$ with fixed birth and death rates. The key point here is that we don't have to simulate this using computationally intensive algorithms (gillespie etc.); the math provides a shortcut which allows us to generate the results on a single core in under a second for a tree with 100 tips or about 8 seconds for a tree with 1000 tips! In R! 
 
-The applications of this fast generation of sampled trees are countless. For us, this results allowed us to simulate thousands of trees to check our methods for growth rate estimation from phylogenetic tree reconstruction, which is detailed in [our recent preprint.](https://www.biorxiv.org/) We'll reproduce this validation here.
+The applications of this fast generation of sampled trees are countless. For us, this results allowed us to simulate thousands of trees to check our methods for growth rate estimation from phylogenetic tree reconstruction, which is detailed in [our recent preprint.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) We'll reproduce this validation here.
 
 ## Setup {-}
 First, we'll have to load the packages we want to use. We'll be plotting the trees 
@@ -104,7 +104,7 @@ Let's apply our growth rate estimates to this tree, seeing if our estimates are 
 * `internalLengths()`: This function sums the edge lengths of the internal edges of the tree (excluding the stem). We call this sum $L_i$. The growth rate is calculated as $r = L_i / n$ where $n$ is the number of sampled tips.
 * `maxLikelihood()`: This function uses a maximum likelihood estimation of the distribution of coalescence times, using the information about when the tree splits. The distribution of coalescence times is approximated by a standard logistic distribution scaled by $1/r$. Maximizing the likelihood of the observed coalescence times for the $r$ term gives us our estimate.
 
-Both methods are detailed in [our recent preprint.](https://www.biorxiv.org/)
+Both methods are detailed in [our recent preprint.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/)
 
 ```{r estimateOne}
 maxLikelihood(tree)$estimate
@@ -353,11 +353,11 @@ ggplot(results_vary_n) +
 
 As you can see, both estimates are highly dependent on the number of samples. If you'd like to see the same density values on the y-axis for all three `n` values, set `scales = "fixed"` in the `facet_wrap()` function.
 
-If you're interested, you can apply the same quantitative measures to this data as we did before in [Quantitative comparisons]. We won't repeat that here, but we show this in Figure 2 of [our preprint](https://www.biorxiv.org/). This information is also available in the Supplementary tables, which are also available as .csv files.
+If you're interested, you can apply the same quantitative measures to this data as we did before in [Quantitative comparisons]. We won't repeat that here, but we show this in Figure 2 of [our preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/). This information is also available in the Supplementary tables, which are also available as .csv files.
 
 ## Varying r (and/or cloneAge)
 
-As we noted before, we can simulate many trees at once using `simUltra()` and `simMut()`. Here, we'll use `simUltra()` to generate 100 trees at various growth rates. We do a similar analysis in Figures 3 and 4 of [our preprint](https://www.biorxiv.org/), noting that our methods struggle with small growth rates. Let's see if we come to the same conclusion here.
+As we noted before, we can simulate many trees at once using `simUltra()` and `simMut()`. Here, we'll use `simUltra()` to generate 100 trees at various growth rates. We do a similar analysis in Figures 3 and 4 of [our preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/), noting that our methods struggle with small growth rates. Let's see if we come to the same conclusion here.
 
 ### Varying r or cloneAge?
 
@@ -389,14 +389,14 @@ While the trees on the left and the right aren't identical due to the stochastic
 
 ### Performance across r values
 
-Now we can arbitrarily choose whether to vary `r` or `cloneAge`. For consistency, we'll vary `r`, as we do in Figures 3 and 4 of [our preprint](https://www.biorxiv.org/). Here, we have two options:
+Now we can arbitrarily choose whether to vary `r` or `cloneAge`. For consistency, we'll vary `r`, as we do in Figures 3 and 4 of [our preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/). Here, we have two options:
 
 1. Simulate at fixed `r` values, showing which are good and which are problematic
 2. Simulate at random `r` values and then try to decipher which estimates are good and which aren't
 
 Option 1 is essentially the same as we did in [Varying n], but with `r` instead of `n`, so repeating that here wouldn't be as useful. Option 2 is also more realistic...we can pretend we don't know the ground truth and show how we decide if our methods are relevant before comparing to the ground truth.
 
-Let's simulate 1000 trees with 50 samples `n` and various growth rates `r`, ranging from 0.1 to 1 per year, run for 40 years. This will take a while, so we won't actually evaluate this as part of this vignette. However, we do a full reproduction of our work from [our recent preprint](https://www.biorxiv.org/) in [an article, "Reproduce simulation results"](https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html) which can be found on [our package website](https://bdj34.github.io/cloneRate/).
+Let's simulate 1000 trees with 50 samples `n` and various growth rates `r`, ranging from 0.1 to 1 per year, run for 40 years. This will take a while, so we won't actually evaluate this as part of this vignette. However, we do a full reproduction of our work from [our recent preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) in [an article, "Reproduce simulation results"](https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html) which can be found on [our package website](https://bdj34.github.io/cloneRate/).
 
 ```{r vary_r, eval = FALSE}
 # Uniform ditribution of r used to generate b_vec
@@ -434,7 +434,7 @@ The method for simulating the trees is a direct result of the work of Amaury Lam
 
 * [Lambert, 2018](https://pubmed.ncbi.nlm.nih.gov/29704514/)
 
-And here's a final link to [our preprint](https://www.biorxiv.org/) for more of the details of the methods and data analysis.
+And here's a final link to [our preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) for more of the details of the methods and data analysis.
 
 There aren't too many colors in this vignette, but we tried to use colorblind friendly colors, specifically pulling colors from a palette designed by [Bang Wong](https://www.nature.com/articles/nmeth.1618) and available [here.](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)
 
