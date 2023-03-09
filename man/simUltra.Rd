@@ -11,7 +11,7 @@ simUltra(
   n,
   nTrees = 1,
   precBits = 1000,
-  addStem = TRUE,
+  addStem = FALSE,
   nCores = 1
 )
 }

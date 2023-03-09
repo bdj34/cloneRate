@@ -35,6 +35,7 @@ Suggests:
     knitr,
     parallel,
     rmarkdown,
+    rstan,
     spelling,
     survival,
     testthat (>= 3.0.0)
