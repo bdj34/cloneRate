@@ -9,7 +9,7 @@ birthDeathMCMC(
   maxGrowthRate = 4,
   alpha = 0.05,
   showProgress = TRUE,
-  nChain = 3,
+  nChains = 3,
   nCores = 1,
   chainLength = 2000
 )
@@ -25,7 +25,7 @@ will depend on the nature of the data}
 
 \item{showProgress}{TRUE or FALSE, should the Rstan MCMC progress be printed?}
 
-\item{nChain}{Number of chains to run in MCMC. Default is 3}
+\item{nChains}{Number of chains to run in MCMC. Default is 3}
 
 \item{nCores}{Number of cores to perform MCMC. Default is 1, but chains can
 be run in parallel}
@@ -39,8 +39,9 @@ intervals, and other important details (clone age estimate, runtime, n,
 etc.)
 }
 \description{
-Uses Rstan and the No U-turn sampler to approximate the likelihood
-from Stadler 2009
+Uses Rstan and the No U-turn sampler to approximate the
+growth rate using the likelihood from Stadler 2009 "On incomplete sampling
+under birth–death models and connections to the sampling-based coalescent"
 }
 \examples{
 df <- birthDeathMCMC(cloneRate::exampleUltraTrees[[1]])

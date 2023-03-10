@@ -398,7 +398,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #' @param maxGrowthRate Sets upper bound on birth rate. Default is 4 but this
 #'  will depend on the nature of the data
 #' @param showProgress TRUE or FALSE, should the Rstan MCMC progress be printed?
-#' @param nChain Number of chains to run in MCMC. Default is 3
+#' @param nChains Number of chains to run in MCMC. Default is 3
 #' @param nCores Number of cores to perform MCMC. Default is 1, but chains can
 #'  be run in parallel
 #' @param chainLength Number of iterations for each chain in MCMC. Default is
@@ -415,7 +415,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #' df <- birthDeathMCMC(cloneRate::exampleUltraTrees[[1]])
 #'
 birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
-                           showProgress = TRUE, nChain = 3,
+                           showProgress = TRUE, nChains = 3,
                            nCores = 1, chainLength = 2000){
 
   ptm <- proc.time()

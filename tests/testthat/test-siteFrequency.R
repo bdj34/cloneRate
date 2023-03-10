@@ -1,5 +1,5 @@
 test_that("tree gives normalized frequency of 1", {
-  tree <- simUltra(a = 1, b = 0, cloneAge = 10, n = 40)
+  tree <- simUltra(a = 1, b = 0, cloneAge = 10, n = 40, addStem = TRUE)
   siteFreq.df <- siteFrequency(tree, includeStem = T)
   expect_equal(sum(siteFreq.df$normalizedFreq), 1)
 
