@@ -86,3 +86,25 @@ test_that("all growth rate functions throw warning with non-binary trees", {
   nonBinaryMutTree <- cloneRate::ultra2mut(nonBinaryTree, nu = 10)
   expect_warning(sharedMuts(nonBinaryMutTree), regexp = "Tree is not binary.")
 })
+
+test_that("MCMC gices expected output", {
+  tree <- simUltra(a = 1, b = 0, cloneAge = 20, n = 20)
+  mcmcOut <- birthDeathMCMC(tree)
+  expect_true(inherits(mcmcOut, "data.frame"))
+  expect_true(mcmcOut$estimate < 2)
+
+  maxRate <- .5
+  mcmcOut <- birthDeathMCMC(tree, maxGrowthRate = maxRate)
+  expect_true(mcmcOut$estimate < maxRate)
+})
+
+test_that("MCMC gives expected error messages", {
+  tree2 <- simUltra(a = 10, b = 0, cloneAge = 40, n = 20)
+  expect_error(birthDeathMCMC(tree2), regexp = "low sampling probability")
+
+  mutTree <- simMut(a = 1, b = 0, cloneAge = 20, n = 20, nu = 10)
+  expect_error(birthDeathMCMC(mutTree), regexp = "not ultrametric")
+
+  listTrees <- simUltra(a = 1, b = 0, cloneAge = 20, n = 20, nTrees = 2)
+  expect_error(birthDeathMCMC(listTrees), regexp = "can only handle a single tree")
+})
