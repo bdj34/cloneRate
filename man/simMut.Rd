@@ -64,7 +64,7 @@ tree <- simMut(a = 1, b = 0.5, cloneAge = 40, n = 50, nu = 10)
 # Generate a list of mutation-based trees with a range of mutation rates
 tree_list <- simMut(
   a = 1, b = 0.5, cloneAge = 40, n = 50,
-  nu = stats::runif(n = 10, min = 10, max = 20), nTrees = 10
+  nu = stats::runif(n = 10, min = 10, max = 20), nTrees = 5
 )
 
 }
