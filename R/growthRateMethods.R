@@ -496,6 +496,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
 #' @description Takes a compiled stan model and runs it many times
 #'
 #' @inheritParams birthDeathMCMC
+#' @param stanModel Compiled stan model, generated using rstan::stan_model
 #'
 #' @return A dataframe including the net growth rate estimate, confidence
 #'  intervals, and other important details (clone age estimate, runtime, n,
@@ -574,8 +575,8 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
 
   # Get growth rate and 95% CI, alos rough estimate of sampling probability
   ptile <- c(alpha / 2, 0.5, 1 - alpha / 2)
-  growthRateVec <- quantile(outList$posterior$lambda - outList$posterior$mu, ptile)
-  rhoVec <- quantile(outList$posterior$rho, ptile)
+  growthRateVec <- stats::quantile(outList$posterior$lambda - outList$posterior$mu, ptile)
+  rhoVec <- stats::quantile(outList$posterior$rho, ptile)
 
   # Rough estimate of clone age
   cloneAgeEstimate <- max(coal_times) + 1 / growthRateVec[2]
