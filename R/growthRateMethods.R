@@ -501,6 +501,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
 #'
 #' @param stanModel Compiled stan model, generated using rstan::stan_model
 #'
+#' @keywords internal
 #' @return A dataframe including the net growth rate estimate, confidence
 #'  intervals, and other important details (clone age estimate, runtime, n,
 #'  etc.)
