@@ -174,7 +174,7 @@ for the time because <code>T</code> in R means <code>TRUE</code>.</p>
 <span><span class="co">#&gt; Phylogenetic tree with 100 tips and 99 internal nodes.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tip labels:</span></span>
-<span><span class="co">#&gt;   t3, t28, t45, t76, t56, t69, ...</span></span>
+<span><span class="co">#&gt;   t20, t60, t84, t7, t37, t61, ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Rooted; includes branch lengths.</span></span></code></pre></div>
 <p>Again, the best place to get more info about the class
@@ -184,7 +184,7 @@ look at the metadata included in the tree.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   r a b cloneAge   n runtime_seconds addStem</span></span>
-<span><span class="co">#&gt; 1 1 1 0       20 100           0.657   FALSE</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 1 1 0       20 100           0.644   FALSE</span></span></code></pre></div>
 <p>We see that the columns are:</p>
 <ul>
 <li>
@@ -243,10 +243,10 @@ likelihood of the observed coalescence times for the <span class="math inline">\
 recent preprint.</a></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span></span>
-<span><span class="co">#&gt; [1] 0.9545354</span></span>
+<span><span class="co">#&gt; [1] 1.10146</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span></span>
-<span><span class="co">#&gt; [1] 0.9563523</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1.183357</span></span></code></pre></div>
 <p>We know that our actual growth rate is 1, so we can evaluate how our
 estimates are doing. One estimate doesn’t really tell us much though.
 Let’s try 100. To do this, we just set the <code>nTrees</code> param
@@ -259,7 +259,7 @@ it takes a few minutes.</p>
 <code class="sourceCode R"><span><span class="va">ptm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">tree.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span>, nTrees <span class="op">=</span> <span class="fl">500</span>, nCores <span class="op">=</span> <span class="fl">1</span>, addStem <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">ptm</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 276.301</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 273.084</span></span></code></pre></div>
 <p>Let’s apply our methods to these trees. We can input either a single
 <code>phylo</code> object, or a list of <code>phylo</code> objects to
 our growth rate functions. Either way, it’ll return a
@@ -401,7 +401,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rmse</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt; 0.10320452 0.09507903 0.10916408</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.10048446 0.09297483 0.10498502</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="mean">Mean<a class="anchor" aria-label="anchor" href="#mean"></a>
@@ -417,7 +417,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simMean</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt;   1.011343   1.037281   1.012821</span></span></code></pre></div>
+<span><span class="co">#&gt;   1.021782   1.043689   1.019493</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="standard-deviation">Standard deviation<a class="anchor" aria-label="anchor" href="#standard-deviation"></a>
@@ -433,7 +433,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simSD</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt; 0.10268197 0.08755288 0.10851720</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.09819337 0.08215292 0.10326281</span></span></code></pre></div>
 <p>What we saw in the density plot is reflected in the mean, sd, and
 rmse. Maximum likelihood performs best by Root Mean Square Error even
 though it’s mean is a bit higher at 1.04. This is likely due to the
@@ -468,7 +468,7 @@ check:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simCoverage</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt;      0.964      0.944      0.978</span></span></code></pre></div>
+<span><span class="co">#&gt;      0.966      0.950      0.980</span></span></code></pre></div>
 <p>We’re right around 95%, which is great! But you might expect that
 <code><a href="../reference/maxLikelihood.html">maxLikelihood()</a></code>, which has the lowest RMSE, might have the
 best coverage probability. In fact, the confidence interval for the
@@ -675,14 +675,10 @@ ranging from 0.1 to 1 per year, run for 40 years.</p>
 <span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
 <span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
 <span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
@@ -747,21 +743,39 @@ ranging from 0.1 to 1 per year, run for 40 years.</p>
 <span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
 <span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
 <span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
 <span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
 <span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
 <span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
@@ -820,7 +834,8 @@ truth values.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Estimate percent error"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Density"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Internal lengths"</span>, <span class="st">"Max. likelihood"</span><span class="op">)</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"#009E73"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Internal lengths"</span>, <span class="st">"Max. likelihood"</span><span class="op">)</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"#009E73"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 2 rows containing non-finite values (`stat_density()`).</span></span></code></pre></div>
 <p><img src="reproduce-simResults_files/figure-html/coverage_vary_r-1.png" width="100%"></p>
 <p>Not bad, but we have some rogue estimates with &gt; 200% error! And
 we have many with &gt; 50% error. Let’s apply that cutoff ratio of 3 to
@@ -833,7 +848,7 @@ methods. Hopefully, this will get rid of the very poor estimates.</p>
 <span></span>
 <span><span class="co"># How many did we cut</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_vary_r</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_vary_r_cut</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 24</span></span>
+<span><span class="co">#&gt; [1] 26</span></span>
 <span></span>
 <span><span class="co"># Plot, adding a vertical line at 0 because that's the error free estimate</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_vary_r_cut</span><span class="op">)</span> <span class="op">+</span></span>
