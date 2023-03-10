@@ -92,7 +92,8 @@ internalLengths <- function(tree, alpha = 0.05) {
   # Check ratio of external to internal lengths
   if (extLen / intLen <= 3) {
     warning("External to internal lengths ratio is less than or equal to 3,
-            which means internal lengths method may not be applicable.\n")
+            which means internal lengths method may not be applicable. Consider
+            using birthDeathMCMC() function, which avoids this issue.\n")
   }
 
   # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
@@ -237,7 +238,9 @@ sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
   # Check ratio of private to shared mutations
   if (privateMuts / sharedMutations <= 3) {
     warning("Private to shared mutations ratio is less than or equal to 3,
-            which means shared mutations method may not be applicable.\n")
+            which means shared mutations method may not be applicable. If you
+            convert the mutation-based tree to a time-based ultrametric tree,
+            the birthDeathMCMC() function can be used.\n")
   }
 
   # Estimate clone age. If tree has stem, take tree age, otherwise estimate by adding 1/r
@@ -332,7 +335,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   LL <- function(params) {
     a <- params[1]
     r <- params[2]
-    U <- (coal_times - a) * r # U_i = (H_i-a)*r
+    U <- (coal_times - a) * r
     sigmoid <- 1 / (1 + exp(-U))
     ll <- sum(log(sigmoid)) + sum(log(1 - sigmoid)) + log(r) * length(U)
   }
@@ -353,7 +356,8 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   # Check ratio of external to internal lengths
   if (extLen / intLen <= 3) {
     warning("External to internal lengths ratio is less than or equal to 3,
-            which means max. likelihood method may not be applicable.\n")
+            which means max. likelihood method may not be applicable. Consider
+            using birthDeathMCMC() function, which avoids this issue.\n")
   }
 
   # Calculate 1-alpha confidence intervals
@@ -379,6 +383,178 @@ maxLikelihood <- function(tree, alpha = 0.05) {
     "method" = "maxLike"
   ))
 }
+
+
+
+
+
+#' Growth rate estimate using MCMC
+#'
+#' @description Uses Rstan and the No U-turn sampler to approximate the
+#'  growth rate using the likelihood from Stadler 2009 "On incomplete sampling
+#'  under birth–death models and connections to the sampling-based coalescent"
+#'
+#' @inheritParams internalLengths
+#' @param maxGrowthRate Sets upper bound on birth rate. Default is 4 but this
+#'  will depend on the nature of the data
+#' @param showProgress TRUE or FALSE, should the Rstan MCMC progress be printed?
+#' @param nChain Number of chains to run in MCMC. Default is 3
+#' @param nCores Number of cores to perform MCMC. Default is 1, but chains can
+#'  be run in parallel
+#' @param chainLength Number of iterations for each chain in MCMC. Default is
+#'  2000, increase if stan tells you to
+#'
+#' @return A dataframe including the net growth rate estimate, confidence
+#'     intervals, and other important details (clone age estimate, runtime, n,
+#'     etc.)
+#' @seealso [cloneRate::internalLengths] [cloneRate::maxLikelihood] which use
+#'  alternative methods for growth rate estimation from an ultrametric tree.
+#' @export
+#'
+#' @examples
+#' df <- birthDeathMCMC(cloneRate::exampleUltraTrees[[1]])
+#'
+birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
+                           showProgress = TRUE, nChain = 3,
+                           nCores = 1, chainLength = 2000){
+
+  ptm <- proc.time()
+
+  if (!requireNamespace("rstan", quietly = TRUE)) {
+    stop(
+      "Package \"rstan\" must be installed to use birthDeathMCMC() function",
+      call. = T
+    )
+  }
+
+  if(inherits(tree, "list") & !inherits(tree, "phylo")){
+    stop("At the moment, MCMC can only handle a single tree (class phylo), not
+    a list of trees. This will be changed soon.")
+  }
+
+  # Basic check on input formatting and alpha value
+  inputCheck(tree, alpha)
+
+  # Get number of tips
+  n <- ape::Ntip(tree)
+
+  # Get the number of direct descendants from a node, identifying the nodes with > 2
+  countChildren <- table(tree$edge[, 1])
+
+  # Check if tree is binary branching
+  if (!max(countChildren) == 2) {
+    # Throw warning to user
+    warningMessage <- paste0(
+      "Tree is not binary. Birth-death branching trees should be binary,
+       but tree resonstruction from data may lead to  3+ descendants from
+       a single parent node. Converting tree to binary, but PROCEED WITH CAUTION!
+       Input tree has ", max(countChildren), " nodes directly descending
+       from a single parent node. A binary tree would only have 2 descendant
+       nodes from each parent node."
+    )
+
+    if (!is.null(tree$metadata$cloneName_meta)) {
+      warningMessage <- paste0(warningMessage, " Tree throwing warning is ", tree$metadata$cloneName_meta)
+    }
+    warning(paste0(warningMessage, "\n"))
+
+    # Convert tree to binary
+    tree <- ape::multi2di(tree)
+  }
+
+  bdSampler.stan="
+  functions{
+    real logLikeBDcoalTimes_lpdf(real[] t, real lambda, real mu, real rho){
+      int numCoal;
+      real ll;
+      numCoal=size(t);
+
+      // Define the log likelihood
+      ll=0.0;
+      ll = ll + log(numCoal + 1); // First term in place of doing a factorial (I dont know how)
+      ll = ll + log(lambda - mu) + (numCoal)*log(lambda*rho) - (lambda - mu)*max(t);
+      ll = ll - log(rho*lambda + (lambda*(1-rho)-mu)*exp(-(lambda-mu)*max(t)));
+      for(k in 1:numCoal){
+        ll = ll + log(k); // Subsequent terms of factorial
+        ll = ll + 2*log(lambda-mu) - (lambda-mu)*t[k];
+        ll = ll - 2*log(rho*lambda + (lambda*(1-rho) - mu)*exp(-(lambda-mu)*t[k]));
+      }
+
+      return(ll);
+    }
+  }
+
+  data{
+    int<lower=1> nCoal; // Number of coalescence times
+    real t[nCoal];  // Coalescence times
+    real upperLambda; // Max growth rate allowed
+  }
+
+  parameters {
+    real<lower=0, upper=upperLambda> lambda;
+    real<lower=0, upper=lambda> mu;
+    real<lower=0, upper=1> rho;
+  }
+
+  model {
+    t ~ logLikeBDcoalTimes(lambda, mu, rho);
+  }
+  "
+
+  resultLengths <- suppressWarnings(internalLengths(tree))
+  if(exp(resultLengths$estimate*resultLengths$cloneAgeEstimate) > 1e15){
+    stop("Extremely low sampling probability (high expected population size)
+            will lead to inaccurate MCMC results due to inadequate machine
+            precision. Use maxLikelihood() or internalLengths() functions
+            instead, which are equipped to handle star-shaped trees.")
+  }
+
+  # Get n-1 coalescence times, removing the nth if given a tree with a stem
+  coal_times <- sort(ape::branching.times(tree))[c(1:(n-1))]
+  nCoal <- length(coal_times)
+
+  # Set input data
+  inData <- list("nCoal" = nCoal,
+                 "t" = coal_times,
+                 "upperLambda" = maxGrowthRate)
+
+  # Compile and run Rstan
+  stanr <- rstan::stan(model_code = bdSampler.stan,
+                       data = inData,
+                       chains = nChains,
+                       cores = nCores,
+                       iter = chainLength)
+
+  outList <- list(posterior=rstan::extract(stanr),
+                  res = stanr,
+                  tree = tree,
+                  dat = inData)
+
+  # Get growth rate and 95% CI, alos rough estimate of sampling probability
+  ptile <- c(alpha/2, 0.5, 1-alpha/2)
+  growthRateVec <- quantile(outList$posterior$lambda - outList$posterior$mu, ptile)
+  rhoVec <- quantile(outList$posterior$rho, ptile)
+
+  # Rough estimate of clone age
+  cloneAgeEstimate <- max(coal_times) + 1/growthRateVec[2]
+
+  runtime <- proc.time() - ptm
+
+  return(data.frame(
+    "lowerBound" = growthRateVec[1], "estimate" = growthRateVec[2],
+    "upperBound" = growthRateVec[3], "cloneAgeEstimate" = cloneAgeEstimate,
+    "sumInternalLengths" = resultLengths$sumInternalLengths,
+    "sumExternalLengths" = resultLengths$sumExternalLengths,
+    "extIntRatio" = resultLengths$extIntRatio,
+    "n" = n, "alpha" = alpha, "runtime_s" = runtime[["elapsed"]],
+    "method" = "BirthDeathMCMC", "samplingProbBallpark" = rhoVec[2]
+  ))
+
+}
+
+
+
+
 
 
 #' Check the inputs to growth rate functions
@@ -419,8 +595,6 @@ inputCheck <- function(tree, alpha) {
 
   return(NULL)
 }
-
-
 
 
 
