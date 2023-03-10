@@ -100,7 +100,7 @@ test_that("MCMC gices expected output", {
 
 test_that("MCMC gives expected error messages", {
   tree2 <- simUltra(a = 10, b = 0, cloneAge = 40, n = 20)
-  expect_error(birthDeathMCMC(tree2), regexp = "low sampling probability")
+  expect_warning(birthDeathMCMC(tree2), regexp = "Low sampling probability")
 
   mutTree <- simMut(a = 1, b = 0, cloneAge = 20, n = 20, nu = 10)
   expect_error(birthDeathMCMC(mutTree), regexp = "not ultrametric")
