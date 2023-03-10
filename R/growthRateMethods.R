@@ -494,11 +494,12 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
 #' Run stan model
 #' @noRd
 #'
-#' @description Takes a compiled stan model and runs it many times
+#' @description Takes a compiled stan model and runs it. Same params as
+#'  birthDeathMCMC and one additional param, stanModel, which is the
+#'  object of class stanmodel (essentially compiled stan). See rstan package
+#'  for more details
 #'
-#' @inheritParams birthDeathMCMC
 #' @param stanModel Compiled stan model, generated using rstan::stan_model
-#'
 #'
 #' @return A dataframe including the net growth rate estimate, confidence
 #'  intervals, and other important details (clone age estimate, runtime, n,
