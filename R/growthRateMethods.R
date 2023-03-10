@@ -418,8 +418,6 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
                            showProgress = TRUE, nChains = 3,
                            nCores = 1, chainLength = 2000){
 
-  ptm <- proc.time()
-
   if (!requireNamespace("rstan", quietly = TRUE)) {
     stop(
       "Package \"rstan\" must be installed to use birthDeathMCMC() function",
@@ -427,41 +425,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
     )
   }
 
-  if(inherits(tree, "list") & !inherits(tree, "phylo")){
-    stop("At the moment, MCMC can only handle a single tree (class phylo), not
-    a list of trees. This will be changed soon.")
-  }
-
-  # Basic check on input formatting and alpha value
-  inputCheck(tree, alpha)
-
-  # Get number of tips
-  n <- ape::Ntip(tree)
-
-  # Get the number of direct descendants from a node, identifying the nodes with > 2
-  countChildren <- table(tree$edge[, 1])
-
-  # Check if tree is binary branching
-  if (!max(countChildren) == 2) {
-    # Throw warning to user
-    warningMessage <- paste0(
-      "Tree is not binary. Birth-death branching trees should be binary,
-       but tree resonstruction from data may lead to  3+ descendants from
-       a single parent node. Converting tree to binary, but PROCEED WITH CAUTION!
-       Input tree has ", max(countChildren), " nodes directly descending
-       from a single parent node. A binary tree would only have 2 descendant
-       nodes from each parent node."
-    )
-
-    if (!is.null(tree$metadata$cloneName_meta)) {
-      warningMessage <- paste0(warningMessage, " Tree throwing warning is ", tree$metadata$cloneName_meta)
-    }
-    warning(paste0(warningMessage, "\n"))
-
-    # Convert tree to binary
-    tree <- ape::multi2di(tree)
-  }
-
+  # Stan code as string
   bdSampler.stan="
   functions{
     real logLikeBDcoalTimes_lpdf(real[] t, real lambda, real mu, real rho){
@@ -501,6 +465,78 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
   }
   "
 
+  # Compile stan model once
+  COMPILED_STAN=rstan::stan_model(model_code=bdSampler.stan)
+
+  # If we have a list of phylo objects instead of a single phylo object, call recursively
+  if (inherits(tree, "list") & inherits(tree[[1]], "phylo")) {
+    # Run birth-death MCMC model many times
+    df <- do.call(rbind, lapply(tree, runStan, stanModel = COMPILED_STAN,
+                                maxGrowthRate = maxGrowthRate, alpha = alpha,
+                                showProgress = showProgress, nChains = nChains,
+                                nCores = nCores, chainLength = chainLength))
+    df$cloneName_result <- names(tree)
+    return(df)
+  } else {
+    # Run stan model once
+    df <- runStan(tree, stanModel = COMPILED_STAN,
+                  maxGrowthRate = maxGrowthRate, alpha = alpha,
+                  showProgress = showProgress, nChains = nChains,
+                  nCores = nCores, chainLength = chainLength)
+    return(df)
+  }
+
+}
+
+
+#' Run stan model
+#'
+#' @description Takes a compiled stan model and runs it many times
+#'
+#' @inheritParams birthDeathMCMC
+#'
+#' @return A dataframe including the net growth rate estimate, confidence
+#'  intervals, and other important details (clone age estimate, runtime, n,
+#'  etc.)
+#'
+runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
+                      showProgress = TRUE, nChains = 3,
+                      nCores = 1, chainLength = 2000){
+
+  # Keep track of time to run each instance (excluding compile time)
+  ptm <- proc.time()
+
+  # Basic check on input formatting and alpha value
+  inputCheck(tree, alpha)
+
+  # Get number of tips
+  n <- ape::Ntip(tree)
+
+  # Get the number of direct descendants from a node, identifying the nodes with > 2
+  countChildren <- table(tree$edge[, 1])
+
+  # Check if tree is binary branching
+  if (!max(countChildren) == 2) {
+    # Throw warning to user
+    warningMessage <- paste0(
+      "Tree is not binary. Birth-death branching trees should be binary,
+       but tree resonstruction from data may lead to  3+ descendants from
+       a single parent node. Converting tree to binary, but PROCEED WITH CAUTION!
+       Input tree has ", max(countChildren), " nodes directly descending
+       from a single parent node. A binary tree would only have 2 descendant
+       nodes from each parent node."
+    )
+
+    if (!is.null(tree$metadata$cloneName_meta)) {
+      warningMessage <- paste0(warningMessage, " Tree throwing warning is ", tree$metadata$cloneName_meta)
+    }
+    warning(paste0(warningMessage, "\n"))
+
+    # Convert tree to binary
+    tree <- ape::multi2di(tree)
+  }
+
+
   resultLengths <- suppressWarnings(internalLengths(tree))
   if(exp(resultLengths$estimate*resultLengths$cloneAgeEstimate) > 1e15){
     stop("Extremely low sampling probability (high expected population size)
@@ -519,11 +555,11 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
                  "upperLambda" = maxGrowthRate)
 
   # Compile and run Rstan
-  stanr <- rstan::stan(model_code = bdSampler.stan,
-                       data = inData,
-                       chains = nChains,
-                       cores = nCores,
-                       iter = chainLength)
+  stanr <- sampling(stanModel,
+                    data = inData,
+                    chains = nChains,
+                    cores = nCores,
+                    iter = chainLength)
 
   outList <- list(posterior=rstan::extract(stanr),
                   res = stanr,
@@ -549,10 +585,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
     "n" = n, "alpha" = alpha, "runtime_s" = runtime[["elapsed"]],
     "method" = "BirthDeathMCMC", "samplingProbBallpark" = rhoVec[2]
   ))
-
 }
-
-
 
 
 

@@ -105,6 +105,7 @@ test_that("MCMC gives expected error messages", {
   mutTree <- simMut(a = 1, b = 0, cloneAge = 20, n = 20, nu = 10)
   expect_error(birthDeathMCMC(mutTree), regexp = "not ultrametric")
 
-  listTrees <- simUltra(a = 1, b = 0, cloneAge = 20, n = 20, nTrees = 2)
-  expect_error(birthDeathMCMC(listTrees), regexp = "can only handle a single tree")
+  numTrees <- 2
+  listTrees <- simUltra(a = 1, b = 0, cloneAge = 20, n = 20, nTrees = numTrees)
+  expect_equal(nrow(birthDeathMCMC(listTrees)), numTrees)
 })
