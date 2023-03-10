@@ -73,4 +73,3 @@ test_that("precBits too low throws error", {
 test_that("coal_to_tree produces ultrametric phylo object", {
   expect_true(ape::is.ultrametric(coal_to_tree(runif(9, min = 5, max = 20))))
 })
-

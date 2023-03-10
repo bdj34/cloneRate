@@ -285,10 +285,9 @@ ultra2mut <- function(tree, nu) {
 #' randomCoalTimes <- c(9.3, 7.8, 10.15, 11.23, 9.4, 8.8, 10.01, 13)
 #' tree <- coal_to_tree(randomCoalTimes)
 #'
-coal_to_tree <- function(coal_times){
-
+coal_to_tree <- function(coal_times) {
   # coal_times must be a vector of numbers
-  if(!inherits(coal_times, "numeric") | length(coal_times) < 2){
+  if (!inherits(coal_times, "numeric") | length(coal_times) < 2) {
     stop("coal_times input to coal_to_tree() function must a numeric vector")
   }
 

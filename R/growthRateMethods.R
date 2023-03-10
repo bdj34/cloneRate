@@ -416,8 +416,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #'
 birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
                            showProgress = TRUE, nChains = 3,
-                           nCores = 1, chainLength = 2000){
-
+                           nCores = 1, chainLength = 2000) {
   if (!requireNamespace("rstan", quietly = TRUE)) {
     stop(
       "Package \"rstan\" must be installed to use birthDeathMCMC() function",
@@ -426,7 +425,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
   }
 
   # Stan code as string
-  bdSampler.stan="
+  bdSampler.stan <- "
   functions{
     real logLikeBDcoalTimes_lpdf(real[] t, real lambda, real mu, real rho){
       int numCoal;
@@ -466,26 +465,29 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
   "
 
   # Compile stan model once
-  COMPILED_STAN=rstan::stan_model(model_code=bdSampler.stan)
+  COMPILED_STAN <- rstan::stan_model(model_code = bdSampler.stan)
 
   # If we have a list of phylo objects instead of a single phylo object, call recursively
   if (inherits(tree, "list") & inherits(tree[[1]], "phylo")) {
     # Run birth-death MCMC model many times
-    df <- do.call(rbind, lapply(tree, runStan, stanModel = COMPILED_STAN,
-                                maxGrowthRate = maxGrowthRate, alpha = alpha,
-                                showProgress = showProgress, nChains = nChains,
-                                nCores = nCores, chainLength = chainLength))
+    df <- do.call(rbind, lapply(tree, runStan,
+      stanModel = COMPILED_STAN,
+      maxGrowthRate = maxGrowthRate, alpha = alpha,
+      showProgress = showProgress, nChains = nChains,
+      nCores = nCores, chainLength = chainLength
+    ))
     df$cloneName_result <- names(tree)
     return(df)
   } else {
     # Run stan model once
-    df <- runStan(tree, stanModel = COMPILED_STAN,
-                  maxGrowthRate = maxGrowthRate, alpha = alpha,
-                  showProgress = showProgress, nChains = nChains,
-                  nCores = nCores, chainLength = chainLength)
+    df <- runStan(tree,
+      stanModel = COMPILED_STAN,
+      maxGrowthRate = maxGrowthRate, alpha = alpha,
+      showProgress = showProgress, nChains = nChains,
+      nCores = nCores, chainLength = chainLength
+    )
     return(df)
   }
-
 }
 
 
@@ -500,9 +502,8 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
 #'  etc.)
 #'
 runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
-                      showProgress = TRUE, nChains = 3,
-                      nCores = 1, chainLength = 2000){
-
+                    showProgress = TRUE, nChains = 3,
+                    nCores = 1, chainLength = 2000) {
   # Keep track of time to run each instance (excluding compile time)
   ptm <- proc.time()
 
@@ -538,7 +539,7 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
 
 
   resultLengths <- suppressWarnings(internalLengths(tree))
-  if(exp(resultLengths$estimate*resultLengths$cloneAgeEstimate) > 1e15){
+  if (exp(resultLengths$estimate * resultLengths$cloneAgeEstimate) > 1e15) {
     stop("Extremely low sampling probability (high expected population size)
             will lead to inaccurate MCMC results due to inadequate machine
             precision. Use maxLikelihood() or internalLengths() functions
@@ -546,33 +547,38 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
   }
 
   # Get n-1 coalescence times, removing the nth if given a tree with a stem
-  coal_times <- sort(ape::branching.times(tree))[c(1:(n-1))]
+  coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
   nCoal <- length(coal_times)
 
   # Set input data
-  inData <- list("nCoal" = nCoal,
-                 "t" = coal_times,
-                 "upperLambda" = maxGrowthRate)
+  inData <- list(
+    "nCoal" = nCoal,
+    "t" = coal_times,
+    "upperLambda" = maxGrowthRate
+  )
 
   # Compile and run Rstan
-  stanr <- sampling(stanModel,
-                    data = inData,
-                    chains = nChains,
-                    cores = nCores,
-                    iter = chainLength)
+  stanr <- rstan::sampling(stanModel,
+    data = inData,
+    chains = nChains,
+    cores = nCores,
+    iter = chainLength
+  )
 
-  outList <- list(posterior=rstan::extract(stanr),
-                  res = stanr,
-                  tree = tree,
-                  dat = inData)
+  outList <- list(
+    posterior = rstan::extract(stanr),
+    res = stanr,
+    tree = tree,
+    dat = inData
+  )
 
   # Get growth rate and 95% CI, alos rough estimate of sampling probability
-  ptile <- c(alpha/2, 0.5, 1-alpha/2)
+  ptile <- c(alpha / 2, 0.5, 1 - alpha / 2)
   growthRateVec <- quantile(outList$posterior$lambda - outList$posterior$mu, ptile)
   rhoVec <- quantile(outList$posterior$rho, ptile)
 
   # Rough estimate of clone age
-  cloneAgeEstimate <- max(coal_times) + 1/growthRateVec[2]
+  cloneAgeEstimate <- max(coal_times) + 1 / growthRateVec[2]
 
   runtime <- proc.time() - ptm
 
