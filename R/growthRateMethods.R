@@ -499,6 +499,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
 #'  object of class stanmodel (essentially compiled stan). See rstan package
 #'  for more details
 #'
+#' @inheritParams birthDeathMCMC
 #' @param stanModel Compiled stan model, generated using rstan::stan_model
 #'
 #' @keywords internal
@@ -546,10 +547,12 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
 
   resultLengths <- suppressWarnings(internalLengths(tree))
   if (exp(resultLengths$estimate * resultLengths$cloneAgeEstimate) > 1e15) {
-    stop("Extremely low sampling probability (high expected population size)
-            will lead to inaccurate MCMC results due to inadequate machine
-            precision. Use maxLikelihood() or internalLengths() functions
-            instead, which are equipped to handle star-shaped trees.")
+    warning("Low sampling probability (high expected population size)
+            may lead to inaccurate MCMC results due to inadequate machine
+            precision. If n (number of tips of the tree) is high, use
+            maxLikelihood() or internalLengths() functions instead, which are
+            equipped to handle star-shaped trees. For low n (n < 20), you may
+            be able to ignore this message.")
   }
 
   # Get n-1 coalescence times, removing the nth if given a tree with a stem
