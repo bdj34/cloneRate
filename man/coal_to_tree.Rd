@@ -20,6 +20,6 @@ merging lineages.
 \examples{
 # Generate an ape phylo tree with n tips from a vector of n-1 coalescence times
 randomCoalTimes <- c(9.3, 7.8, 10.15, 11.23, 9.4, 8.8, 10.01, 13)
-tree <- coal_to_tree(a = 1, b = 0.5, cloneAge = 20, n = 50)
+tree <- coal_to_tree(randomCoalTimes)
 
 }
