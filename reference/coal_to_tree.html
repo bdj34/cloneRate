@@ -83,8 +83,7 @@ phylogenetic tree with edge lengths in units of time.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Generate an ape phylo tree with n tips from a vector of n-1 coalescence times</span></span></span>
 <span class="r-in"><span><span class="va">randomCoalTimes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9.3</span>, <span class="fl">7.8</span>, <span class="fl">10.15</span>, <span class="fl">11.23</span>, <span class="fl">9.4</span>, <span class="fl">8.8</span>, <span class="fl">10.01</span>, <span class="fl">13</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">coal_to_tree</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0.5</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in coal_to_tree(a = 1, b = 0.5, cloneAge = 20, n = 50):</span> unused arguments (a = 1, b = 0.5, cloneAge = 20, n = 50)</span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">coal_to_tree</span><span class="op">(</span><span class="va">randomCoalTimes</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
