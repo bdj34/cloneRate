@@ -189,7 +189,7 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
 #' # Generate a list of mutation-based trees with a range of mutation rates
 #' tree_list <- simMut(
 #'   a = 1, b = 0.5, cloneAge = 40, n = 50,
-#'   nu = stats::runif(n = 10, min = 10, max = 20), nTrees = 5
+#'   nu = stats::runif(n = 5, min = 10, max = 20), nTrees = 5
 #' )
 #'
 simMut <- function(a, b, cloneAge, n, nu, nTrees = 1,
