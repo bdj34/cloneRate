@@ -8,7 +8,7 @@ birthDeathMCMC(
   tree,
   maxGrowthRate = 4,
   alpha = 0.05,
-  showProgress = TRUE,
+  verbose = TRUE,
   nChains = 3,
   nCores = 1,
   chainLength = 2000
@@ -23,7 +23,7 @@ will depend on the nature of the data}
 
 \item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
 
-\item{showProgress}{TRUE or FALSE, should the Rstan MCMC progress be printed?}
+\item{verbose}{TRUE or FALSE, should the Rstan MCMC intermediate output and progress be printed?}
 
 \item{nChains}{Number of chains to run in MCMC. Default is 3}
 

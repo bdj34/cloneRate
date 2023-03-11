@@ -397,7 +397,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #' @inheritParams internalLengths
 #' @param maxGrowthRate Sets upper bound on birth rate. Default is 4 but this
 #'  will depend on the nature of the data
-#' @param showProgress TRUE or FALSE, should the Rstan MCMC progress be printed?
+#' @param verbose TRUE or FALSE, should the Rstan MCMC intermediate output and progress be printed?
 #' @param nChains Number of chains to run in MCMC. Default is 3
 #' @param nCores Number of cores to perform MCMC. Default is 1, but chains can
 #'  be run in parallel
@@ -415,7 +415,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #' df <- birthDeathMCMC(cloneRate::exampleUltraTrees[[1]])
 #'
 birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
-                           showProgress = TRUE, nChains = 3,
+                           verbose = TRUE, nChains = 3,
                            nCores = 1, chainLength = 2000) {
   if (!requireNamespace("rstan", quietly = TRUE)) {
     stop(
@@ -473,7 +473,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
     df <- do.call(rbind, lapply(tree, runStan,
       stanModel = COMPILED_STAN,
       maxGrowthRate = maxGrowthRate, alpha = alpha,
-      showProgress = showProgress, nChains = nChains,
+      verbose = verbose, nChains = nChains,
       nCores = nCores, chainLength = chainLength
     ))
     df$cloneName_result <- names(tree)
@@ -483,7 +483,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
     df <- runStan(tree,
       stanModel = COMPILED_STAN,
       maxGrowthRate = maxGrowthRate, alpha = alpha,
-      showProgress = showProgress, nChains = nChains,
+      verbose = verbose, nChains = nChains,
       nCores = nCores, chainLength = chainLength
     )
     return(df)
@@ -509,7 +509,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
 #'
 #'
 runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
-                    showProgress = TRUE, nChains = 3,
+                    verbose = TRUE, nChains = 3,
                     nCores = 1, chainLength = 2000) {
   # Keep track of time to run each instance (excluding compile time)
   ptm <- proc.time()
@@ -566,13 +566,24 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
     "upperLambda" = maxGrowthRate
   )
 
-  # Run Rstan
-  stanr <- rstan::sampling(stanModel,
-    data = inData,
-    chains = nChains,
-    cores = nCores,
-    iter = chainLength
-  )
+  # Run Rstan, setting variable
+  if (verbose) {
+    stanr <- rstan::sampling(stanModel,
+      data = inData,
+      chains = nChains,
+      cores = nCores,
+      iter = chainLength,
+      verbose = TRUE
+    )
+  } else {
+    stanr <- rstan::sampling(stanModel,
+      data = inData,
+      chains = nChains,
+      cores = nCores,
+      iter = chainLength,
+      refresh = 0
+    )
+  }
 
   outList <- list(
     posterior = rstan::extract(stanr),
@@ -598,7 +609,8 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
     "sumExternalLengths" = resultLengths$sumExternalLengths,
     "extIntRatio" = resultLengths$extIntRatio,
     "n" = n, "alpha" = alpha, "runtime_s" = runtime[["elapsed"]],
-    "method" = "BirthDeathMCMC", "samplingProbBallpark" = rhoVec[2]
+    "method" = "BirthDeathMCMC", "samplingProbBallpark" = rhoVec[2],
+    "chainLength" = chainLength, "nChains" = nChains, "nCores" = nCores
   ))
 }
 

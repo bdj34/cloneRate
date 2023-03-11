@@ -1,7 +1,7 @@
 Type: Package
 Package: cloneRate
 Title: Estimate growth rates from phylogenetic trees
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: c(
     person("Brian", "Johnson", , "brian.d.johnson97@gmail.com", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-9477-4677")),
