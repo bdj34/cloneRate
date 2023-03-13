@@ -469,15 +469,28 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
 
   # If we have a list of phylo objects instead of a single phylo object, call recursively
   if (inherits(tree, "list") & inherits(tree[[1]], "phylo")) {
-    # Run birth-death MCMC model many times
-    df <- do.call(rbind, lapply(tree, runStan,
-      stanModel = COMPILED_STAN,
-      maxGrowthRate = maxGrowthRate, alpha = alpha,
-      verbose = verbose, nChains = nChains,
-      nCores = nCores, chainLength = chainLength
-    ))
-    df$cloneName_result <- names(tree)
-    return(df)
+    # Run birth-death MCMC model many times. Parallelize if possible
+    if(requireNamespace("parallel")){
+      df <- do.call(rbind, parallel::mclapply(tree, runStan,
+                                  stanModel = COMPILED_STAN,
+                                  maxGrowthRate = maxGrowthRate, alpha = alpha,
+                                  verbose = verbose, nChains = nChains,
+                                  nCores = if(nChains == nCores){nCores}else{1},
+                                  chainLength = chainLength,
+                                  mc.cores = if(nChains == nCores){1}else{nCores}
+      ))
+      df$cloneName_result <- names(tree)
+      return(df)
+    }else{
+      df <- do.call(rbind, lapply(tree, runStan,
+                                  stanModel = COMPILED_STAN,
+                                  maxGrowthRate = maxGrowthRate, alpha = alpha,
+                                  verbose = verbose, nChains = nChains,
+                                  nCores = nCores, chainLength = chainLength
+      ))
+      df$cloneName_result <- names(tree)
+      return(df)
+    }
   } else {
     # Run stan model once
     df <- runStan(tree,
