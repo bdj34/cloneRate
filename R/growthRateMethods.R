@@ -568,29 +568,45 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
 
   # Run Rstan, setting variable
   if (verbose) {
-    stanr <- rstan::sampling(stanModel,
-      data = inData,
-      chains = nChains,
-      cores = nCores,
-      iter = chainLength,
-      verbose = TRUE
-    )
+    stanr <- tryCatch.W.E({
+      rstan::sampling(stanModel,
+                      data = inData,
+                      chains = nChains,
+                      cores = nCores,
+                      iter = chainLength,
+                      verbose = TRUE
+      )
+    })
   } else {
-    stanr <- rstan::sampling(stanModel,
-      data = inData,
-      chains = nChains,
-      cores = nCores,
-      iter = chainLength,
-      refresh = 0
-    )
+    stanr <- tryCatch.W.E({
+      rstan::sampling(stanModel,
+                      data = inData,
+                      chains = nChains,
+                      cores = nCores,
+                      iter = chainLength,
+                      refresh = 0
+      )
+    })
   }
 
+  # stanr <- tryCatch.W.E({
+  #   rstan::sampling(stanModel,
+  #                   data = inData,
+  #                   chains = nChains,
+  #                   cores = nCores,
+  #                   iter = chainLength,
+  #                   verbose = TRUE
+  #   )
+  # })
+
   outList <- list(
-    posterior = rstan::extract(stanr),
-    res = stanr,
+    posterior = rstan::extract(stanr$value),
+    res = stanr$value,
     tree = tree,
     dat = inData
   )
+
+  warningMessage <- paste(unlist(stanr$warning), collapse = " ____ ")
 
   # Get growth rate and 95% CI, alos rough estimate of sampling probability
   ptile <- c(alpha / 2, 0.5, 1 - alpha / 2)
@@ -610,8 +626,10 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
     "extIntRatio" = resultLengths$extIntRatio,
     "n" = n, "alpha" = alpha, "runtime_s" = runtime[["elapsed"]],
     "method" = "BirthDeathMCMC", "samplingProbBallpark" = rhoVec[2],
-    "chainLength" = chainLength, "nChains" = nChains, "nCores" = nCores
+    "chainLength" = chainLength, "nChains" = nChains, "nCores" = nCores,
+    "warningMessage" = warningMessage
   ))
+
 }
 
 
@@ -759,3 +777,26 @@ moments <- function(tree, alpha = 0.05) {
     "method" = "moments"
   ))
 }
+
+
+#' Capture error and warning messages
+#'
+#' @description R utility function. Run
+#'  file.show(system.file("demo/error.catching.R")) for details)
+#'
+#' @param expr Expression of R code to run can capture output + warnings from
+#' @keywords internal
+#' @return list with value as expression output and warning as warning
+#'
+tryCatch.W.E <- function(expr)
+{
+  W <- NULL
+  w.handler <- function(w){ # warning handler
+    W <<- w
+    invokeRestart("muffleWarning")
+  }
+  list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
+                                   warning = w.handler),
+       warning = W)
+}
+
