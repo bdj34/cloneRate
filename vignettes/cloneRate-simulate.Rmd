@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 In this vignette, we'll walk through how we simulated a birth-death branching process to validate our growth rate methods. The simulation procedure is a direct implementation of results by Amaury Lambert in [a recent paper](https://pubmed.ncbi.nlm.nih.gov/29704514/). We'll show here that these results allow for extremely fast generation of a sampled tree of size $n$ from a birth-death process of time $T$ with fixed birth and death rates. The key point here is that we don't have to simulate this using computationally intensive algorithms (gillespie etc.); the math provides a shortcut which allows us to generate the results on a single core in under a second for a tree with 100 tips or about 8 seconds for a tree with 1000 tips! In R! 
 
-The applications of this fast generation of sampled trees are countless. For us, this results allowed us to simulate thousands of trees to check our methods for growth rate estimation from phylogenetic tree reconstruction, which is detailed in [our recent preprint.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) We'll reproduce this validation here.
+The applications of this fast generation of sampled trees are countless. For us, these results allowed us to simulate thousands of trees to check our methods for growth rate estimation from phylogenetic tree reconstruction, which is detailed in [our recent preprint.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/) We'll reproduce this validation here.
 
 ## Setup {-}
 First, we'll have to load the packages we want to use. We'll be plotting the trees 
