@@ -570,21 +570,21 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
   if (verbose) {
     stanr <- tryCatch.W.E({
       rstan::sampling(stanModel,
-                      data = inData,
-                      chains = nChains,
-                      cores = nCores,
-                      iter = chainLength,
-                      verbose = TRUE
+        data = inData,
+        chains = nChains,
+        cores = nCores,
+        iter = chainLength,
+        verbose = TRUE
       )
     })
   } else {
     stanr <- tryCatch.W.E({
       rstan::sampling(stanModel,
-                      data = inData,
-                      chains = nChains,
-                      cores = nCores,
-                      iter = chainLength,
-                      refresh = 0
+        data = inData,
+        chains = nChains,
+        cores = nCores,
+        iter = chainLength,
+        refresh = 0
       )
     })
   }
@@ -629,7 +629,6 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
     "chainLength" = chainLength, "nChains" = nChains, "nCores" = nCores,
     "warningMessage" = warningMessage
   ))
-
 }
 
 
@@ -784,19 +783,22 @@ moments <- function(tree, alpha = 0.05) {
 #' @description R utility function. Run
 #'  file.show(system.file("demo/error.catching.R")) for details)
 #'
+#' @noRd
 #' @param expr Expression of R code to run can capture output + warnings from
 #' @keywords internal
+#'
 #' @return list with value as expression output and warning as warning
 #'
-tryCatch.W.E <- function(expr)
-{
+tryCatch.W.E <- function(expr) {
   W <- NULL
-  w.handler <- function(w){ # warning handler
+  w.handler <- function(w) { # warning handler
     W <<- w
     invokeRestart("muffleWarning")
   }
-  list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
-                                   warning = w.handler),
-       warning = W)
+  list(
+    value = withCallingHandlers(tryCatch(expr, error = function(e) e),
+      warning = w.handler
+    ),
+    warning = W
+  )
 }
-
