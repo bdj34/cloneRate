@@ -107,13 +107,11 @@ n10_n30_lengths <- internalLengths(n10_n30_trees)
 n10_n30_both <- rbind(n10_n30_maxLike, n10_n30_lengths)
 ```
 
-Finally, we can add our `resultsCombined` data.frame from before, which
-has the results of applying `maxLikelihood()` and `internalLengths()` to
-the set of 500 ultrametric trees at `n = 100`.
+Add text here
 
 ```{r mergeAll}
-# Merge the results data.frames
-results_vary_n <- rbind(n10_n30_both, resultsCombined)
+#
+results_vary_n <- rbind(n10_n30_both)
 ```
 
 Let's make a plot for each of these, showing the performance. We'll use
@@ -137,7 +135,7 @@ ggplot(results_vary_n) +
     labels = c("Internal lengths", "Max. likelihood"),
     values = c("black", "#009E73")
   ) +
-  facet_wrap(~ factor(paste0("n = ", n), levels = c("n = 10", "n = 30", "n = 100")),
+  facet_wrap(~ factor(paste0("n = ", n), levels = c("n = 10", "n = 30")),
     ncol = 1, strip.position = "bottom", scales = "free", dir = "v"
   )
 ```
