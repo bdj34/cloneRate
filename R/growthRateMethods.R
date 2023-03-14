@@ -459,7 +459,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
     real<lower=-1000, upper=0> lgRho;
   }
 
-  model {
+  model { // Lack of specified priors indicates a uniform prior on the parameter bounds
     t ~ logLikeBDcoalTimes(lambda, mu, lgRho);
   }
   "
