@@ -427,7 +427,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
   # Stan code as string
   bdSampler.stan <- "
   functions{
-    real logLikeBDcoalTimes_lpdf(real[] t, real lambda, real mu, real rho){
+    real logLikeBDcoalTimes_lpdf(real[] t, real lambda, real mu, real lgRho){
       int numCoal;
       real ll;
       numCoal=size(t);
@@ -435,12 +435,12 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
       // Define the log likelihood
       ll=0.0;
       ll = ll + log(numCoal + 1); // First term in place of doing a factorial (I dont know how)
-      ll = ll + log(lambda - mu) + (numCoal)*log(lambda*rho) - (lambda - mu)*max(t);
-      ll = ll - log(rho*lambda + (lambda*(1-rho)-mu)*exp(-(lambda-mu)*max(t)));
+      ll = ll + log(lambda - mu) + (numCoal)*(log(lambda) + lgRho) - (lambda - mu)*max(t);
+      ll = ll - log(exp(lgRho)*lambda + (lambda*(1-exp(lgRho))-mu)*exp(-(lambda-mu)*max(t)));
       for(k in 1:numCoal){
         ll = ll + log(k); // Subsequent terms of factorial
         ll = ll + 2*log(lambda-mu) - (lambda-mu)*t[k];
-        ll = ll - 2*log(rho*lambda + (lambda*(1-rho) - mu)*exp(-(lambda-mu)*t[k]));
+        ll = ll - 2*log(exp(lgRho)*lambda + (lambda*(1-exp(lgRho)) - mu)*exp(-(lambda-mu)*t[k]));
       }
 
       return(ll);
@@ -456,11 +456,11 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
   parameters {
     real<lower=0, upper=upperLambda> lambda;
     real<lower=0, upper=lambda> mu;
-    real<lower=0, upper=1> rho;
+    real<lower=-1000, upper=0> lgRho;
   }
 
   model {
-    t ~ logLikeBDcoalTimes(lambda, mu, rho);
+    t ~ logLikeBDcoalTimes(lambda, mu, lgRho);
   }
   "
 
@@ -602,16 +602,6 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
     })
   }
 
-  # stanr <- tryCatch.W.E({
-  #   rstan::sampling(stanModel,
-  #                   data = inData,
-  #                   chains = nChains,
-  #                   cores = nCores,
-  #                   iter = chainLength,
-  #                   verbose = TRUE
-  #   )
-  # })
-
   outList <- list(
     posterior = rstan::extract(stanr$value),
     res = stanr$value,
@@ -624,7 +614,7 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
   # Get growth rate and 95% CI, alos rough estimate of sampling probability
   ptile <- c(alpha / 2, 0.5, 1 - alpha / 2)
   growthRateVec <- stats::quantile(outList$posterior$lambda - outList$posterior$mu, ptile)
-  rhoVec <- stats::quantile(outList$posterior$rho, ptile)
+  rhoVec <- exp(stats::quantile(outList$posterior$lgRho, ptile))
 
   # Rough estimate of clone age
   cloneAgeEstimate <- max(coal_times) + 1 / growthRateVec[2]
