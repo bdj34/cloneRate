@@ -557,16 +557,8 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
     tree <- ape::multi2di(tree)
   }
 
-
+  # Get internal lengths from our lengths function
   resultLengths <- suppressWarnings(internalLengths(tree))
-  if (exp(resultLengths$estimate * resultLengths$cloneAgeEstimate) > 1e15) {
-    warning("Low sampling probability (high expected population size)
-            may lead to inaccurate MCMC results due to inadequate machine
-            precision. If n (number of tips of the tree) is high, use
-            maxLikelihood() or internalLengths() functions instead, which are
-            equipped to handle star-shaped trees. For low n (n < 20), you may
-            be able to ignore this message.")
-  }
 
   # Get n-1 coalescence times, removing the nth if given a tree with a stem
   coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
