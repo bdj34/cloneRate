@@ -330,18 +330,18 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   # Only take n-1 coal times to avoid using "branching time" from stem node
   coal_times <- sort(ape::branching.times(tree))[c(1:(n - 1))]
 
-  # Log-likelihood function using the approximation for T large
+  # Negative Log-likelihood function using the approximation for T large
   # params[1]=a, params[2]=r=1/b
-  LL <- function(params) {
+  nLL <- function(params) {
     a <- params[1]
     r <- params[2]
     U <- (coal_times - a) * r
     sigmoid <- 1 / (1 + exp(-U))
-    ll <- sum(log(sigmoid)) + sum(log(1 - sigmoid)) + log(r) * length(U)
+    ll <- -(sum(log(sigmoid)) + sum(log(1 - sigmoid)) + log(r) * length(U))
   }
 
   # Calculate growth rate by maximizing log likelihood (using maxLik package)
-  growthRate <- maxLik::maxLik(LL, start = c(mean(coal_times), .1), )$estimate[2]
+  growthRate <- stats::optim(c(mean(coal_times), .1), nLL)$par[2]
 
   # Get other tree info (lengths)
   extLen <- sum(tree$edge.length[tree$edge[, 2] %in% c(1:n)])

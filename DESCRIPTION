@@ -24,7 +24,6 @@ BugReports: https://github.com/bdj34/cloneRate/issues
 Depends: R (>= 3.6.0)
 Imports:
     ape (>= 4.0),
-    maxLik (>= 1.4),
     Rmpfr (>= 0.8)
 Suggests:
     adephylo,
@@ -36,7 +35,6 @@ Suggests:
     parallel,
     rmarkdown,
     rstan,
-    spelling,
     survival,
     testthat (>= 3.0.0)
 VignetteBuilder:
