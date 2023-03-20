@@ -341,7 +341,13 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   }
 
   # Calculate growth rate by maximizing log likelihood (using maxLik package)
-  growthRate <- stats::optim(c(mean(coal_times), 1/stats::sd(coal_times)), nLL)$par[2]
+  growthRate <- stats::optim(
+    par = c(mean(coal_times), 1 / stats::sd(coal_times)),
+    fn = nLL,
+    method = "L-BFGS-B",
+    lower = c(-Inf, 0),
+    upper = c(Inf, Inf)
+  )$par[2]
 
   # Get other tree info (lengths)
   extLen <- sum(tree$edge.length[tree$edge[, 2] %in% c(1:n)])
@@ -470,23 +476,31 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
   # If we have a list of phylo objects instead of a single phylo object, call recursively
   if (inherits(tree, "list") & inherits(tree[[1]], "phylo")) {
     # Run birth-death MCMC model many times. Parallelize if possible
-    if(requireNamespace("parallel")){
+    if (requireNamespace("parallel")) {
       df <- do.call(rbind, parallel::mclapply(tree, runStan,
-                                  stanModel = COMPILED_STAN,
-                                  maxGrowthRate = maxGrowthRate, alpha = alpha,
-                                  verbose = verbose, nChains = nChains,
-                                  nCores = if(nChains == nCores){nCores}else{1},
-                                  chainLength = chainLength,
-                                  mc.cores = if(nChains == nCores){1}else{nCores}
+        stanModel = COMPILED_STAN,
+        maxGrowthRate = maxGrowthRate, alpha = alpha,
+        verbose = verbose, nChains = nChains,
+        nCores = if (nChains == nCores) {
+          nCores
+        } else {
+          1
+        },
+        chainLength = chainLength,
+        mc.cores = if (nChains == nCores) {
+          1
+        } else {
+          nCores
+        }
       ))
       df$cloneName_result <- names(tree)
       return(df)
-    }else{
+    } else {
       df <- do.call(rbind, lapply(tree, runStan,
-                                  stanModel = COMPILED_STAN,
-                                  maxGrowthRate = maxGrowthRate, alpha = alpha,
-                                  verbose = verbose, nChains = nChains,
-                                  nCores = nCores, chainLength = chainLength
+        stanModel = COMPILED_STAN,
+        maxGrowthRate = maxGrowthRate, alpha = alpha,
+        verbose = verbose, nChains = nChains,
+        nCores = nCores, chainLength = chainLength
       ))
       df$cloneName_result <- names(tree)
       return(df)
