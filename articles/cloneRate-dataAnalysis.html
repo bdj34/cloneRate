@@ -240,6 +240,8 @@ time-based, in units of years, so we should apply our
 <code class="sourceCode R"><span><span class="co"># Get maximum likelihood and internal lengths estimates</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">PD9478_subClone</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span><span class="co">#&gt; [1] 0.516</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">PD9478_subClone</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.601</span></span></code></pre></div>
@@ -305,17 +307,17 @@ function to the trees.</p>
 <span><span class="co"># Preview the output</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">resultsMaxLike</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                lowerBound  estimate upperBound</span></span>
-<span><span class="co">#&gt; PD34493_clone1 0.09731092 0.1687070  0.2401030</span></span>
-<span><span class="co">#&gt; PD34493_clone3 0.17678442 0.2315671  0.2863497</span></span>
-<span><span class="co">#&gt; PD34493_clone4 0.09426999 0.1957054  0.2971408</span></span>
-<span><span class="co">#&gt; PD41305_clone1 0.17395035 0.3301687  0.4863870</span></span>
-<span><span class="co">#&gt; PD41305_clone2 0.15909319 0.2758183  0.3925433</span></span>
-<span><span class="co">#&gt; PD41305_clone3 0.32745096 0.5435078  0.7595647</span></span>
+<span><span class="co">#&gt; PD34493_clone1 0.09735001 0.1687747  0.2401995</span></span>
+<span><span class="co">#&gt; PD34493_clone3 0.17683736 0.2316364  0.2864354</span></span>
+<span><span class="co">#&gt; PD34493_clone4 0.09429337 0.1957539  0.2972145</span></span>
+<span><span class="co">#&gt; PD41305_clone1 0.17389045 0.3300550  0.4862195</span></span>
+<span><span class="co">#&gt; PD41305_clone2 0.15905894 0.2757589  0.3924588</span></span>
+<span><span class="co">#&gt; PD41305_clone3 0.32744388 0.5434961  0.7595483</span></span>
 <span></span>
 <span><span class="co"># Print correlation coefficient of the estimates from the two methods</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">cor.test</a></span><span class="op">(</span><span class="va">resultsLengths</span><span class="op">$</span><span class="va">estimate</span>, <span class="va">resultsMaxLike</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       cor </span></span>
-<span><span class="co">#&gt; 0.9829595</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.9829561</span></span></code></pre></div>
 <p>Not bad! With a correlation coefficient around 0.98, the estimates
 from each method agree very well.</p>
 <div class="section level3">
