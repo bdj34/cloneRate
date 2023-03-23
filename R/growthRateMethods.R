@@ -337,16 +337,15 @@ maxLikelihood <- function(tree, alpha = 0.05) {
     r <- params[2]
     U <- (coal_times - a) * r
     sigmoid <- 1 / (1 + exp(-U))
-    ll <- -(sum(log(sigmoid)) + sum(log(1 - sigmoid)) + log(r) * length(U))
+    ll <- sum(log(sigmoid)) + sum(log(1 - sigmoid)) + log(r) * length(U)
+    return(-ll)
   }
 
   # Calculate growth rate by maximizing log likelihood (using maxLik package)
   growthRate <- stats::optim(
-    par = c(mean(coal_times), 1 / stats::sd(coal_times)),
+    par = c(mean(coal_times), (pi/sqrt(3)) / stats::sd(coal_times)),
     fn = nLL,
-    method = "L-BFGS-B",
-    lower = c(-Inf, 0),
-    upper = c(Inf, Inf)
+    method = "Nelder-Mead"
   )$par[2]
 
   # Get other tree info (lengths)
