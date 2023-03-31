@@ -599,28 +599,6 @@ more trees. Note: this will also take a few minutes.</p>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span><span class="va">n10_n30_lengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">n10_n30_trees</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Combine the estimates</span></span>
@@ -652,7 +630,8 @@ normalize this.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"n = "</span>, <span class="va">n</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n = 10"</span>, <span class="st">"n = 30"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    ncol <span class="op">=</span> <span class="fl">1</span>, strip.position <span class="op">=</span> <span class="st">"bottom"</span>, scales <span class="op">=</span> <span class="st">"free"</span>, dir <span class="op">=</span> <span class="st">"v"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 7 rows containing non-finite values (`stat_density()`).</span></span></code></pre></div>
 <p><img src="reproduce-simResults_files/figure-html/plot_vary_n-1.png" width="100%"></p>
 <p>As you can see, both estimates are highly dependent on the number of
 samples. If you’d like to see the same density values on the y-axis for
@@ -779,669 +758,9 @@ ranging from 0.1 to 1 per year, run for 40 years.</p>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
 <span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
 <span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
@@ -1609,60 +928,6 @@ ranging from 0.1 to 1 per year, run for 40 years.</p>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
@@ -1731,10 +996,6 @@ ranging from 0.1 to 1 per year, run for 40 years.</p>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
@@ -1752,20 +1013,6 @@ ranging from 0.1 to 1 per year, run for 40 years.</p>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span></span>
-<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
-<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
-<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
-<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
@@ -1874,6 +1121,722 @@ ranging from 0.1 to 1 per year, run for 40 years.</p>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): External to internal lengths ratio is less than or equal to 3,</span></span>
+<span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
+<span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(r): NaNs produced</span></span></code></pre></div>
@@ -1937,7 +1900,7 @@ methods. Hopefully, this will get rid of the very poor estimates.</p>
 <span></span>
 <span><span class="co"># How many did we cut</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_vary_r</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_vary_r_cut</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 32</span></span>
+<span><span class="co">#&gt; [1] 15</span></span>
 <span></span>
 <span><span class="co"># Plot, adding a vertical line at 0 because that's the error free estimate</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_vary_r_cut</span><span class="op">)</span> <span class="op">+</span></span>

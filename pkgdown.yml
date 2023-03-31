@@ -5,7 +5,7 @@ articles:
   reproduce-simResults: reproduce-simResults.html
   cloneRate-dataAnalysis: cloneRate-dataAnalysis.html
   cloneRate-simulate: cloneRate-simulate.html
-last_built: 2023-03-31T22:07Z
+last_built: 2023-03-31T22:40Z
 urls:
   reference: https://bdj34.github.io/cloneRate/reference
   article: https://bdj34.github.io/cloneRate/articles
