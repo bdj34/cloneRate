@@ -343,7 +343,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 
   # Calculate growth rate by maximizing log likelihood (using maxLik package)
   growthRate <- stats::optim(
-    par = c(mean(coal_times), (pi/sqrt(3)) / stats::sd(coal_times)),
+    par = c(mean(coal_times), (pi / sqrt(3)) / stats::sd(coal_times)),
     fn = nLL,
     method = "Nelder-Mead"
   )$par[2]

@@ -135,7 +135,9 @@
 #' Longitudinal validation data
 #'
 #' For three individuals with clonal expansions that can be estimated using our methods,
-#' we have longitudinal data to orthogonally validate these estimates, which is provided here.
+#' we have longitudinal data to orthogonally validate these estimates, which is included here.
+#' Additionally, for 13 clones with a driver gene matching a driver gene in the single cell
+#' data, but without a match to a specific clone, we include this longitudinal data as well.
 #'
 #' @format A \code{data.frame} containing all the information needed
 #' \describe{
@@ -145,7 +147,7 @@
 #'  \item{Gene}{Gene or genes with mutation that identifies the clone}
 #'  \item{Protein}{Protein affected by the mutation}
 #'  \item{cellType}{The type of cells used for sequencing}
-#'  \item{cloneName}{The name we use for the clone to match to single cell data}
+#'  \item{cloneName}{The name we use for the clone to match to single cell data, if applicable.}
 #' }
 #'
 #' @references These datasets were generated and annotated in:
