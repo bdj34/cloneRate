@@ -23,7 +23,8 @@ pd9478 <- data.frame(
   "Sample.ID" = patient, "Age" = ageVec, "VAF" = vafVec,
   "Gene" = driver, "cellType" = cellTypeVec,
   "Protein" = "Multiple",
-  "cloneName" = paste0(patient, "_1_clone1")
+  "cloneName" = paste0(patient, "_1_clone1"),
+  "source" = "Williams et al."
 )
 
 
@@ -178,6 +179,9 @@ all_fabre <- fitsOnly_cut[, c("Sample.ID", "Age", "VAF", "Gene", "Protein", "cel
 all_fabre$cloneName <- "No matching single-cell clone"
 all_fabre$cloneName[all_fabre$Sample.ID == "PD34493" & all_fabre$Gene == "SF3B1"] <- "PD34493_clone1"
 all_fabre$cloneName[all_fabre$Sample.ID == "PD41276" & all_fabre$Gene == "SF3B1"] <- "PD41276_clone1"
+
+# Include source information
+all_fabre$source <- "Fabre et al."
 
 # Only include the expansions that match a driver observed in any single-cell data.
 # Only the SF3B1 clones with exact clone matches are included because these are
