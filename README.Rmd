@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/bdj34/cloneRate/branch/main/graph/badge.svg)](https://app.codecov.io/gh/bdj34/cloneRate?branch=main)
 <!-- badges: end -->
 
-The goal of cloneRate is to provide easily accessible methods for estimating the growth rate of clones. The input should either be an ultrametric phylogenetic tree with edge lengths corresponding to time, or a non-ultrametric phylogenetic tree with edge lengths corresponding to mutation counts. This package provides the internal lengths and maximum likelihood methods for ultrametric trees and the shared mutations method for mutation-based trees, all of which are from our recent preprint [Estimating single cell clonal dynamics in human blood using coalescent theory](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1). 
+The goal of cloneRate is to provide easily accessible methods for estimating the growth rate of clones. The input should either be an ultrametric phylogenetic tree with edge lengths corresponding to time, or a non-ultrametric phylogenetic tree with edge lengths corresponding to mutation counts. This package provides the internal lengths and maximum likelihood methods for ultrametric trees and the shared mutations method for mutation-based trees, all of which are from our recent preprint [Estimating single cell clonal dynamics in human blood using coalescent theory](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2). 
 
 As a bonus, we provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching process. A direct result of [Amaury Lambert's work](https://pubmed.ncbi.nlm.nih.gov/29704514/), we use this fast simulation technique to validate our growth rate estimates.
 
@@ -99,7 +99,7 @@ Because we're simulating a new tree each time, the estimate will change with eac
 
 ### Estimate growth rate of many trees
 
-In our [paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1), we use simulated trees to test
+In our [paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2), we use simulated trees to test
 our growth rate estimates. As an example, let's load some simulated data
 that comes with our package, exampleUltraTrees has 100 ultrametric trees. 
 In the "metadata" data.frame we will find the ground truth growth rate, 
@@ -167,7 +167,7 @@ Our package comes with 42 clones annotated from four distinct publications, whic
 * [Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/) 
 * [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 
-The mathematical basis for our estimates is detailed in full in [our paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/).
+The mathematical basis for our estimates is detailed in full in [our paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
 
 Simulating the birth-death trees is a direct result of the work of Amaury Lambert in:
 

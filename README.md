@@ -19,7 +19,7 @@ maximum likelihood methods for ultrametric trees and the shared
 mutations method for mutation-based trees, all of which are from our
 recent preprint [Estimating single cell clonal dynamics in human blood
 using coalescent
-theory](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1).
+theory](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2).
 
 As a bonus, we provide a fast way to simulate the coalescent (tree) of a
 sample from a birth-death branching process. A direct result of [Amaury
@@ -108,7 +108,7 @@ with each run, so don’t be worried if your results don’t match exactly.
 ### Estimate growth rate of many trees
 
 In our
-[paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1), we
+[paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2), we
 use simulated trees to test our growth rate estimates. As an example,
 let’s load some simulated data that comes with our package,
 exampleUltraTrees has 100 ultrametric trees. In the “metadata”
@@ -188,7 +188,7 @@ are three clones profiled at two different timepoints, meaning there are
 - [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 
 The mathematical basis for our estimates is detailed in full in [our
-paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v1/).
+paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
 
 Simulating the birth-death trees is a direct result of the work of
 Amaury Lambert in:
