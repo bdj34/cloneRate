@@ -342,11 +342,11 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   }
 
   # Calculate growth rate by maximizing log likelihood (using maxLik package)
-  growthRate <- stats::optim(
+  growthRate <- suppressWarnings(stats::optim(
     par = c(mean(coal_times), (pi / sqrt(3)) / stats::sd(coal_times)),
     fn = nLL,
     method = "Nelder-Mead"
-  )$par[2]
+  ))$par[2]
 
   # Get other tree info (lengths)
   extLen <- sum(tree$edge.length[tree$edge[, 2] %in% c(1:n)])
