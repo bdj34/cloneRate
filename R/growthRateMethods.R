@@ -341,7 +341,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
     return(-ll)
   }
 
-  # Calculate growth rate by maximizing log likelihood (using maxLik package)
+  # Calculate growth rate by maximizing log likelihood
   growthRate <- suppressWarnings(stats::optim(
     par = c(mean(coal_times), (pi / sqrt(3)) / stats::sd(coal_times)),
     fn = nLL,
