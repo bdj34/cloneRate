@@ -94,7 +94,7 @@ paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
 They implement Phylofit in Rstan, in a very similar manner to our
 birth-death MCMC. First, we compile the Stan code:
 
-```{r stanCode}
+```{r stanCode, eval = FALSE}
 stan.code <- "functions{
 real glogistic_lpdf(real[] t, real S, real tm, real T,real N){
 int n;
@@ -138,7 +138,7 @@ in a function similar to our other functions for estimating the growth
 rate. We've made some cosmetic changes, but nothing that will affect the
 Phylofit (no ACF) output for the estimated growth rate:
 
-```{r phylofit}
+```{r phylofit, eval = FALSE}
 # Note that this will only work for binary trees
 phylofit <- function(ultratree, nChain = 3, nCores = 1, minLN=4, maxLN=7,
                      chainLength = 20000, alpha = 0.05){
