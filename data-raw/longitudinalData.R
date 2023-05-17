@@ -3,7 +3,6 @@
 library(car)
 library(ggplot2)
 
-
 ####################### Williams et al. ########################################
 # We actually have to manually add the longitudinal data from the Williams paper
 # based on the information contained in https://github.com/NickWilliamsSanger/mpn_phylogenies_and_evolution
