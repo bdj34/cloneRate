@@ -14,15 +14,6 @@ See ape package documentation for details on class \code{phylo} objects.
 Names of each \code{phylo} object (tree) in the list matches the naming used
 in the sources and also includes driver, age, and clone number.
 }
-\source{
-\url{https://pubmed.ncbi.nlm.nih.gov/35058638/}
-
-\url{https://pubmed.ncbi.nlm.nih.gov/35650442/}
-
-\url{https://pubmed.ncbi.nlm.nih.gov/35650444/}
-
-\url{https://pubmed.ncbi.nlm.nih.gov/33621486/}
-}
 \usage{
 data(realCloneData)
 }
