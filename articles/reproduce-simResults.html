@@ -283,8 +283,7 @@ various <code>n</code> values.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"n = "</span>, <span class="va">n</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"n = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">n_vec</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>             ncol <span class="op">=</span> <span class="fl">1</span>, strip.position <span class="op">=</span> <span class="st">"bottom"</span>, scales <span class="op">=</span> <span class="st">"free"</span>, dir <span class="op">=</span> <span class="st">"v"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 rows containing non-finite values (`stat_density()`).</span></span></code></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="reproduce-simResults_files/figure-html/plot_vary_n-1.png" width="100%"></p>
 <p>As you can see, both estimates are highly dependent on the number of
 samples. If you’d like to see the same density values on the y-axis for
@@ -641,7 +640,7 @@ this will get rid of the very poor estimates.</p>
 <span></span>
 <span><span class="co"># How many did we cut</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1100</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1090</span></span></code></pre></div>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot the estimates after the diagnostic</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span> <span class="op">+</span></span>
@@ -713,10 +712,10 @@ lengths method:</p>
 <span>           <span class="st">"Max likelihood"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">normRMSE_before_maxLike</span>, <span class="va">normRMSE_after_maxLike</span>,</span>
 <span>                                 <span class="va">coverage_before_maxLike</span>, <span class="va">coverage_after_maxLike</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                         Value   Lengths Max.likelihood</span></span>
-<span><span class="co">#&gt; 1                 RMSE before 0.4199809      0.4865400</span></span>
-<span><span class="co">#&gt; 2                  RMSE after 0.1651779      0.1620973</span></span>
-<span><span class="co">#&gt; 3 Coverage probability before 0.8964000      0.8571000</span></span>
-<span><span class="co">#&gt; 4  Coverage probability after 0.9484270      0.9233708</span></span></code></pre></div>
+<span><span class="co">#&gt; 1                 RMSE before 0.4235209      0.4927940</span></span>
+<span><span class="co">#&gt; 2                  RMSE after 0.1639574      0.1623545</span></span>
+<span><span class="co">#&gt; 3 Coverage probability before 0.9007000      0.8612000</span></span>
+<span><span class="co">#&gt; 4  Coverage probability after 0.9521886      0.9225589</span></span></code></pre></div>
 </div>
 </div>
 </div>
