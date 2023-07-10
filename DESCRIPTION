@@ -34,6 +34,7 @@ Suggests:
     ggsurvfit,
     knitr,
     parallel,
+    RcppEigen,
     rmarkdown,
     rstan,
     survival,
