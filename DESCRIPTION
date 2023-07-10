@@ -27,6 +27,7 @@ Imports:
     Rmpfr (>= 0.8)
 Suggests:
     adephylo,
+    BH,
     car,
     covr,
     ggplot2,
