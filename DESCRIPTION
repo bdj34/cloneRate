@@ -1,9 +1,10 @@
 Type: Package
 Package: cloneRate
-Title: Estimate growth rates from phylogenetic trees
+Title: Estimate Growth Rates from Phylogenetic Trees
 Version: 0.1.0
 Authors@R: c(
-    person("Brian", "Johnson", , "brian.d.johnson97@gmail.com", role = c("cre", "aut"),
+    person("Brian", "Johnson", email = "brian.d.johnson97@gmail.com", 
+           role = c("cre", "aut", "cph"),
            comment = c(ORCID = "0000-0002-9477-4677")),
     person("Yubo", "Shuai", role = "aut"),
     person("Jason", "Schweinsberg", role = "aut",
@@ -11,12 +12,15 @@ Authors@R: c(
     person("Kit", "Curtius", role = "aut",
            comment = c(ORCID = "0000-0002-2678-0960"))
   )
-Description: Methods to quickly estimate the net growth rate of a
+Description: Quickly estimate the net growth rate of a
     population or clone whose growth can be approximated by a birth-death
-    branching process.  Input should be phylogenetic trees of clones with
+    branching process.  Input should be phylogenetic tree(s) of clone(s) with
     edge lengths corresponding to either time or mutations. Based on
-    coalescent results in "Estimating single cell clonal dynamics in human
-    blood using coalescent theory", Johnson et al. 2023.
+    coalescent results in Johnson et al. 2023 (under review at Bioinformatics). 
+    bioRxiv preprint available at <doi:10.1101/2023.02.24.529817>. Simulation
+    techniques as well as growth rate methods build on prior work from
+    Lambert A. (2018) <doi:10.1016/j.tpb.2018.04.005> and Stadler T. (2009)
+    <doi:10.1016/j.jtbi.2009.07.018>.
 License: MIT + file LICENSE
 URL: https://github.com/bdj34/cloneRate,
     https://bdj34.github.io/cloneRate/

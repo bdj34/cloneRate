@@ -28,25 +28,17 @@ fast simulation technique to validate our growth rate estimates.
 
 ## Installation
 
-You can install the development version of cloneRate from
-[GitHub](https://github.com/) with:
+You can install cloneRate from CRAN with:
 
 ``` r
-# Install devtools if you don't have it already
-install.packages(setdiff("devtools", rownames(installed.packages())))
-
-# Install 
-devtools::install_github("bdj34/cloneRate")
+# Install from CRAN 
+install.packages("cloneRate", dependencies = TRUE)
 ```
 
-For this basic tutorial and our vignettes, we will also use several
-other packages, which can all be installed from CRAN. Because these are
-listed as packages we suggest, running the following command will
-install them along with the vignettes.
-
-``` r
-devtools::install_github("bdj34/cloneRate", build_vignettes = TRUE, dependencies = TRUE)
-```
+For this basic tutorial and our vignettes, we will also use a few other
+packages, which can all be installed from CRAN. Because these are listed
+as packages we suggest, running the above command (setting “dependencies
+= TRUE”) will install them along with the vignettes.
 
 Alternatively, you can install them manually:
 
@@ -56,8 +48,8 @@ install.packages(setdiff(c("ggplot2", "ggsurvfit", "survival", "car"), rownames(
 
 ## Example
 
-We’ll walk through simulating a single tree and plotting it, then apply
-our growth rate methods.
+We’ll walk through simulating a single tree and plotting it. Then we’ll
+apply our growth rate methods.
 
 ### Simulate data
 
@@ -94,12 +86,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.501"
+#> [1] "Max. likelihood estimate = 0.493"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.488"
+#> [1] "Internal lengths estimate = 0.507"
 ```
 
 Because we’re simulating a new tree each time, the estimate will change
@@ -163,7 +155,7 @@ rmse <- unlist(lapply(
 
 print(rmse)
 #>    lengths    maxLike 
-#> 0.09823356 0.09333771
+#> 0.09119116 0.08756432
 ```
 
 As expected, maximum likelihood performs the best. Note that this may

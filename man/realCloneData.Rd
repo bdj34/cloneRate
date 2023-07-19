@@ -35,5 +35,4 @@ These datasets were generated and annotated in:
 \href{https://pubmed.ncbi.nlm.nih.gov/35650444/}{Fabre et al. 2022}
 \href{https://pubmed.ncbi.nlm.nih.gov/33621486/}{Van Egeren et al. 2021}
 }
-\keyword{hematopoiesis}
-\keyword{phylogenetics,}
+\keyword{datasets}

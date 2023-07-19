@@ -27,24 +27,17 @@ As a bonus, we provide a fast way to simulate the coalescent (tree) of a sample 
 
 ## Installation
 
-You can install the development version of cloneRate from
-[GitHub](https://github.com/) with:
+You can install cloneRate from CRAN with:
 
 ``` r
-# Install devtools if you don't have it already
-install.packages(setdiff("devtools", rownames(installed.packages())))
-
-# Install 
-devtools::install_github("bdj34/cloneRate")
+# Install from CRAN 
+install.packages("cloneRate", dependencies = TRUE)
 ```
 
-For this basic tutorial and our vignettes, we will also use several other packages, 
+For this basic tutorial and our vignettes, we will also use a few other packages, 
 which can all be installed from CRAN. Because these are listed as packages we suggest, 
-running the following command will install them along with the vignettes.
-
-``` r
-devtools::install_github("bdj34/cloneRate", build_vignettes = TRUE, dependencies = TRUE)
-```
+running the above command (setting "dependencies = TRUE") will install them along
+with the vignettes.
 
 Alternatively, you can install them manually:
 
@@ -54,7 +47,7 @@ install.packages(setdiff(c("ggplot2", "ggsurvfit", "survival", "car"), rownames(
 
 ## Example
 
-We'll walk through simulating a single tree and plotting it, then apply our growth rate methods. 
+We'll walk through simulating a single tree and plotting it. Then we'll apply our growth rate methods. 
 
 ### Simulate data 
 

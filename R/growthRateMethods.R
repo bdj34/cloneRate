@@ -277,7 +277,7 @@ sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
 #'
 #' @inheritParams internalLengths
 #'
-#' @return A dataframe including the net growth rate estimate, confidence
+#' @returns A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (clone age estimate, runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths] which uses an alternatvie method for
 #'  growth rate estimation from an ultrametric tree.
@@ -409,7 +409,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #' @param chainLength Number of iterations for each chain in MCMC. Default is
 #'  2000, increase if stan tells you to
 #'
-#' @return A dataframe including the net growth rate estimate, confidence
+#' @returns A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (clone age estimate, runtime, n,
 #'     etc.)
 #' @seealso [cloneRate::internalLengths] [cloneRate::maxLikelihood] which use
@@ -529,7 +529,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
 #' @param stanModel Compiled stan model, generated using rstan::stan_model
 #'
 #' @keywords internal
-#' @return A dataframe including the net growth rate estimate, confidence
+#' @returns A dataframe including the net growth rate estimate, confidence
 #'  intervals, and other important details (clone age estimate, runtime, n,
 #'  etc.)
 #'
@@ -651,7 +651,7 @@ runStan <- function(tree, stanModel, maxGrowthRate = 4, alpha = 0.05,
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence
 #'     intervals used with default of alpha = 0.05 (95 percent confidence intervals)
 #' @keywords internal
-#' @return NULL
+#' @returns NULL
 #'
 inputCheck <- function(tree, alpha) {
   # Must be of class phylo
@@ -795,7 +795,7 @@ moments <- function(tree, alpha = 0.05) {
 #' @param expr Expression of R code to run can capture output + warnings from
 #' @keywords internal
 #'
-#' @return list with value as expression output and warning as warning
+#' @returns list with value as expression output and warning as warning
 #'
 tryCatch.W.E <- function(expr) {
   W <- NULL

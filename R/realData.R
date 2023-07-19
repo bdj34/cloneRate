@@ -22,7 +22,6 @@
 #' [Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/)
 #' [Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/)
 #' [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
-#' @keywords phylogenetics, hematopoiesis
 #' @examples
 #' # Plot full reconstructed tree from donor PD34493
 #' ape::plot.phylo(cloneRate::realCloneData[["fullTrees"]][["PD34493"]],

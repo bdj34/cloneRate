@@ -19,7 +19,7 @@ frequency in units of time or mutations, and normalized site frequency. If a
 list of trees is input, output will be a list of such data.frames.
 }
 \description{
-\code{siteFrequency()} returns a data.frame with the frequency in
+\code{siteFrequency()} calculates the site frequency in
 units of time or mutations, as well as a normalized frequency.
 }
 \examples{

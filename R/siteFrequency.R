@@ -1,6 +1,6 @@
 #' Get site frequency spectrum of a tree
 #'
-#' @description `siteFrequency()` returns a data.frame with the frequency in
+#' @description `siteFrequency()` calculates the site frequency in
 #'  units of time or mutations, as well as a normalized frequency.
 #'
 #' @param tree An ultrametric or mutation-based tree subset to include only the
@@ -105,7 +105,7 @@ siteFrequency <- function(tree, includeStem = F) {
 #'
 #' @param tree of class 'phylo'
 #'
-#' @return data.frame with one column containing node numbers and the other
+#' @returns data.frame with one column containing node numbers and the other
 #'   containing the number of tips descending from the given node
 #'
 #' @noRd

@@ -1,3 +1,11 @@
+# cloneRate 0.2.0
+
+## Update for CRAN submission
+
+* Change installation instructions in README
+* Update title and description
+* Small changes to function documentation
+
 # cloneRate 0.1.0
 
 ## Add birth-death MCMC

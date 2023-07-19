@@ -47,9 +47,4 @@ This data set was created for the cloneRate package using
 coalescent theory approaches described in "The coalescent of a sample from a
 binary branching process", Lambert A., Theor. Pop. Bio. 2018.
 }
-\keyword{Coalescent}
-\keyword{Point}
-\keyword{Process}
-\keyword{birth-death}
-\keyword{phylogenetics,}
-\keyword{trees,}
+\keyword{datasets}

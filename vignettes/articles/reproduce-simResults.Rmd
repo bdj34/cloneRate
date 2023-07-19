@@ -87,11 +87,11 @@ al.](https://www.nature.com/articles/s41586-021-04312-6) and [Mitchell
 et al.](https://www.nature.com/articles/s41586-022-04786-y), see Emily
 Mitchell's github:
 <https://github.com/emily-mitchell/normal_haematopoiesis/blob/main/1_functions/farm_only/phylofit.R>.
-Here, we'll include the code from Emily Mithcell's github in a slightly
-simplified form, as we don't want to apply the Aberrant Cell Fraction
+For reproducibility, we'll include the code from Emily Mithcell's github in a 
+slightly simplified form, as we don't want to apply the Aberrant Cell Fraction
 (ACF) implementation of Phylofit, for reasons detailed in [our
 paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
-They implement Phylofit in Rstan, in a very similar manner to our
+They implement Phylofit in Rstan, in a similar manner to the
 birth-death MCMC. First, we compile the Stan code:
 
 ```{r stanCode, eval = FALSE}

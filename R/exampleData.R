@@ -28,7 +28,6 @@
 #' @references This data set was created for the cloneRate package using
 #' coalescent theory approaches described in "The coalescent of a sample from a
 #' binary branching process", Lambert A., Theor. Pop. Bio. 2018.
-#' @keywords phylogenetics, birth-death trees, Coalescent Point Process.
 #' @examples
 #' # Plot first of 100 trees
 #' ape::plot.phylo(cloneRate::exampleUltraTrees[[1]],
@@ -76,7 +75,6 @@
 #' @references This data set was created for the cloneRate package using
 #' coalescent theory approaches described in "The coalescent of a sample from a
 #' binary branching process", Lambert A., Theor. Pop. Bio. 2018.
-#' @keywords phylogenetics, birth-death trees, Coalescent Point Process
 #' @examples
 #' # Plot first of 100 trees
 #' ape::plot.phylo(cloneRate::exampleMutTrees[[1]],

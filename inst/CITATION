@@ -1,7 +1,7 @@
 citHeader("To cite cloneRate in publications use:")
 
-citEntry(
-  entry    = "Article",
+bibentry(
+  bibtype    = "Article",
   title    = "Estimating single cell clonal dynamics in human blood
 using coalescent theory",
   author   = "Brian Johnson, Yubo Shuai, Jason Schweinsberg, Kit Curtius",

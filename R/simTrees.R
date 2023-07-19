@@ -21,7 +21,7 @@
 #' @param nCores Integer indicating the number of cores to use if parallel pkg
 #'  is installed. Default is 1.
 #'
-#' @return An ape object of class "phylo" representing the ultrametric
+#' @returns An ape object of class "phylo" representing the ultrametric
 #'   phylogenetic tree with edge lengths in units of time. Tree metadata is
 #'   located in the 'metadata' data.frame included in each "phylo" object. If
 #'   'nTrees' param is greater than 1, simUltra returns a list of objects of
@@ -175,7 +175,7 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
 #' @param nCores Integer indicating the number of cores to use if parallel pkg
 #'  is installed. Default is 1.
 #'
-#' @return An ape object of class "phylo" representing the ultrametric
+#' @returns An ape object of class "phylo" representing the ultrametric
 #'   phylogenetic tree with edge lengths in units of time. Tree metadata is
 #'   located in the 'metadata' data.frame included in each "phylo" object. If
 #'   'nTrees' param is greater than 1, simUltra returns a list of objects of
@@ -221,7 +221,7 @@ simMut <- function(a, b, cloneAge, n, nu, nTrees = 1,
 #'   vector of mutation rates with length equal to the number of input trees.
 #'   Make sure time units are consistent in nu and tree$edge.length
 #'
-#' @return An ape object of class "phylo" representing the phylogenetic tree
+#' @returns An ape object of class "phylo" representing the phylogenetic tree
 #'   with edge lengths in units of mutations. Value of mutation rate will be
 #'   added to 'metadata' data.frame of output tree if such a data.frame exists
 #'   in the input tree. Otherwise, mutation rate value will be added to "phylo"
@@ -276,7 +276,7 @@ ultra2mut <- function(tree, nu) {
 #'
 #' @param coal_times A numeric vector of coalescence times
 #'
-#' @return An ape object of class "phylo" representing the ultrametric
+#' @returns An ape object of class "phylo" representing the ultrametric
 #'   phylogenetic tree with edge lengths in units of time.
 #' @export
 #'
@@ -356,7 +356,7 @@ coal_to_tree <- function(coal_times) {
 #' @param alpha value defined in simUltra(), of class "mpfr"
 #' @param precBits mpfr param for handling high precision numbers
 #' @noRd
-#' @return An mpfr number equal to the chosen coalescence time
+#' @returns An mpfr number equal to the chosen coalescence time
 #' @importFrom Rmpfr "mpfr"
 #'
 inv_cdf_coal_times <- function(y, net, a, alpha, precBits) {
@@ -386,7 +386,7 @@ inv_cdf_coal_times <- function(y, net, a, alpha, precBits) {
 #'   split/coalescence
 #' @param nTrees Integer indicating the number of trees to be generated
 #' @noRd
-#' @return NULL
+#' @returns NULL
 #'
 inputCheck_simTree <- function(a, b, cloneAge, n, precBits, addStem, nTrees,
                                nCores) {
