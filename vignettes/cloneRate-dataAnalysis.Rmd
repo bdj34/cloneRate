@@ -12,10 +12,11 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  fig.align = 'center',
   collapse = TRUE,
   comment = "#>",
-  out.width = "100%",
-  dpi = 300
+  out.width = "80%",
+  dpi = 150
 )
 ```
 
@@ -119,7 +120,7 @@ of phylogenetic trees in R.
 
 Let's plot the tree:
 
-```{r firstTreePlot, fig.asp = 0.8, fig.width = 7}
+```{r firstTreePlot, fig.asp = 0.8, fig.width = 5.5}
 # Plot the full tree from individual PD9478 at timepoint 1
 PD9478 <- fullTrees.list$PD9478_1
 
@@ -137,7 +138,7 @@ title(main = "PD9478 full tree", ylab = "Time (years)")
 
 If you went through the [simulation vignette](cloneRate-simulate.html), you'll notice that this tree looks quite a bit different than the ones we simulated. In the above tree, there is a clear example of a somatic clonal expansion. We know from the authors who produced this data (see [Williams et al. Fig. 3 PD9478](https://www.nature.com/articles/s41586-021-04312-6/figures/3)), that all the sampled cells within this clone have a mutation in the JAK2 gene (which occurs along the red edge) and the DNMT3A gene (which occurs along the blue edge). Both of these mutations are known to be important in clonal expansions in blood. Let's look more closely at the clone and see what we can learn from the tree. 
 
-```{r plotSubclone, fig.asp = 0.8, fig.width = 7}
+```{r plotSubclone, fig.asp = 0.8, fig.width = 5.5}
 # Load the clone tree from our cloneTrees.list
 PD9478_subClone <- cloneTrees.list[["PD9478_1_clone1"]]
 
@@ -176,7 +177,7 @@ Oof! Looks like we have a warning...
 
 It says that two of the trees we input "PD5847_1_clone1" and "PD4781_1_clone1" are not binary branching trees. This means that one node has more than 2 direct descendants. In this case, it's not a big deal. We know that these trees are resconstructed from mutation data, so this could just mean that we picked up two divisions which happened without mutations occurring in between. Let's plot one of them so we can see where this happens
 
-```{r plotNonBinary, fig.asp = 0.8, fig.width = 7}
+```{r plotNonBinary, fig.asp = 0.8, fig.width = 5.5}
 # Plot, highlighting the 3 descendants of node 76. Then add scale and title
 plot.phylo(cloneTrees.list$PD5847_1_clone1,
   edge.width = 2,

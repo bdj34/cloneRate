@@ -10,7 +10,7 @@ using coalescent theory",
   volume   = NA,
   number   = NA,
   pages    = NA,
-  url      = "NA",
+  url      = "https://doi.org/10.1101/2023.02.24.529817",
   textVersion = paste(
     "Johnson, B., Shuai, Y., Schweinsberg, J., Curtius, K. Estimating single cell clonal dynamics in human blood
     using coalescent theory. 2023."

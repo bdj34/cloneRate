@@ -9,7 +9,7 @@ birthDeathMCMC(
   maxGrowthRate = 4,
   alpha = 0.05,
   verbose = TRUE,
-  nChains = 3,
+  nChains = 4,
   nCores = 1,
   chainLength = 2000
 )
@@ -25,13 +25,13 @@ will depend on the nature of the data}
 
 \item{verbose}{TRUE or FALSE, should the Rstan MCMC intermediate output and progress be printed?}
 
-\item{nChains}{Number of chains to run in MCMC. Default is 3}
+\item{nChains}{Number of chains to run in MCMC. Default is 4}
 
 \item{nCores}{Number of cores to perform MCMC. Default is 1, but chains can
 be run in parallel}
 
 \item{chainLength}{Number of iterations for each chain in MCMC. Default is
-2000, increase if stan tells you to}
+2000 (1000 warm-up + 1000 sampling), increase if stan tells you to}
 }
 \value{
 A dataframe including the net growth rate estimate, confidence

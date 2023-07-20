@@ -403,11 +403,11 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #' @param maxGrowthRate Sets upper bound on birth rate. Default is 4 but this
 #'  will depend on the nature of the data
 #' @param verbose TRUE or FALSE, should the Rstan MCMC intermediate output and progress be printed?
-#' @param nChains Number of chains to run in MCMC. Default is 3
+#' @param nChains Number of chains to run in MCMC. Default is 4
 #' @param nCores Number of cores to perform MCMC. Default is 1, but chains can
 #'  be run in parallel
 #' @param chainLength Number of iterations for each chain in MCMC. Default is
-#'  2000, increase if stan tells you to
+#'  2000 (1000 warm-up + 1000 sampling), increase if stan tells you to
 #'
 #' @returns A dataframe including the net growth rate estimate, confidence
 #'     intervals, and other important details (clone age estimate, runtime, n,
@@ -420,64 +420,15 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #' df <- birthDeathMCMC(cloneRate::exampleUltraTrees[[1]])
 #'
 birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
-                           verbose = TRUE, nChains = 3,
+                           verbose = TRUE, nChains = 4,
                            nCores = 1, chainLength = 2000) {
-  if (!requireNamespace("rstan", quietly = TRUE)) {
-    stop(
-      "Package \"rstan\" must be installed to use birthDeathMCMC() function",
-      call. = T
-    )
-  }
-
-  # Stan code as string
-  bdSampler.stan <- "
-  functions{
-    real logLikeBDcoalTimes_lpdf(real[] t, real lambda, real mu, real lgRho){
-      int numCoal;
-      real ll;
-      numCoal=size(t);
-
-      // Define the log likelihood
-      ll=0.0;
-      ll = ll + log(numCoal + 1); // First term in place of doing a factorial (I dont know how)
-      ll = ll + log(lambda - mu) + (numCoal)*(log(lambda) + lgRho) - (lambda - mu)*max(t);
-      ll = ll - log(exp(lgRho)*lambda + (lambda*(1-exp(lgRho))-mu)*exp(-(lambda-mu)*max(t)));
-      for(k in 1:numCoal){
-        ll = ll + log(k); // Subsequent terms of factorial
-        ll = ll + 2*log(lambda-mu) - (lambda-mu)*t[k];
-        ll = ll - 2*log(exp(lgRho)*lambda + (lambda*(1-exp(lgRho)) - mu)*exp(-(lambda-mu)*t[k]));
-      }
-
-      return(ll);
-    }
-  }
-
-  data{
-    int<lower=1> nCoal; // Number of coalescence times
-    real t[nCoal];  // Coalescence times
-    real upperLambda; // Max growth rate allowed
-  }
-
-  parameters {
-    real<lower=0, upper=upperLambda> lambda;
-    real<lower=0, upper=lambda> mu;
-    real<lower=-1000, upper=0> lgRho;
-  }
-
-  model { // Lack of specified priors indicates a uniform prior on the parameter bounds
-    t ~ logLikeBDcoalTimes(lambda, mu, lgRho);
-  }
-  "
-
-  # Compile stan model once
-  COMPILED_STAN <- rstan::stan_model(model_code = bdSampler.stan)
 
   # If we have a list of phylo objects instead of a single phylo object, call recursively
   if (inherits(tree, "list") & inherits(tree[[1]], "phylo")) {
     # Run birth-death MCMC model many times. Parallelize if possible
     if (requireNamespace("parallel")) {
       df <- do.call(rbind, parallel::mclapply(tree, runStan,
-        stanModel = COMPILED_STAN,
+        stanModel = stanmodels$bdSampler,
         maxGrowthRate = maxGrowthRate, alpha = alpha,
         verbose = verbose, nChains = nChains,
         nCores = if (nChains == nCores) {
@@ -496,7 +447,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
       return(df)
     } else {
       df <- do.call(rbind, lapply(tree, runStan,
-        stanModel = COMPILED_STAN,
+        stanModel = stanmodels$bdSampler,
         maxGrowthRate = maxGrowthRate, alpha = alpha,
         verbose = verbose, nChains = nChains,
         nCores = nCores, chainLength = chainLength
@@ -507,7 +458,7 @@ birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
   } else {
     # Run stan model once
     df <- runStan(tree,
-      stanModel = COMPILED_STAN,
+      stanModel = stanmodels$bdSampler,
       maxGrowthRate = maxGrowthRate, alpha = alpha,
       verbose = verbose, nChains = nChains,
       nCores = nCores, chainLength = chainLength

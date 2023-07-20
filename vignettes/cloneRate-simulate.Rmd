@@ -12,10 +12,11 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  fig.align = 'center',
   collapse = TRUE,
   comment = "#>",
-  out.width = "100%",
-  dpi = 300
+  out.width = "80%",
+  dpi = 150
 )
 ```
 
@@ -89,7 +90,7 @@ We see that the columns are:
 
 Now let's plot the tree.
 
-```{r plotOne, fig.asp = 0.8, fig.width = 7}
+```{r plotOne, fig.asp = 0.8, fig.width = 5.5}
 plot.phylo(tree, direction = "downwards", show.tip.label = FALSE)
 axisPhylo(side = 2, backward = FALSE, las = 1)
 title(main = "Simulated tree", ylab = "Time")
@@ -130,7 +131,7 @@ resultsLengths <- internalLengths(tree.list)
 
 We gave each method 100 trees to estimate, let's plot these estimates. Remember that all the input trees had a growth rate of 1, so we want these estimates to be close to 1. We'll use ggplot's density plot for this:
 
-```{r plotEstimates, fig.asp = 0.8, fig.width = 7}
+```{r plotEstimates, fig.asp = 0.8, fig.width = 5.5}
 # Combine for ggplot formatting
 resultsCombined <- rbind(resultsLengths, resultsMaxLike)
 
@@ -186,7 +187,7 @@ resultsShared <- sharedMuts(mutTree.list, nu = 10)
 
 Let's plot the estimates all together. First, we'll combine the data.frames produced. The `sharedMuts()` function outputs an additional column corresponding to the mutation rate `nu`. Because of this, using rbind on the full data.frames will give an error. We only want to look at the estimates for now, so we'll just combine the necessary columns from each data.frame.
 
-```{r plotAll, fig.asp = 0.8, fig.width = 7}
+```{r plotAll, fig.asp = 0.8, fig.width = 5.5}
 # Combine the columns with the estimates
 colsUse <- c("lowerBound", "estimate", "upperBound", "method")
 resultsAll <- rbind(resultsShared[, colsUse], resultsCombined[, colsUse])
@@ -330,7 +331,7 @@ results_vary_n <- rbind(n10_n30_both, resultsCombined)
 
 Let's make a plot for each of these, showing the performance. We'll use `ggplot2::facet_wrap()` in order to show the same plot at various `n` values. Although we have a different number of trees from the `n = 100` case, the density plot will normalize this.
 
-```{r plot_vary_n, fig.asp = 0.8, fig.width = 7}
+```{r plot_vary_n, fig.asp = 0.8, fig.width = 5.5}
 ggplot(results_vary_n) +
   geom_density(aes(x = estimate, color = method), linewidth = 1.5) +
   geom_vline(xintercept = exampleUltraTrees[[1]]$metadata$r) +
@@ -378,7 +379,7 @@ tree3 <- simUltra(a = 1, b = .5, cloneAge = 120, n = 50)
 
 Now, let's plot using `par()` to show all three in one plot
 
-```{r plot_vary_r, fig.asp = 0.4, fig.width = 7}
+```{r plot_vary_r, fig.asp = 0.4, fig.width = 5.5}
 par(mfrow = c(1, 3))
 ape::plot.phylo(tree1, direction = "downwards", show.tip.label = F, main = "r = 2, cloneAge = 30")
 ape::plot.phylo(tree2, direction = "downwards", show.tip.label = F, main = "r = 0.5, cloneAge = 30")
@@ -410,7 +411,7 @@ vary_r_trees <- simUltra(a = a_vec, b = b_vec, cloneAge = 40, n = 50, nTrees = l
 
 If we were to run the code above, we could analyze it the same as we have done, with our `internalLengths()` and `maxLikelihood()` functions. However, we'd also have to apply our diagnostic, which tells us which clones are good candidates for our method, and which are not. If we run a clone that's not a good candidate, we'll get a warning. Let's generate a tree with a very low growth rate and plot it.
 
-```{r slowClone, fig.asp = 0.8, fig.width = 7}
+```{r slowClone, fig.asp = 0.8, fig.width = 5.5}
 # Let's call it slowClone
 slowClone <- simUltra(a = .15, b = .05, n = 50, cloneAge = 40)
 
