@@ -44,8 +44,7 @@ growth rate using the likelihood from Stadler 2009 "On incomplete sampling
 under birth–death models and connections to the sampling-based coalescent"
 }
 \examples{
-smallTree <- simUltra(a=1, b=0, cloneAge = 20, n=15)
-df <- birthDeathMCMC(smallTree, chainLength = 200)
+df <- birthDeathMCMC(cloneRate::exampleUltraTrees[[1]])
 
 }
 \seealso{
