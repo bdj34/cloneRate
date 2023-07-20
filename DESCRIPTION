@@ -38,12 +38,10 @@ Suggests:
     ggsurvfit,
     knitr,
     parallel,
-    Rcpp (>= 0.12.0),
     RcppEigen,
     RcppParallel,
     rmarkdown,
     rstan (>= 2.21.0),
-    StanHeaders (>= 2.21.0),
     survival,
     testthat (>= 3.0.0)
 VignetteBuilder:
