@@ -38,12 +38,15 @@ Suggests:
     ggsurvfit,
     knitr,
     parallel,
-    RcppEigen,
-    RcppParallel,
     rmarkdown,
     rstan (>= 2.21.0),
     survival,
     testthat (>= 3.0.0)
+LinkingTo: 
+    Rcpp,
+    RcppEigen,
+    RcppParallel,
+    StanHeaders
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
