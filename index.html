@@ -5,13 +5,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content='Methods to quickly estimate the net growth rate of a
+<meta name="description" content="Quickly estimate the net growth rate of a
     population or clone whose growth can be approximated by a birth-death
-    branching process.  Input should be phylogenetic trees of clones with
+    branching process.  Input should be phylogenetic tree(s) of clone(s) with
     edge lengths corresponding to either time or mutations. Based on
-    coalescent results in "Estimating single cell clonal dynamics in human
-    blood using coalescent theory", Johnson et al. 2023.'>
-<title>Estimate growth rates from phylogenetic trees • cloneRate</title>
+    coalescent results in Johnson et al. 2023 (under review at Bioinformatics). 
+    bioRxiv preprint available at &lt;doi:10.1101/2023.02.24.529817&gt;. Simulation
+    techniques as well as growth rate methods build on prior work from
+    Lambert A. (2018) &lt;doi:10.1016/j.tpb.2018.04.005&gt; and Stadler T. (2009)
+    &lt;doi:10.1016/j.jtbi.2009.07.018&gt;.">
+<title>Estimate Growth Rates from Phylogenetic Trees • cloneRate</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -22,13 +25,16 @@
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Estimate growth rates from phylogenetic trees">
-<meta property="og:description" content='Methods to quickly estimate the net growth rate of a
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Estimate Growth Rates from Phylogenetic Trees">
+<meta property="og:description" content="Quickly estimate the net growth rate of a
     population or clone whose growth can be approximated by a birth-death
-    branching process.  Input should be phylogenetic trees of clones with
+    branching process.  Input should be phylogenetic tree(s) of clone(s) with
     edge lengths corresponding to either time or mutations. Based on
-    coalescent results in "Estimating single cell clonal dynamics in human
-    blood using coalescent theory", Johnson et al. 2023.'>
+    coalescent results in Johnson et al. 2023 (under review at Bioinformatics). 
+    bioRxiv preprint available at &lt;doi:10.1101/2023.02.24.529817&gt;. Simulation
+    techniques as well as growth rate methods build on prior work from
+    Lambert A. (2018) &lt;doi:10.1016/j.tpb.2018.04.005&gt; and Stadler T. (2009)
+    &lt;doi:10.1016/j.jtbi.2009.07.018&gt;.">
 <meta property="og:image" content="https://bdj34.github.io/cloneRate/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -43,7 +49,7 @@
     
     <a class="navbar-brand me-2" href="index.html">cloneRate</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,33 +100,30 @@
 <!-- badges: start -->
 
 <p>The goal of cloneRate is to provide easily accessible methods for estimating the growth rate of clones. The input should either be an ultrametric phylogenetic tree with edge lengths corresponding to time, or a non-ultrametric phylogenetic tree with edge lengths corresponding to mutation counts. This package provides the internal lengths and maximum likelihood methods for ultrametric trees and the shared mutations method for mutation-based trees, all of which are from our recent preprint <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2" class="external-link">Estimating single cell clonal dynamics in human blood using coalescent theory</a>.</p>
-<p>As a bonus, we provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching process. A direct result of <a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Amaury Lambert’s work</a>, we use this fast simulation technique to validate our growth rate estimates.</p>
+<p>We provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching process. A direct result of <a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Amaury Lambert’s work</a>, we use this fast simulation technique to validate our growth rate estimates.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of cloneRate from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of cloneRate from <a href="https://github.com/" class="external-link">GitHub</a>. For this basic tutorial and our vignettes, we will also use a few other packages, which can all be installed from CRAN. Because these are listed as packages we ‘suggest’, running the following command (with “dependencies = TRUE”) will install them along with the vignettes.:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install devtools if you don't have it already</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="st">"devtools"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
+<span> </span>
 <span><span class="co"># Install </span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"bdj34/cloneRate"</span><span class="op">)</span></span></code></pre></div>
-<p>For this basic tutorial and our vignettes, we will also use several other packages, which can all be installed from CRAN. Because these are listed as packages we suggest, running the following command will install them along with the vignettes.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"bdj34/cloneRate"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"bdj34/cloneRate"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can install them manually:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ggplot2"</span>, <span class="st">"ggsurvfit"</span>, <span class="st">"survival"</span>, <span class="st">"car"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>We’ll walk through simulating a single tree and plotting it, then apply our growth rate methods.</p>
+<p>We’ll walk through simulating a single tree and plotting it. Then we’ll apply our growth rate methods.</p>
 <div class="section level3">
 <h3 id="simulate-data">Simulate data<a class="anchor" aria-label="anchor" href="#simulate-data"></a>
 </h3>
 <p>We can simulate a sample of size n from a birth-death tree as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bdj34/cloneRate" class="external-link">cloneRate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://ape-package.ird.fr/" class="external-link">ape</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -128,7 +131,7 @@
 <span><span class="co"># Generate a sampled tree with 100 tips from a 20 year birth-death process with birth rate a=1 and death rate b=0.5</span></span>
 <span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0.5</span>, cloneAge <span class="op">=</span> <span class="fl">40</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <p>Now that we have simulated the tree, let’s plot it:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot, then add scale and title</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">tree</span>,</span>
 <span>  direction <span class="op">=</span> <span class="st">"downwards"</span>,</span>
@@ -142,28 +145,28 @@
 <h3 id="estimate-growth-rate-of-one-tree">Estimate growth rate of one tree<a class="anchor" aria-label="anchor" href="#estimate-growth-rate-of-one-tree"></a>
 </h3>
 <p>We can use this tree as input to our methods for growth rate estimation:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Estimate the growth rate r=a-b=0.5 using maximum likelihood</span></span>
 <span><span class="va">maxLike.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Max. likelihood estimate = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">maxLike.df</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Max. likelihood estimate = 0.501"</span></span>
+<span><span class="co">#&gt; [1] "Max. likelihood estimate = 0.526"</span></span>
 <span></span>
 <span><span class="co"># Estimate the growth rate r=a-b=0.5 using internal lengths</span></span>
 <span><span class="va">intLengths.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Internal lengths estimate = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">intLengths.df</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Internal lengths estimate = 0.488"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Internal lengths estimate = 0.512"</span></span></code></pre></div>
 <p>Because we’re simulating a new tree each time, the estimate will change with each run, so don’t be worried if your results don’t match exactly.</p>
 </div>
 <div class="section level3">
 <h3 id="estimate-growth-rate-of-many-trees">Estimate growth rate of many trees<a class="anchor" aria-label="anchor" href="#estimate-growth-rate-of-many-trees"></a>
 </h3>
 <p>In our <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2" class="external-link">paper</a>, we use simulated trees to test our growth rate estimates. As an example, let’s load some simulated data that comes with our package, exampleUltraTrees has 100 ultrametric trees. In the “metadata” data.frame we will find the ground truth growth rate, which in this case is 1. Let’s apply our methods to all 100 trees.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Here we are applying two methods to all of the ultrametric trees</span></span>
 <span><span class="va">resultsUltraMaxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">exampleUltraTrees</span><span class="op">)</span></span>
 <span><span class="va">resultsUltraLengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">exampleUltraTrees</span><span class="op">)</span></span></code></pre></div>
 <p>Notice how the functions <code><a href="reference/maxLikelihood.html">maxLikelihood()</a></code> and <code><a href="reference/internalLengths.html">internalLengths()</a></code> can take as input either a single tree or a list of trees. Either way, the output is a <code>data.frame</code> containing the results. Now that we have 100 estimates on 100 different trees from 2 different methods, let’s plot the distributions</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Combine all into one df for plotting. This works because the columns are the same</span></span>
 <span><span class="va">resultsCombined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">resultsUltraMaxLike</span>, <span class="va">resultsUltraLengths</span><span class="op">)</span></span>
 <span></span>
@@ -181,7 +184,7 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Internal lengths"</span>, <span class="st">"Max. likelihood"</span><span class="op">)</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"#009E73"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plotExample-1.png" width="100%"></p>
 <p>Finally, let’s compute the root mean square error (RMSE) of the estimates. We expect maximum likelihood to perform the best by RMSE, but 100 is a relatively small sample size so anything could happen…</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate the RMSE</span></span>
 <span><span class="va">groundTruth</span> <span class="op">&lt;-</span> <span class="va">exampleUltraTrees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">r</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">rmse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
@@ -193,9 +196,9 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rmse</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike </span></span>
-<span><span class="co">#&gt; 0.09823356 0.09333771</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.09119116 0.08756432</span></span></code></pre></div>
 <p>As expected, maximum likelihood performs the best. Note that this may change if we regenerate the data. For more details, see the <a href="https://bdj34.github.io/cloneRate/">cloneRate website</a> or vignettes:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"cloneRate-dataAnalysis"</span>, package <span class="op">=</span> <span class="st">"cloneRate"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"cloneRate-simulate"</span>, package <span class="op">=</span> <span class="st">"cloneRate"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -244,7 +247,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Brian Johnson <br><small class="roles"> Maintainer, author </small> <a href="https://orcid.org/0000-0002-9477-4677" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Brian Johnson <br><small class="roles"> Maintainer, author, copyright holder </small> <a href="https://orcid.org/0000-0002-9477-4677" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Yubo Shuai <br><small class="roles"> Author </small>  </li>
 <li>Jason Schweinsberg <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-4152-0059" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Kit Curtius <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-2678-0960" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>

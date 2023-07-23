@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cloneRate</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,11 +142,12 @@ plotting. The palette is taken from <a href="https://davidmathlogic.com/colorbli
 applied in <a href="https://www.nature.com/articles/s41586-021-04312-6" class="external-link">Williams et
 al.</a> and <a href="https://www.nature.com/articles/s41586-022-04786-y" class="external-link">Mitchell et
 al.</a>, see Emily Mitchell’s github: <a href="https://github.com/emily-mitchell/normal_haematopoiesis/blob/main/1_functions/farm_only/phylofit.R" class="external-link uri">https://github.com/emily-mitchell/normal_haematopoiesis/blob/main/1_functions/farm_only/phylofit.R</a>.
-Here, we’ll include the code from Emily Mithcell’s github in a slightly
-simplified form, as we don’t want to apply the Aberrant Cell Fraction
-(ACF) implementation of Phylofit, for reasons detailed in <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-paper</a>. They implement Phylofit in Rstan, in a very similar manner to
-our birth-death MCMC. First, we compile the Stan code:</p>
+For reproducibility, we’ll include the code from Emily Mithcell’s github
+in a slightly simplified form, as we don’t want to apply the Aberrant
+Cell Fraction (ACF) implementation of Phylofit, for reasons detailed in
+<a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
+paper</a>. They implement Phylofit in Rstan, in a similar manner to the
+birth-death MCMC. First, we compile the Stan code:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stan.code</span> <span class="op">&lt;-</span> <span class="st">"functions{</span></span>
 <span><span class="st">real glogistic_lpdf(real[] t, real S, real tm, real T,real N){</span></span>
@@ -640,7 +641,7 @@ this will get rid of the very poor estimates.</p>
 <span></span>
 <span><span class="co"># How many did we cut</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1115</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1072</span></span></code></pre></div>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot the estimates after the diagnostic</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span> <span class="op">+</span></span>
@@ -712,10 +713,10 @@ lengths method:</p>
 <span>           <span class="st">"Max likelihood"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">normRMSE_before_maxLike</span>, <span class="va">normRMSE_after_maxLike</span>,</span>
 <span>                                 <span class="va">coverage_before_maxLike</span>, <span class="va">coverage_after_maxLike</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                         Value   Lengths Max.likelihood</span></span>
-<span><span class="co">#&gt; 1                 RMSE before 0.4193610      0.4797730</span></span>
-<span><span class="co">#&gt; 2                  RMSE after 0.1632779      0.1610091</span></span>
-<span><span class="co">#&gt; 3 Coverage probability before 0.8989000      0.8596000</span></span>
-<span><span class="co">#&gt; 4  Coverage probability after 0.9522791      0.9259426</span></span></code></pre></div>
+<span><span class="co">#&gt; 1                 RMSE before 0.4412620      0.5002142</span></span>
+<span><span class="co">#&gt; 2                  RMSE after 0.1651965      0.1625389</span></span>
+<span><span class="co">#&gt; 3 Coverage probability before 0.8984000      0.8574000</span></span>
+<span><span class="co">#&gt; 4  Coverage probability after 0.9500448      0.9219310</span></span></code></pre></div>
 </div>
 </div>
 </div>
