@@ -1,21 +1,12 @@
 ## R CMD check results
 
-0 errors | 0 warnings | 3 notes
+0 errors | 0 warnings | 2 notes
 
 * This is a new release.
 
 
-* checking installed package size ... NOTE
-    installed size is  5.3Mb
-    sub-directories of 1Mb or more:
-      doc    2.4Mb
-      libs   1.7Mb
-
-  Shared object (".so") under libs required for portability. Workflow 
-  implemented according to rstan guidelines.
-
-
-* checking for GNU extensions in Makefiles ... NOTE
-  GNU make is a SystemRequirements.
+* Examples with CPU (user + system) or elapsed time > 5s
+                   user system elapsed
+  birthDeathMCMC 47.155   0.11  47.503
   
-  GNU make required for rstan.
+  Running MCMC with suggested settings takes > 5 seconds

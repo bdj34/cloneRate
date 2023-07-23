@@ -6,8 +6,6 @@
 * Move rstan from suggests to imports
 * Update rstan methods to be consistent with rstantools recommendations
 * Change installation instructions in README
-* Update title and description
-* Small changes to function documentation
 
 # cloneRate 0.1.0
 
