@@ -19,7 +19,7 @@ internalLengths <- function(tree, alpha = 0.05) {
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
   if (inherits(tree, "list") & !inherits(tree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
-    return.df <- do.call(rbind, lapply(tree, internalLengths))
+    return.df <- do.call(rbind, lapply(tree, internalLengths, alpha = alpha))
     return.df$cloneName_result <- names(tree)
     return(return.df)
   }
@@ -292,7 +292,7 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   # If we have a list of phylo objects instead of a single phylo object, call recursively
   if (inherits(tree, "list") & !inherits(tree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
-    return.df <- do.call(rbind, lapply(tree, maxLikelihood))
+    return.df <- do.call(rbind, lapply(tree, maxLikelihood, alpha = alpha))
     return.df$cloneName_result <- names(tree)
     return(return.df)
   }
@@ -654,7 +654,7 @@ moments <- function(tree, alpha = 0.05) {
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
   if (inherits(tree, "list") & !inherits(tree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
-    return.df <- do.call(rbind, lapply(tree, moments))
+    return.df <- do.call(rbind, lapply(tree, moments, alpha = alpha))
     return.df$cloneName_result <- names(tree)
     return(return.df)
   }
