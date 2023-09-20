@@ -99,12 +99,12 @@
 </div>
 <!-- badges: start -->
 
-<p>The goal of cloneRate is to provide easily accessible methods for estimating the growth rate of clones. The input should either be an ultrametric phylogenetic tree with edge lengths corresponding to time, or a non-ultrametric phylogenetic tree with edge lengths corresponding to mutation counts. This package provides the internal lengths and maximum likelihood methods for ultrametric trees and the shared mutations method for mutation-based trees, all of which are from our recent preprint <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2" class="external-link">Estimating single cell clonal dynamics in human blood using coalescent theory</a>.</p>
-<p>We provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching process. A direct result of <a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Amaury Lambert’s work</a>, we use this fast simulation technique to validate our growth rate estimates.</p>
+<p>The goal of cloneRate is to provide easily accessible methods for estimating the growth rate of clones. The input should either be an ultrametric phylogenetic tree with edge lengths corresponding to time, or a non-ultrametric phylogenetic tree with edge lengths corresponding to mutation counts. This package provides the internal lengths and maximum likelihood methods for ultrametric trees and the shared mutations method for mutation-based trees, all of which are from our recent paper <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">cloneRate: fast estimation of single-cell clonal dynamics using coalescent theory</a>. We also provide a birth-death Markov Chain Monte Carlo (MCMC) approach using the probability density derived in Eq. 5 of <a href="https://pubmed.ncbi.nlm.nih.gov/19631666/" class="external-link">Tanja Stadler’s work</a>.</p>
+<p>To test our methods, we provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching process, which is a direct result of <a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Amaury Lambert’s work</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of cloneRate from <a href="https://github.com/" class="external-link">GitHub</a>. For this basic tutorial and our vignettes, we will also use a few other packages, which can all be installed from CRAN. Because these are listed as packages we ‘suggest’, running the following command (with “dependencies = TRUE”) will install them along with the vignettes.:</p>
+<p>You can install the development version of cloneRate from <a href="https://github.com/" class="external-link">GitHub</a>. For this basic tutorial and our vignettes, we will also use a few other packages, which can all be installed from CRAN. Because these are listed as packages we ‘suggest’, running the following command (with <code>dependencies = TRUE</code>) will install them along with the vignettes:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install devtools if you don't have it already</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="st">"devtools"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -149,18 +149,18 @@
 <code class="sourceCode R"><span><span class="co"># Estimate the growth rate r=a-b=0.5 using maximum likelihood</span></span>
 <span><span class="va">maxLike.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Max. likelihood estimate = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">maxLike.df</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Max. likelihood estimate = 0.526"</span></span>
+<span><span class="co">#&gt; [1] "Max. likelihood estimate = 0.457"</span></span>
 <span></span>
 <span><span class="co"># Estimate the growth rate r=a-b=0.5 using internal lengths</span></span>
 <span><span class="va">intLengths.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Internal lengths estimate = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">intLengths.df</span><span class="op">$</span><span class="va">estimate</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Internal lengths estimate = 0.512"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Internal lengths estimate = 0.448"</span></span></code></pre></div>
 <p>Because we’re simulating a new tree each time, the estimate will change with each run, so don’t be worried if your results don’t match exactly.</p>
 </div>
 <div class="section level3">
 <h3 id="estimate-growth-rate-of-many-trees">Estimate growth rate of many trees<a class="anchor" aria-label="anchor" href="#estimate-growth-rate-of-many-trees"></a>
 </h3>
-<p>In our <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2" class="external-link">paper</a>, we use simulated trees to test our growth rate estimates. As an example, let’s load some simulated data that comes with our package, exampleUltraTrees has 100 ultrametric trees. In the “metadata” data.frame we will find the ground truth growth rate, which in this case is 1. Let’s apply our methods to all 100 trees.</p>
+<p>In <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our paper</a>, we use simulated trees to test our growth rate estimates. As an example, let’s load some simulated data that comes with our package, <code>exampleUltraTrees</code> has 100 ultrametric trees. In the “metadata” data.frame we will find the ground truth growth rate, which in this case is 1. Let’s apply our methods to all 100 trees.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Here we are applying two methods to all of the ultrametric trees</span></span>
 <span><span class="va">resultsUltraMaxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">exampleUltraTrees</span><span class="op">)</span></span>
@@ -206,6 +206,10 @@
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
+<p>Simulating the birth-death trees is a direct result of the work of Amaury Lambert in:</p>
+<ul>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Lambert, 2018</a></li>
+</ul>
 <p>Our package comes with 42 clones annotated from four distinct publications, which are the ones we use in our analysis. Note that there are three clones profiled at two different timepoints, meaning there are 39 unique clones. The papers which generate this data are:</p>
 <ul>
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/35058638/" class="external-link">Williams et al. 2022</a></li>
@@ -213,11 +217,11 @@
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/35650444/" class="external-link">Fabre et al. 2022</a></li>
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/33621486/" class="external-link">Van Egeren et al. 2021</a></li>
 </ul>
-<p>The mathematical basis for our estimates is detailed in full in <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our paper</a>.</p>
-<p>Simulating the birth-death trees is a direct result of the work of Amaury Lambert in:</p>
+<p>The birth-death MCMC (not shown in this vignette) is based on the probability density derived in Eq. 5 of Tanja Stadler’s work:</p>
 <ul>
-<li><a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Lambert, 2018</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/19631666/" class="external-link">Stadler, 2009</a></li>
 </ul>
+<p>The mathematical basis for our estimates is detailed in full in <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182/" class="external-link">our paper</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
