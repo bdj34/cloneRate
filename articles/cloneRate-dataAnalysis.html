@@ -50,7 +50,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/reproduce-simResults.html">Reproduce simulation results</a>
     <a class="dropdown-item" href="../articles/cloneRate-dataAnalysis.html">Analysis of human blood data</a>
-    <a class="dropdown-item" href="../articles/cloneRate-simulate.html">Validating growth rate estimates via simulation</a>
+    <a class="dropdown-item" href="../articles/cloneRate-simulate.html">Intro to validating growth rate estimates via simulation</a>
   </div>
 </li>
 <li class="nav-item">
@@ -327,7 +327,7 @@ MCMC and the maximum likelihood estimate:</p>
 <span></span>
 <span><span class="co"># Print correlation coefficient of the estimates from the two methods</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">cor.test</a></span><span class="op">(</span><span class="va">resultsBDMCMC</span><span class="op">$</span><span class="va">estimate</span>, <span class="va">resultsMaxLike</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
-<span><span class="co"># &gt;  cor </span></span>
+<span><span class="co"># &gt;  cor</span></span>
 <span><span class="co"># &gt; 0.9964975</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="understanding-the-function-outputs">Understanding the function outputs<a class="anchor" aria-label="anchor" href="#understanding-the-function-outputs"></a>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="cloneRate">
-<title>Validating growth rate estimates via simulation • cloneRate</title>
+<title>Intro to validating growth rate estimates via simulation • cloneRate</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Validating growth rate estimates via simulation">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Intro to validating growth rate estimates via simulation">
 <meta property="og:description" content="cloneRate">
 <meta property="og:image" content="https://bdj34.github.io/cloneRate/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -50,7 +50,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/reproduce-simResults.html">Reproduce simulation results</a>
     <a class="dropdown-item" href="../articles/cloneRate-dataAnalysis.html">Analysis of human blood data</a>
-    <a class="dropdown-item" href="../articles/cloneRate-simulate.html">Validating growth rate estimates via simulation</a>
+    <a class="dropdown-item" href="../articles/cloneRate-simulate.html">Intro to validating growth rate estimates via simulation</a>
   </div>
 </li>
 <li class="nav-item">
@@ -80,7 +80,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Validating growth rate estimates via simulation</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Intro to validating growth rate estimates via simulation</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/bdj34/cloneRate/blob/HEAD/vignettes/cloneRate-simulate.Rmd" class="external-link"><code>vignettes/cloneRate-simulate.Rmd</code></a></small>
@@ -103,8 +103,10 @@ about 8 seconds for a tree with 1000 tips! In R!</p>
 <p>The applications of this fast generation of sampled trees are
 countless. For us, these results allowed us to simulate thousands of
 trees to check our methods for growth rate estimation from phylogenetic
-tree reconstruction, which is detailed in <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-recent preprint.</a> We’ll reproduce this validation here.</p>
+tree reconstruction, which is detailed in <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper</a>. We provide an intro to simulation here, with full
+reproduction of our simulation results in <a href="https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html">the
+article linked here</a>.</p>
 <div class="section level3">
 <h3 class="unnumbered" id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
@@ -128,7 +130,7 @@ our plots, which can be installed from CRAN as shown below:</p>
 <span><span class="op">}</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <p>We’ll also set the color palette which we’ll use for most of the
-plotting. The palette is taken from <a href="https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7" class="external-link">here</a></p>
+plotting. The palette is avilable <a href="https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7" class="external-link">here</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">colorPal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>, <span class="st">"#F0E442"</span>, <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span>, <span class="st">"#CC79A7"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -159,7 +161,7 @@ and the number of sampled tips <code>n</code>. Note that we use
 for the time because <code>T</code> in R means <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate the tree</span></span>
-<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span>, addStem <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># We see that the tree is of class phylo</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
@@ -168,10 +170,10 @@ for the time because <code>T</code> in R means <code>TRUE</code>.</p>
 <span><span class="co"># Preview the tree</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Phylogenetic tree with 100 tips and 99 internal nodes.</span></span>
+<span><span class="co">#&gt; Phylogenetic tree with 100 tips and 100 internal nodes.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tip labels:</span></span>
-<span><span class="co">#&gt;   t11, t100, t51, t34, t80, t12, ...</span></span>
+<span><span class="co">#&gt;   t64, t73, t25, t55, t94, t80, ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Rooted; includes branch lengths.</span></span></code></pre></div>
 <p>Again, the best place to get more info about the class
@@ -181,7 +183,7 @@ look at the metadata included in the tree.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   r a b cloneAge   n runtime_seconds addStem</span></span>
-<span><span class="co">#&gt; 1 1 1 0       20 100           0.783   FALSE</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 1 1 0       20 100           1.325    TRUE</span></span></code></pre></div>
 <p>We see that the columns are:</p>
 <ul>
 <li>
@@ -236,14 +238,14 @@ coalescence times is approximated by a standard logistic distribution
 scaled by <span class="math inline">\(1/r\)</span>. Maximizing the
 likelihood of the observed coalescence times for the <span class="math inline">\(r\)</span> term gives us our estimate.</li>
 </ul>
-<p>Both methods are detailed in <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-recent preprint.</a></p>
+<p>Both methods are detailed in <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper.</a></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span></span>
-<span><span class="co">#&gt; [1] 1.191703</span></span>
+<span><span class="co">#&gt; [1] 1.045386</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span></span>
-<span><span class="co">#&gt; [1] 1.153962</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.9908379</span></span></code></pre></div>
 <p>We know that our actual growth rate is 1, so we can evaluate how our
 estimates are doing. One estimate doesn’t really tell us much though.
 Let’s try 100. To do this, we just set the <code>nTrees</code> param
@@ -256,7 +258,7 @@ it takes about a minute.</p>
 <code class="sourceCode R"><span><span class="va">ptm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">tree.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span>, nTrees <span class="op">=</span> <span class="fl">100</span>, nCores <span class="op">=</span> <span class="fl">1</span>, addStem <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">ptm</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 73.44</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 122.601</span></span></code></pre></div>
 <p>Let’s apply our methods to these trees. We can input either a single
 <code>phylo</code> object, or a list of <code>phylo</code> objects to
 our growth rate functions. Either way, it’ll return a
@@ -326,10 +328,9 @@ the <code><a href="../reference/internalLengths.html">internalLengths()</a></cod
 counting the internal edge lengths in units of time, the
 <code><a href="../reference/sharedMuts.html">sharedMuts()</a></code> function counts the internal/shared mutations
 and uses the mutation rate to scale to time. So, if <span class="math inline">\(M_i\)</span> is the number of internal or shared
-mutations, <span class="math inline">\(nu\)</span> is the mutation rate,
-and <span class="math inline">\(n\)</span> is the number of samples, the
-growth rate estimate is <span class="math inline">\(r = M_i /(\nu
-n)\)</span>.</p>
+mutations, <span class="math inline">\(\nu\)</span> (<code>nu</code>) is
+the mutation rate, and <span class="math inline">\(n\)</span> is the
+number of samples, the growth rate estimate is <span class="math inline">\(r = M_i /(\nu n)\)</span>.</p>
 <p>Let’s apply the <code><a href="../reference/sharedMuts.html">sharedMuts()</a></code> function to the trees that
 we converted to mutation-based. Remember that these mutation-based trees
 are generated from the ultrametric trees we applied our functions
@@ -398,7 +399,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rmse</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt;  0.1134892  0.1132660  0.1204242</span></span></code></pre></div>
+<span><span class="co">#&gt;  0.1158181  0.1090120  0.1145366</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="mean">Mean<a class="anchor" aria-label="anchor" href="#mean"></a>
@@ -414,7 +415,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simMean</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt;   1.039855   1.061270   1.039377</span></span></code></pre></div>
+<span><span class="co">#&gt;   1.034232   1.058002   1.034869</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="standard-deviation">Standard deviation<a class="anchor" aria-label="anchor" href="#standard-deviation"></a>
@@ -430,7 +431,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simSD</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt; 0.10679621 0.09574334 0.11437788</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.11120109 0.09276524 0.10964962</span></span></code></pre></div>
 <p>What we saw in the density plot is quantified in the mean, sd, and
 rmse. Maximum likelihood usually performs best by Root Mean Square Error
 (RMSE) even though it’s mean is a bit higher (usually around 1.04). With
@@ -450,8 +451,8 @@ methods also provide confidence intervals. The default, with
 <code>alpha = 0.05</code>, is to provide 95% confidence intervals. While
 you can change that if you’d like, 95% seems to be pretty standard, so
 we’ll use that. If our 95% confidence interval is accurate, we’d expect
-our estimates to fall within this interval 95% of the time. Let’s
-check:</p>
+the ground truth growth rate to fall within our confidence interval 95%
+of the time. Let’s check:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate the coverage probability of our estimates</span></span>
 <span><span class="va">groundTruth</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
@@ -467,7 +468,7 @@ check:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simCoverage</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt;       0.93       0.94       0.97</span></span></code></pre></div>
+<span><span class="co">#&gt;       0.95       0.93       0.99</span></span></code></pre></div>
 <p>We’re right around 95%, which is great! But you might expect that
 <code><a href="../reference/maxLikelihood.html">maxLikelihood()</a></code>, which typically has the lowest RMSE, might
 have the best coverage probability. In fact, the confidence interval for
@@ -510,7 +511,7 @@ make sure <code>a_vec</code> and <code>b_vec</code> are also of length
 multiple trees, we either set a single value for the parameters, or a
 vector of length <code>nTrees</code>. This applies to both
 <code><a href="../reference/simUltra.html">simUltra()</a></code> and <code><a href="../reference/simMut.html">simMut()</a></code>. Let’s generate some
-more trees. Note: this will also take a few minutes.</p>
+more trees. Note: this will also take a minute or two.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n10_n30_trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span></span>
 <span>  a <span class="op">=</span> <span class="va">a_vec</span>, b <span class="op">=</span> <span class="va">b_vec</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="va">n_vec</span>,</span>
@@ -554,8 +555,7 @@ normalize this.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"n = "</span>, <span class="va">n</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n = 10"</span>, <span class="st">"n = 30"</span>, <span class="st">"n = 100"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    ncol <span class="op">=</span> <span class="fl">1</span>, strip.position <span class="op">=</span> <span class="st">"bottom"</span>, scales <span class="op">=</span> <span class="st">"free"</span>, dir <span class="op">=</span> <span class="st">"v"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 4 rows containing non-finite values (`stat_density()`).</span></span></code></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="cloneRate-simulate_files/figure-html/plot_vary_n-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>As you can see, both estimates are highly dependent on the number of
 samples. If you’d like to see the same density values on the y-axis for
@@ -563,8 +563,8 @@ all three <code>n</code> values, set <code>scales = "fixed"</code> in
 the <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap()</a></code> function.</p>
 <p>If you’re interested, you can apply the same quantitative measures to
 this data as we did before in <a href="#quantitative-comparisons">Quantitative comparisons</a>. We won’t
-repeat that here, but we show this in Figure 2 of <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-preprint</a>. This information is also available in the Supplementary
+repeat that here, but we show this in Figure 2 of <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper</a>. This information is also available in the Supplementary
 tables, which are also available as .csv files.</p>
 </div>
 <div class="section level3">
@@ -573,8 +573,8 @@ tables, which are also available as .csv files.</p>
 <p>As we noted before, we can simulate many trees at once using
 <code><a href="../reference/simUltra.html">simUltra()</a></code> and <code><a href="../reference/simMut.html">simMut()</a></code>. Here, we’ll use
 <code><a href="../reference/simUltra.html">simUltra()</a></code> to generate 100 trees at various growth rates.
-We do a similar analysis in Figures 3 and 4 of <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-preprint</a>, noting that our methods struggle with small growth rates.
+We do a similar analysis in Figures 3 and 4 of <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper</a>, noting that our methods struggle with small growth rates.
 Let’s see if we come to the same conclusion here.</p>
 <div class="section level4">
 <h4 id="varying-r-or-cloneage">Varying r or cloneAge?<a class="anchor" aria-label="anchor" href="#varying-r-or-cloneage"></a>
@@ -621,8 +621,8 @@ certainly different from the tree in the middle.</p>
 </h4>
 <p>Now we can arbitrarily choose whether to vary <code>r</code> or
 <code>cloneAge</code>. For consistency, we’ll vary <code>r</code>, as we
-do in Figures 3 and 4 of <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-preprint</a>. Here, we have two options:</p>
+do in Figures 3 and 4 of <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper</a>. Here, we have two options:</p>
 <ol style="list-style-type: decimal">
 <li>Simulate at fixed <code>r</code> values, showing which are good and
 which are problematic</li>
@@ -638,8 +638,8 @@ ground truth.</p>
 growth rates <code>r</code>, ranging from 0.1 to 1 per year, run for 40
 years. This will take a while, so we won’t actually evaluate this as
 part of this vignette. However, we do a full reproduction of our work
-from <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-recent preprint</a> in <a href="https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html">an
+from <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+recent paper</a> in <a href="https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html">an
 article, “Reproduce simulation results”</a> which can be found on <a href="https://bdj34.github.io/cloneRate/">our package website</a>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Uniform ditribution of r used to generate b_vec</span></span>
@@ -674,23 +674,23 @@ to apply our methods:</p>
 <span><span class="co">#&gt; Warning in maxLikelihood(slowClone): External to internal lengths ratio is less than or equal to 3,</span></span>
 <span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
 <span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1  0.1531944 0.1994183  0.2456422         44.14466            267.063</span></span>
+<span><span class="co">#&gt;   lowerBound estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
+<span><span class="co">#&gt; 1  0.1910775 0.248732  0.3063866         33.85305           196.9856</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio  n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           367.5651    1.376324 50  0.05     0.005 maxLike</span></span>
+<span><span class="co">#&gt; 1           401.1982    2.036688 50  0.05     0.008 maxLike</span></span>
 <span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">slowClone</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in internalLengths(slowClone): External to internal lengths ratio is less than or equal to 3,</span></span>
 <span><span class="co">#&gt;             which means internal lengths method may not be applicable. Consider</span></span>
 <span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
 <span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1  0.1353275 0.1872217   0.239116         44.47134            267.063</span></span>
+<span><span class="co">#&gt; 1    0.18347 0.2538256  0.3241812         33.77237           196.9856</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio  n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           367.5651    1.376324 50  0.05     0.003 lengths</span></span></code></pre></div>
+<span><span class="co">#&gt; 1           401.1982    2.036688 50  0.05     0.005 lengths</span></span></code></pre></div>
 <p>Our estimates are off by quite a bit (the ground truth estimate is
 0.1), and we see a warning. The warning tells us that the external to
 internal edge length ratio is below 3, so this clone is likely not a
 good candidate for our methods. For details on how we came up with 3 as
-a cutoff see Figure 4 of our preprint or the reproduced analysis in <a href="https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html">the
+a cutoff see Figure 4 of our paper or the reproduced analysis in <a href="https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html">the
 article, “Reproduce simulation results”</a> from <a href="https://bdj34.github.io/cloneRate/">our package website</a>. The
 real advantage to this diagnostic is that we can look at a tree and
 calculate this ratio to tell us right away if our methods are
@@ -712,9 +712,8 @@ below:</p>
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">Lambert,
 2018</a></li>
 </ul>
-<p>And here’s a final link to <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-preprint</a> for more of the details of the methods and data
-analysis.</p>
+<p>And here’s a final link to <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper</a> for more of the details of the methods and data analysis.</p>
 <p>There aren’t too many colors in this vignette, but we tried to use
 colorblind friendly colors, specifically pulling colors from a palette
 designed by <a href="https://www.nature.com/articles/nmeth.1618" class="external-link">Bang

@@ -50,7 +50,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/reproduce-simResults.html">Reproduce simulation results</a>
     <a class="dropdown-item" href="../articles/cloneRate-dataAnalysis.html">Analysis of human blood data</a>
-    <a class="dropdown-item" href="../articles/cloneRate-simulate.html">Validating growth rate estimates via simulation</a>
+    <a class="dropdown-item" href="../articles/cloneRate-simulate.html">Intro to validating growth rate estimates via simulation</a>
   </div>
 </li>
 <li class="nav-item">
@@ -92,17 +92,17 @@
 <p>NOTE: This is not included as a vignette with the package due to
 long-running scripts. Instead, it will only be available as an article
 on <a href="https://bdj34.github.io/cloneRate/">this website</a>. This
-is intended to reproduce simulations shown in our recent work <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">“Estimating
-single cell clonal dynamics in human blood using coalescent theory”</a>.
-We’ll skip over many of the basics, as those are detailed in our
-introductory simulation article/vignette which is available in
+is intended to reproduce simulations shown in our recent work <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">“cloneRate:
+fast estimation of single-cell clonal dynamics using coalescent
+theory”</a>. We’ll skip over many of the basics, as those are detailed
+in our introductory simulation article/vignette which is available in
 <code><a href="../articles/cloneRate-simulate.html">vignette("cloneRate-simulate")</a></code>. The simulation procedure
 for generating birth-death trees is a direct implementation of results
 by Amaury Lambert in <a href="https://pubmed.ncbi.nlm.nih.gov/29704514/" class="external-link">a recent paper</a>.
 These results allowed us to simulate thousands of trees to check our
 methods for growth rate estimation from phylogenetic tree
-reconstruction, which is detailed in <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-recent preprint.</a> We’ll reproduce this validation here.</p>
+reconstruction, which is detailed in <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+recent paper.</a> We’ll reproduce this validation here.</p>
 <div class="section level3">
 <h3 class="unnumbered" id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
@@ -145,7 +145,7 @@ al.</a>, see Emily Mitchell’s github: <a href="https://github.com/emily-mitche
 For reproducibility, we’ll include the code from Emily Mithcell’s github
 in a slightly simplified form, as we don’t want to apply the Aberrant
 Cell Fraction (ACF) implementation of Phylofit, for reasons detailed in
-<a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
+<a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
 paper</a>. They implement Phylofit in Rstan, in a similar manner to the
 birth-death MCMC. First, we compile the Stan code:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -184,39 +184,43 @@ birth-death MCMC. First, we compile the Stan code:</p>
 <span><span class="st">t ~ glogistic(S,tm,T,pow(10,LN));</span></span>
 <span><span class="st">}</span></span>
 <span><span class="st">"</span></span>
-<span><span class="va">PHYLOFIT_STAN_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stan_model.html" class="external-link">stan_model</a></span><span class="op">(</span>model_code<span class="op">=</span><span class="va">stan.code</span>, model_name <span class="op">=</span> <span class="st">"Phylofit"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">PHYLOFIT_STAN_MODEL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stan_model.html" class="external-link">stan_model</a></span><span class="op">(</span>model_code <span class="op">=</span> <span class="va">stan.code</span>, model_name <span class="op">=</span> <span class="st">"Phylofit"</span><span class="op">)</span></span></code></pre></div>
 <p>Now that the Stan code is compiled, it’s ready to be run. We’ll wrap
 it in a function similar to our other functions for estimating the
 growth rate. We’ve made some cosmetic changes, but nothing that will
 affect the Phylofit (no ACF) output for the estimated growth rate:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Note that this will only work for binary trees</span></span>
-<span><span class="va">phylofit</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ultratree</span>, <span class="va">nChain</span> <span class="op">=</span> <span class="fl">3</span>, <span class="va">nCores</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">minLN</span><span class="op">=</span><span class="fl">4</span>, <span class="va">maxLN</span><span class="op">=</span><span class="fl">7</span>,</span>
-<span>                     <span class="va">chainLength</span> <span class="op">=</span> <span class="fl">20000</span>, <span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">{</span></span>
-<span>  </span>
+<span><span class="va">phylofit</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ultratree</span>, <span class="va">nChain</span> <span class="op">=</span> <span class="fl">3</span>, <span class="va">nCores</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">minLN</span> <span class="op">=</span> <span class="fl">4</span>, <span class="va">maxLN</span> <span class="op">=</span> <span class="fl">7</span>,</span>
+<span>                     <span class="va">chainLength</span> <span class="op">=</span> <span class="fl">20000</span>, <span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">ptm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Get data from the tree</span></span>
 <span>  <span class="va">coal_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/branching.times.html" class="external-link">branching.times</a></span><span class="op">(</span><span class="va">ultratree</span><span class="op">)</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"N"</span> <span class="op">=</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/summary.phylo.html" class="external-link">Ntip</a></span><span class="op">(</span><span class="va">ultratree</span><span class="op">)</span>, </span>
-<span>              <span class="st">"t"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">coal_times</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>              <span class="st">"T"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">coal_times</span><span class="op">)</span>, </span>
-<span>              <span class="st">"maxT"</span> <span class="op">=</span> <span class="fl">2</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">coal_times</span><span class="op">)</span>,</span>
-<span>              <span class="st">"minLN"</span> <span class="op">=</span> <span class="va">minLN</span>, <span class="st">"maxLN"</span> <span class="op">=</span> <span class="va">maxLN</span><span class="op">)</span></span>
-<span>  <span class="va">dat</span><span class="op">$</span><span class="va">minT</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="cn">T</span><span class="op">-</span><span class="va">dat</span><span class="op">$</span><span class="va">t</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span>  </span>
+<span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="st">"N"</span> <span class="op">=</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/summary.phylo.html" class="external-link">Ntip</a></span><span class="op">(</span><span class="va">ultratree</span><span class="op">)</span>,</span>
+<span>    <span class="st">"t"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">coal_times</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="st">"T"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">coal_times</span><span class="op">)</span>,</span>
+<span>    <span class="st">"maxT"</span> <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">coal_times</span><span class="op">)</span>,</span>
+<span>    <span class="st">"minLN"</span> <span class="op">=</span> <span class="va">minLN</span>, <span class="st">"maxLN"</span> <span class="op">=</span> <span class="va">maxLN</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="va">dat</span><span class="op">$</span><span class="va">minT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="cn">T</span> <span class="op">-</span> <span class="va">dat</span><span class="op">$</span><span class="va">t</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
 <span>  <span class="co"># Run the Stan code</span></span>
-<span>  <span class="va">stanr</span><span class="op">=</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html" class="external-link">sampling</a></span><span class="op">(</span><span class="va">PHYLOFIT_STAN_MODEL</span>,</span>
-<span>                 data<span class="op">=</span><span class="va">dat</span>,iter <span class="op">=</span> <span class="va">chainLength</span>,control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adapt_delta<span class="op">=</span><span class="fl">0.95</span><span class="op">)</span>,</span>
-<span>                 chains <span class="op">=</span> <span class="va">nChain</span>, cores <span class="op">=</span> <span class="va">nCores</span><span class="op">)</span></span>
-<span>  </span>
+<span>  <span class="va">stanr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html" class="external-link">sampling</a></span><span class="op">(</span><span class="va">PHYLOFIT_STAN_MODEL</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">dat</span>, iter <span class="op">=</span> <span class="va">chainLength</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>,</span>
+<span>    chains <span class="op">=</span> <span class="va">nChain</span>, cores <span class="op">=</span> <span class="va">nCores</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
 <span>  <span class="co"># Return the results</span></span>
-<span>  <span class="va">ptile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">alpha</span><span class="op">/</span><span class="fl">2</span>, <span class="fl">.5</span>, <span class="fl">1</span><span class="op">-</span><span class="va">alpha</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="va">ptile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">alpha</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">.5</span>, <span class="fl">1</span> <span class="op">-</span> <span class="va">alpha</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
 <span>  <span class="va">posterior</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="fu">rstan</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">stanr</span><span class="op">)</span><span class="op">$</span><span class="va">S</span>, <span class="va">ptile</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"lowerBound"</span> <span class="op">=</span> <span class="va">posterior</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"estimate"</span> <span class="op">=</span> <span class="va">posterior</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
-<span>             <span class="st">"upperBound"</span> <span class="op">=</span> <span class="va">posterior</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="st">"runtime_s"</span> <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">ptm</span><span class="op">)</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span>,</span>
-<span>             <span class="st">"n"</span> <span class="op">=</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/summary.phylo.html" class="external-link">Ntip</a></span><span class="op">(</span><span class="va">ultratree</span><span class="op">)</span>, <span class="st">"alpha"</span> <span class="op">=</span> <span class="va">alpha</span>, <span class="st">"method"</span> <span class="op">=</span> <span class="st">"Phylofit no ACF"</span>,</span>
-<span>             <span class="st">"nChains"</span> <span class="op">=</span> <span class="va">nChain</span>, <span class="st">"nCores"</span> <span class="op">=</span> <span class="va">nCores</span>, <span class="st">"chainLength"</span> <span class="op">=</span> <span class="va">chainLength</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    <span class="st">"lowerBound"</span> <span class="op">=</span> <span class="va">posterior</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"estimate"</span> <span class="op">=</span> <span class="va">posterior</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>    <span class="st">"upperBound"</span> <span class="op">=</span> <span class="va">posterior</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="st">"runtime_s"</span> <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">ptm</span><span class="op">)</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span>,</span>
+<span>    <span class="st">"n"</span> <span class="op">=</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/summary.phylo.html" class="external-link">Ntip</a></span><span class="op">(</span><span class="va">ultratree</span><span class="op">)</span>, <span class="st">"alpha"</span> <span class="op">=</span> <span class="va">alpha</span>, <span class="st">"method"</span> <span class="op">=</span> <span class="st">"Phylofit no ACF"</span>,</span>
+<span>    <span class="st">"nChains"</span> <span class="op">=</span> <span class="va">nChain</span>, <span class="st">"nCores"</span> <span class="op">=</span> <span class="va">nCores</span>, <span class="st">"chainLength"</span> <span class="op">=</span> <span class="va">chainLength</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
@@ -283,8 +287,9 @@ various <code>n</code> values.</p>
 <span>    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="va">colorPal</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"n = "</span>, <span class="va">n</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"n = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">n_vec</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>             ncol <span class="op">=</span> <span class="fl">1</span>, strip.position <span class="op">=</span> <span class="st">"bottom"</span>, scales <span class="op">=</span> <span class="st">"free"</span>, dir <span class="op">=</span> <span class="st">"v"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>    ncol <span class="op">=</span> <span class="fl">1</span>, strip.position <span class="op">=</span> <span class="st">"bottom"</span>, scales <span class="op">=</span> <span class="st">"free"</span>, dir <span class="op">=</span> <span class="st">"v"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 2 rows containing non-finite values (`stat_density()`).</span></span></code></pre></div>
 <p><img src="reproduce-simResults_files/figure-html/plot_vary_n-1.png" width="100%"></p>
 <p>As you can see, both estimates are highly dependent on the number of
 samples. If you’d like to see the same density values on the y-axis for
@@ -325,28 +330,36 @@ as a part of the <code>cloneRate</code> package, so it’s a
 straightforward one-liner:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># NOTE: depending on the number of cores, this will take hours to days</span></span>
-<span><span class="va">vary_n_bdMCMC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/birthDeathMCMC.html">birthDeathMCMC</a></span><span class="op">(</span><span class="va">vary_n_trees</span>, nCores <span class="op">=</span> <span class="fl">3</span>, nChains <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>                                 chainLength <span class="op">=</span> <span class="fl">15000</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">vary_n_bdMCMC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/birthDeathMCMC.html">birthDeathMCMC</a></span><span class="op">(</span><span class="va">vary_n_trees</span>,</span>
+<span>  nCores <span class="op">=</span> <span class="fl">3</span>, nChains <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  chainLength <span class="op">=</span> <span class="fl">15000</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>And for Phylofit, we use the <code>phylofit()</code> function we
 created at the start, which is a copy of the function from Emily
 Mitchell’s github and was created by Nick Williams and used in Williams
 et al. and Mitchell et al.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># NOTE: depending on the number of cores, this will take hours to days</span></span>
-<span><span class="va">vary_n_phylofit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, </span>
-<span>                            <span class="fu"><a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">mclapply</a></span><span class="op">(</span><span class="va">vary_n_trees</span>, <span class="va">phylofit</span>,</span>
-<span>                                     mc.cores <span class="op">=</span> <span class="fl">5</span>, mc.silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>                            <span class="op">)</span></span></code></pre></div>
+<span><span class="va">vary_n_phylofit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span></span>
+<span>  <span class="va">rbind</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">mclapply</a></span><span class="op">(</span><span class="va">vary_n_trees</span>, <span class="va">phylofit</span>,</span>
+<span>    mc.cores <span class="op">=</span> <span class="fl">5</span>, mc.silent <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now we can make a list for each set of 500 trees, split by method and
 number of samples, <code>n</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Make a list with each list element containing a data.frame of results for a </span></span>
+<code class="sourceCode R"><span><span class="co"># Make a list with each list element containing a data.frame of results for a</span></span>
 <span><span class="co"># given n and method</span></span>
-<span><span class="va">vary_n_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_n_lengths</span>, <span class="va">vary_n_lengths</span><span class="op">$</span><span class="va">n</span><span class="op">)</span>,</span>
-<span>                        <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_n_maxLike</span>, <span class="va">vary_n_maxLike</span><span class="op">$</span><span class="va">n</span><span class="op">)</span>,</span>
-<span>                        <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_n_bdMCMC</span>, <span class="va">vary_n_bdMCMC</span><span class="op">$</span><span class="va">n</span><span class="op">)</span>,</span>
-<span>                        <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_n_phylofit</span>, <span class="va">vary_n_phylofit</span><span class="op">$</span><span class="va">n</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>                        recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">vary_n_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_n_lengths</span>, <span class="va">vary_n_lengths</span><span class="op">$</span><span class="va">n</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_n_maxLike</span>, <span class="va">vary_n_maxLike</span><span class="op">$</span><span class="va">n</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_n_bdMCMC</span>, <span class="va">vary_n_bdMCMC</span><span class="op">$</span><span class="va">n</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_n_phylofit</span>, <span class="va">vary_n_phylofit</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  recursive <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="summary-statistics">Summary statistics<a class="anchor" aria-label="anchor" href="#summary-statistics"></a>
@@ -356,39 +369,49 @@ we want from the estimates. Make sure that each input data.frame
 contains all the same number of tips, true growth rate, method, etc. so
 that it should be combined.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">get_summary_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">growthRate</span>, <span class="va">cloneAge</span><span class="op">)</span><span class="op">{</span></span>
+<code class="sourceCode R"><span><span class="va">get_summary_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">growthRate</span>, <span class="va">cloneAge</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">meanEstimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
 <span>  <span class="va">sdEstimate</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
 <span>  <span class="va">medianEstimate</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
-<span>  <span class="va">normalizedRMSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">growthRate</span> <span class="op">-</span> <span class="va">df</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span><span class="op">/</span><span class="va">growthRate</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">coverageProb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">growthRate</span> <span class="op">&amp;</span> <span class="va">df</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">growthRate</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span>  <span class="va">normalizedRMSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">growthRate</span> <span class="op">-</span> <span class="va">df</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span> <span class="op">/</span> <span class="va">growthRate</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">coverageProb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">growthRate</span> <span class="op">&amp;</span> <span class="va">df</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">growthRate</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span>  <span class="va">runtimeMean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">runtime_s</span><span class="op">)</span></span>
 <span>  <span class="va">runtimeSD</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">runtime_s</span><span class="op">)</span></span>
 <span>  <span class="va">method</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">method</span><span class="op">)</span></span>
-<span>  <span class="va">nCores</span> <span class="op">&lt;-</span> <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">nCores</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">{</span><span class="fl">1</span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span><span class="va">df</span><span class="op">$</span><span class="va">nCores</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">}</span></span>
-<span>  <span class="va">nChains</span> <span class="op">&lt;-</span> <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">nChains</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">{</span><span class="cn">NA</span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span><span class="va">df</span><span class="op">$</span><span class="va">nChains</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">}</span></span>
+<span>  <span class="va">nCores</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">nCores</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fl">1</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="va">df</span><span class="op">$</span><span class="va">nCores</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">nChains</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">nChains</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="cn">NA</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="va">df</span><span class="op">$</span><span class="va">nChains</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span>  <span class="op">}</span></span>
 <span>  <span class="va">nTips</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Combine everything into a data.frame to return</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"Method"</span> <span class="op">=</span> <span class="va">method</span>, <span class="st">"Number of samples, n"</span> <span class="op">=</span> <span class="va">nTips</span>,</span>
-<span>             <span class="st">"Net growth rate, r"</span> <span class="op">=</span> <span class="va">growthRate</span>, <span class="st">"Clone age, T"</span> <span class="op">=</span> <span class="va">cloneAge</span>,</span>
-<span>             <span class="st">"Number of simulated trees"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
-<span>             <span class="st">"Mean estimate"</span> <span class="op">=</span> <span class="va">meanEstimate</span>, <span class="st">"SD estimate"</span> <span class="op">=</span> <span class="va">sdEstimate</span>,</span>
-<span>             <span class="st">"Median Estimate"</span> <span class="op">=</span> <span class="va">medianEstimate</span>, </span>
-<span>             <span class="st">"Normalized RMSE"</span> <span class="op">=</span> <span class="va">normalizedRMSE</span>,</span>
-<span>             <span class="st">"95% Coverage probability"</span> <span class="op">=</span> <span class="va">coverageProb</span>, <span class="co"># Assuming 95% CI</span></span>
-<span>             <span class="st">"Runtime (s)"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">runtimeMean</span>, <span class="fl">3</span><span class="op">)</span>, <span class="st">" +/- "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">runtimeSD</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>             <span class="st">"Number of cores"</span> <span class="op">=</span> <span class="va">nCores</span>, <span class="st">"Number of chains"</span> <span class="op">=</span> <span class="va">nChains</span></span>
-<span>             <span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Method"</span> <span class="op">=</span> <span class="va">method</span>, <span class="st">"Number of samples, n"</span> <span class="op">=</span> <span class="va">nTips</span>,</span>
+<span>    <span class="st">"Net growth rate, r"</span> <span class="op">=</span> <span class="va">growthRate</span>, <span class="st">"Clone age, T"</span> <span class="op">=</span> <span class="va">cloneAge</span>,</span>
+<span>    <span class="st">"Number of simulated trees"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
+<span>    <span class="st">"Mean estimate"</span> <span class="op">=</span> <span class="va">meanEstimate</span>, <span class="st">"SD estimate"</span> <span class="op">=</span> <span class="va">sdEstimate</span>,</span>
+<span>    <span class="st">"Median Estimate"</span> <span class="op">=</span> <span class="va">medianEstimate</span>,</span>
+<span>    <span class="st">"Normalized RMSE"</span> <span class="op">=</span> <span class="va">normalizedRMSE</span>,</span>
+<span>    <span class="st">"95% Coverage probability"</span> <span class="op">=</span> <span class="va">coverageProb</span>, <span class="co"># Assuming 95% CI</span></span>
+<span>    <span class="st">"Runtime (s)"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">runtimeMean</span>, <span class="fl">3</span><span class="op">)</span>, <span class="st">" +/- "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">runtimeSD</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="st">"Number of cores"</span> <span class="op">=</span> <span class="va">nCores</span>, <span class="st">"Number of chains"</span> <span class="op">=</span> <span class="va">nChains</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>We can apply our summary stats function to the list of results
 contained in <code>vary_n_results</code> to get a summary data.frame
 with statistics for each value of <code>n</code> and each method.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">summary_n.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">vary_n_results</span>, <span class="va">get_summary_stats</span>, </span>
-<span>                                    growthRate <span class="op">=</span> <span class="fl">0.5</span>, cloneAge <span class="op">=</span> <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">summary_n.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">vary_n_results</span>, <span class="va">get_summary_stats</span>,</span>
+<span>  growthRate <span class="op">=</span> <span class="fl">0.5</span>, cloneAge <span class="op">=</span> <span class="fl">40</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The information in <code>summary_n.df</code> is available in
-Supplementary table 6 of our preprint, and is also available as “.csv”
+Supplementary table 6 of our paper, and is also available as “.csv”
 file. Note that the stochastic nature of the tree generation and MCMCs
 will lead to slight differences in the results each time the analysis is
 performed.</p>
@@ -397,9 +420,8 @@ performed.</p>
 <div class="section level3">
 <h3 id="varying-r-andor-cloneage">Varying r (and/or cloneAge)<a class="anchor" aria-label="anchor" href="#varying-r-andor-cloneage"></a>
 </h3>
-<p>Here, we’ll recreate the analysis in Figures 3 and 4 of <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-preprint</a>, noting that our methods struggle with small growth
-rates.</p>
+<p>Here, we’ll recreate the analysis in Figures 3 and 4 of <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper</a>, noting that our methods struggle with small growth rates.</p>
 <div class="section level4">
 <h4 id="varying-r-or-cloneage">Varying r or cloneAge?<a class="anchor" aria-label="anchor" href="#varying-r-or-cloneage"></a>
 </h4>
@@ -448,8 +470,8 @@ negligible.</p>
 </h4>
 <p>Now we can arbitrarily choose whether to vary <code>r</code> or
 <code>cloneAge</code>. For consistency, we’ll vary <code>r</code>, as we
-do in Figures 3 and 4 of <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-preprint</a>. Here, we have two analyses:</p>
+do in Figures 3 and 4 of <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper</a>. Here, we have two analyses:</p>
 <ol style="list-style-type: decimal">
 <li>Simulate at fixed <code>r</code> values, showing which are good and
 which are problematic</li>
@@ -468,8 +490,10 @@ but vary growth rate, from 0.15 to 1.</p>
 <span><span class="va">a_vec</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">r_vec</span><span class="op">)</span>, min <span class="op">=</span> <span class="va">r_vec</span>, max <span class="op">=</span> <span class="va">r_vec</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">b_vec</span> <span class="op">&lt;-</span> <span class="va">a_vec</span> <span class="op">-</span> <span class="va">r_vec</span></span>
 <span></span>
-<span><span class="va">vary_r_trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a_vec</span>, b <span class="op">=</span> <span class="va">b_vec</span>, cloneAge <span class="op">=</span> <span class="fl">40</span>, n <span class="op">=</span> <span class="fl">100</span>, </span>
-<span>                         nTrees <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">a_vec</span><span class="op">)</span>, nCores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">vary_r_trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span></span>
+<span>  a <span class="op">=</span> <span class="va">a_vec</span>, b <span class="op">=</span> <span class="va">b_vec</span>, cloneAge <span class="op">=</span> <span class="fl">40</span>, n <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  nTrees <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">a_vec</span><span class="op">)</span>, nCores <span class="op">=</span> <span class="fl">6</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Again, we keep the growth rate <code>a - b</code> equal to
 <code>r</code>, but let the actual birth and death rates vary. Now we
 apply our methods for estimating the growth rate:</p>
@@ -485,23 +509,33 @@ computationally expensive and should be done in a high performance
 computing environment:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># NOTE: depending on the number of cores, these will take hours to days</span></span>
-<span><span class="va">vary_r_bdMCMC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/birthDeathMCMC.html">birthDeathMCMC</a></span><span class="op">(</span><span class="va">vary_r_trees</span>, nCores <span class="op">=</span> <span class="fl">3</span>, nChains <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>                                 chainLength <span class="op">=</span> <span class="fl">15000</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">vary_r_phylofit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, </span>
-<span>                            <span class="fu"><a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">mclapply</a></span><span class="op">(</span><span class="va">vary_r_trees</span>, <span class="va">phylofit</span>,</span>
-<span>                                     mc.cores <span class="op">=</span> <span class="fl">5</span>, mc.silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">vary_r_bdMCMC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/birthDeathMCMC.html">birthDeathMCMC</a></span><span class="op">(</span><span class="va">vary_r_trees</span>,</span>
+<span>  nCores <span class="op">=</span> <span class="fl">3</span>, nChains <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  chainLength <span class="op">=</span> <span class="fl">15000</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">vary_r_phylofit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span></span>
+<span>  <span class="va">rbind</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">mclapply</a></span><span class="op">(</span><span class="va">vary_r_trees</span>, <span class="va">phylofit</span>,</span>
+<span>    mc.cores <span class="op">=</span> <span class="fl">5</span>, mc.silent <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Make a list with each list element containing a data.frame of results for a </span></span>
+<span><span class="co"># Make a list with each list element containing a data.frame of results for a</span></span>
 <span><span class="co"># given r and method</span></span>
-<span><span class="va">vary_r_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_r_lengths</span>, <span class="va">r_vec</span><span class="op">)</span>,</span>
-<span>                        <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_r_maxLike</span>, <span class="va">r_vec</span><span class="op">)</span>,</span>
-<span>                        <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_r_bdMCMC</span>, <span class="va">r_vec</span><span class="op">)</span>,</span>
-<span>                        <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_r_phylofit</span>, <span class="va">r_vec</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>                        recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">vary_r_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_r_lengths</span>, <span class="va">r_vec</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_r_maxLike</span>, <span class="va">r_vec</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_r_bdMCMC</span>, <span class="va">r_vec</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">vary_r_phylofit</span>, <span class="va">r_vec</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  recursive <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">summary_r.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">get_summary_stats</span>, <span class="va">vary_r_results</span>,</span>
-<span>                                    growthRate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">vary_r_results</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>                                    cloneAge <span class="op">=</span> <span class="fl">40</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  growthRate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">vary_r_results</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  cloneAge <span class="op">=</span> <span class="fl">40</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="random-r-fig--4">Random r (Fig. 4)<a class="anchor" aria-label="anchor" href="#random-r-fig--4"></a>
@@ -520,8 +554,8 @@ before the sampling time. In practice, using these simulations, we show
 that an external to internal lengths ratio greater than 3 is good enough
 to apply our methods. Let’s apply our methods and see how they look
 before and after applying this ratio cutoff. Note that this is what
-we’re doing in Figure 4 of <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
-preprint</a>.</p>
+we’re doing in Figure 4 of <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
+paper</a>.</p>
 <p>Let’s simulate 10,000 trees with 50 samples each and various growth
 rates, ranging from 0.1 to 1 per year, run for 40 years. Then, we should
 be able to dial in the ratio of external to internal lengths that is
@@ -533,8 +567,10 @@ large enough to work well with our methods.</p>
 <span><span class="va">b_vec</span> <span class="op">&lt;-</span> <span class="va">a_vec</span> <span class="op">-</span> <span class="va">r_vec</span></span>
 <span></span>
 <span><span class="co"># Input to simUltra()</span></span>
-<span><span class="va">random_r_trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a_vec</span>, b <span class="op">=</span> <span class="va">b_vec</span>, cloneAge <span class="op">=</span> <span class="fl">40</span>, n <span class="op">=</span> <span class="fl">50</span>, </span>
-<span>                           nTrees <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">a_vec</span><span class="op">)</span>, nCores <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">random_r_trees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span></span>
+<span>  a <span class="op">=</span> <span class="va">a_vec</span>, b <span class="op">=</span> <span class="va">b_vec</span>, cloneAge <span class="op">=</span> <span class="fl">40</span>, n <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  nTrees <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">a_vec</span><span class="op">)</span>, nCores <span class="op">=</span> <span class="fl">6</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Apply our <code><a href="../reference/internalLengths.html">internalLengths()</a></code> and
 <code><a href="../reference/maxLikelihood.html">maxLikelihood()</a></code> functions as usual, except that we want to
 suppress the warnings. These warnings will tell us that the external to
@@ -564,13 +600,17 @@ truth values.</p>
 <span><span class="co"># Plot, adding a vertical line at 0 because that's the error free estimate</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_random_r</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">percent_error</span>, color <span class="op">=</span> <span class="va">method</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">percent_error</span>, color <span class="op">=</span> <span class="va">method</span>, </span>
-<span>                 y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r</span><span class="op">)</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">.01</span>, max <span class="op">=</span> <span class="op">-</span><span class="fl">.001</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>             size <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="va">percent_error</span>, color <span class="op">=</span> <span class="va">method</span>,</span>
+<span>      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r</span><span class="op">)</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">.01</span>, max <span class="op">=</span> <span class="op">-</span><span class="fl">.001</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">.1</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">2000</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -579,7 +619,7 @@ truth values.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Density"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Internal lengths"</span>, <span class="st">"Max. likelihood"</span><span class="op">)</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"#009E73"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reproduce-simResults_files/figure-html/coverage_vary_r-1.png" width="100%"></p>
-<p>Not bad, but we have some rogue estimates with &gt; 100% error! And
+<p>Not bad, but we have some rogue estimates with &gt; 150% error! And
 we have many with &gt; 50% error.</p>
 <p>The external to internal lengths ratio should give a good estimate of
 how supercritical a tree is. But we need to figure out what ratio is
@@ -591,43 +631,54 @@ are:</p>
 <code class="sourceCode R"><span><span class="co"># Split by the integer value of the ratio</span></span>
 <span></span>
 <span><span class="co"># Make a dataframe to store the coverage probabilities</span></span>
-<span><span class="va">covProbs.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"intervalMin"</span> <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>                          <span class="st">"intervalMax"</span> <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>                          <span class="st">"coverageProb"</span> <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>                          <span class="st">"method"</span> <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>                          <span class="st">"count"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="va">covProbs.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="st">"intervalMin"</span> <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="st">"intervalMax"</span> <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="st">"coverageProb"</span> <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="st">"method"</span> <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="st">"count"</span> <span class="op">=</span> <span class="cn">NA</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Calculate coverage probability at each interval of ext. to int. lengths ratio</span></span>
-<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># Get the subset that has a ratio in the interval i to i+1</span></span>
 <span>  <span class="va">lengths.tmp</span> <span class="op">&lt;-</span> <span class="va">random_r_lengths</span><span class="op">[</span><span class="va">random_r_lengths</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&gt;=</span> <span class="va">i</span> <span class="op">&amp;</span></span>
-<span>                                    <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&lt;</span> <span class="va">i</span><span class="op">+</span><span class="fl">1</span>,<span class="op">]</span></span>
+<span>    <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&lt;</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span>, <span class="op">]</span></span>
 <span>  <span class="va">maxLike.tmp</span> <span class="op">&lt;-</span> <span class="va">random_r_maxLike</span><span class="op">[</span><span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&gt;=</span> <span class="va">i</span> <span class="op">&amp;</span></span>
-<span>                                    <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&lt;</span> <span class="va">i</span><span class="op">+</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span>  </span>
+<span>    <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&lt;</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span>, <span class="op">]</span></span>
+<span></span>
 <span>  <span class="va">coverageLengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">lengths.tmp</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">lengths.tmp</span><span class="op">$</span><span class="va">ground_truth</span> <span class="op">&amp;</span></span>
-<span>                           <span class="va">lengths.tmp</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">lengths.tmp</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lengths.tmp</span><span class="op">)</span></span>
+<span>    <span class="va">lengths.tmp</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">lengths.tmp</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lengths.tmp</span><span class="op">)</span></span>
 <span>  <span class="va">coverageMaxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">maxLike.tmp</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">maxLike.tmp</span><span class="op">$</span><span class="va">ground_truth</span> <span class="op">&amp;</span></span>
-<span>                           <span class="va">maxLike.tmp</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">maxLike.tmp</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">maxLike.tmp</span><span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="va">covProbs.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">covProbs.df</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"intervalMin"</span> <span class="op">=</span> <span class="va">i</span>,</span>
-<span>                                               <span class="st">"intervalMax"</span> <span class="op">=</span> <span class="va">i</span><span class="op">+</span><span class="fl">1</span>,</span>
-<span>                                               <span class="st">"coverageProb"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">coverageLengths</span>,</span>
-<span>                                                                  <span class="va">coverageMaxLike</span><span class="op">)</span>,</span>
-<span>                                               <span class="st">"method"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lengths"</span>, <span class="st">"maxLike"</span><span class="op">)</span>,</span>
-<span>                                               <span class="st">"count"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">maxLike.tmp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">maxLike.tmp</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">maxLike.tmp</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">maxLike.tmp</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">covProbs.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">covProbs.df</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    <span class="st">"intervalMin"</span> <span class="op">=</span> <span class="va">i</span>,</span>
+<span>    <span class="st">"intervalMax"</span> <span class="op">=</span> <span class="va">i</span> <span class="op">+</span> <span class="fl">1</span>,</span>
+<span>    <span class="st">"coverageProb"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="va">coverageLengths</span>,</span>
+<span>      <span class="va">coverageMaxLike</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="st">"method"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lengths"</span>, <span class="st">"maxLike"</span><span class="op">)</span>,</span>
+<span>    <span class="st">"count"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">maxLike.tmp</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Remove NA row from initialization</span></span>
-<span><span class="va">covProbs.df</span> <span class="op">&lt;-</span> <span class="va">covProbs.df</span><span class="op">[</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">covProbs.df</span><span class="op">$</span><span class="va">intervalMin</span><span class="op">)</span>,<span class="op">]</span></span></code></pre></div>
-<p>Let’s plot this as we do in Figure 4A of our preprint:</p>
+<span><span class="va">covProbs.df</span> <span class="op">&lt;-</span> <span class="va">covProbs.df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">covProbs.df</span><span class="op">$</span><span class="va">intervalMin</span><span class="op">)</span>, <span class="op">]</span></span></code></pre></div>
+<p>Let’s plot this as we do in Figure 4A of our paper:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">covProbs.df</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">intervalMin</span>, y <span class="op">=</span> <span class="va">coverageProb</span>, </span>
-<span>                                       xend <span class="op">=</span> <span class="va">intervalMax</span>, yend <span class="op">=</span> <span class="va">coverageProb</span>,</span>
-<span>                                       color <span class="op">=</span> <span class="va">method</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">colorPal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Coverage Probability"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"External to internal lengths ratio"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">covProbs.df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">intervalMin</span>, y <span class="op">=</span> <span class="va">coverageProb</span>,</span>
+<span>    xend <span class="op">=</span> <span class="va">intervalMax</span>, yend <span class="op">=</span> <span class="va">coverageProb</span>,</span>
+<span>    color <span class="op">=</span> <span class="va">method</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">colorPal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Coverage Probability"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"External to internal lengths ratio"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">3</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.95</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span>, linewidth <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reproduce-simResults_files/figure-html/plotRatio-1.png" width="100%"></p>
@@ -641,18 +692,22 @@ this will get rid of the very poor estimates.</p>
 <span></span>
 <span><span class="co"># How many did we cut</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1077</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1064</span></span></code></pre></div>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot the estimates after the diagnostic</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">percent_error</span>, color <span class="op">=</span> <span class="va">method</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">percent_error</span>, color <span class="op">=</span> <span class="va">method</span>, </span>
-<span>                 y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">.01</span>, max <span class="op">=</span> <span class="op">-</span><span class="fl">.001</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>             size <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="va">percent_error</span>, color <span class="op">=</span> <span class="va">method</span>,</span>
+<span>      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">.01</span>, max <span class="op">=</span> <span class="op">-</span><span class="fl">.001</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">.1</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    legend.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -661,7 +716,7 @@ this will get rid of the very poor estimates.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Density"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Internal lengths"</span>, <span class="st">"Max. likelihood"</span><span class="op">)</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"#009E73"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reproduce-simResults_files/figure-html/plotCutoff-1.png" width="100%"></p>
-<p>I’d say that’s much better. We cut 1065 of the 10,000 trees,
+<p>I’d say that’s much better. We cut about 1,000 of the 10,000 trees,
 eliminating many of the worst estimates. The exact number of trees
 removed will change each time the analysis is run. The real advantage
 here is that we can look at a tree and calculate this ratio which will
@@ -671,52 +726,60 @@ coverage probability, as we do in Figure 4D. We’ll start with the
 lengths method:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get the lengths stats before the diagnostic</span></span>
-<span><span class="va">normRMSE_before_lengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">random_r_lengths</span><span class="op">$</span><span class="va">estimate</span> <span class="op">-</span> <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">/</span></span>
-<span>                                   <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">random_r_lengths</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">normRMSE_before_lengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">random_r_lengths</span><span class="op">$</span><span class="va">estimate</span> <span class="op">-</span> <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">random_r_lengths</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">coverage_before_lengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">random_r_lengths</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">ground_truth</span> <span class="op">&amp;</span></span>
-<span>                                 <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">/</span></span>
-<span>                          <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">random_r_lengths</span><span class="op">)</span></span>
-<span>  </span>
+<span>  <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">random_r_lengths</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">random_r_lengths</span><span class="op">)</span></span>
+<span></span>
 <span></span>
 <span><span class="co"># Get the lengths stats for those passing the diagnostic</span></span>
-<span><span class="va">lengths_passing</span> <span class="op">&lt;-</span> <span class="va">random_r_lengths</span><span class="op">[</span><span class="va">random_r_lengths</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span></span>
-<span><span class="va">normRMSE_after_lengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">lengths_passing</span><span class="op">$</span><span class="va">estimate</span> <span class="op">-</span> <span class="va">lengths_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">/</span></span>
-<span>                                  <span class="va">lengths_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lengths_passing</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">lengths_passing</span> <span class="op">&lt;-</span> <span class="va">random_r_lengths</span><span class="op">[</span><span class="va">random_r_lengths</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&gt;</span> <span class="fl">3</span>, <span class="op">]</span></span>
+<span><span class="va">normRMSE_after_lengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">lengths_passing</span><span class="op">$</span><span class="va">estimate</span> <span class="op">-</span> <span class="va">lengths_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="va">lengths_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lengths_passing</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">coverage_after_lengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">lengths_passing</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">lengths_passing</span><span class="op">$</span><span class="va">ground_truth</span> <span class="op">&amp;</span></span>
-<span>                                 <span class="va">lengths_passing</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">lengths_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">/</span></span>
-<span>                          <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lengths_passing</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="va">lengths_passing</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">lengths_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lengths_passing</span><span class="op">)</span></span></code></pre></div>
 <p>Do the same for the maximum likelihood estimates:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get the maxLike stats before the diagnostic</span></span>
-<span><span class="va">normRMSE_before_maxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">estimate</span> <span class="op">-</span> <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">/</span></span>
-<span>                                   <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">random_r_maxLike</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">normRMSE_before_maxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">estimate</span> <span class="op">-</span> <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">random_r_maxLike</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">coverage_before_maxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">ground_truth</span> <span class="op">&amp;</span></span>
-<span>                                 <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">/</span></span>
-<span>                          <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">random_r_maxLike</span><span class="op">)</span></span>
-<span>  </span>
+<span>  <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">random_r_maxLike</span><span class="op">)</span></span>
+<span></span>
 <span></span>
 <span><span class="co"># Get the maxLike stats for those passing the diagnostic</span></span>
-<span><span class="va">maxLike_passing</span> <span class="op">&lt;-</span> <span class="va">random_r_maxLike</span><span class="op">[</span><span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span></span>
-<span><span class="va">normRMSE_after_maxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">maxLike_passing</span><span class="op">$</span><span class="va">estimate</span> <span class="op">-</span> <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">/</span></span>
-<span>                                  <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">maxLike_passing</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">maxLike_passing</span> <span class="op">&lt;-</span> <span class="va">random_r_maxLike</span><span class="op">[</span><span class="va">random_r_maxLike</span><span class="op">$</span><span class="va">extIntRatio</span> <span class="op">&gt;</span> <span class="fl">3</span>, <span class="op">]</span></span>
+<span><span class="va">normRMSE_after_maxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">maxLike_passing</span><span class="op">$</span><span class="va">estimate</span> <span class="op">-</span> <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">maxLike_passing</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">coverage_after_maxLike</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">maxLike_passing</span><span class="op">$</span><span class="va">upperBound</span> <span class="op">&gt;</span> <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">ground_truth</span> <span class="op">&amp;</span></span>
-<span>                                 <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span><span class="op">/</span></span>
-<span>                          <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">maxLike_passing</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">lowerBound</span> <span class="op">&lt;</span> <span class="va">maxLike_passing</span><span class="op">$</span><span class="va">ground_truth</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">maxLike_passing</span><span class="op">)</span></span></code></pre></div>
 <p>And then we can construct a table like in Figure 4D:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"Value"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RMSE before"</span>, <span class="st">"RMSE after"</span>, <span class="st">"Coverage probability before"</span>,</span>
-<span>                       <span class="st">"Coverage probability after"</span><span class="op">)</span>,</span>
-<span>           <span class="st">"Lengths"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">normRMSE_before_lengths</span>, <span class="va">normRMSE_after_lengths</span>,</span>
-<span>                         <span class="va">coverage_before_lengths</span>, <span class="va">coverage_after_lengths</span><span class="op">)</span>,</span>
-<span>           <span class="st">"Max likelihood"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">normRMSE_before_maxLike</span>, <span class="va">normRMSE_after_maxLike</span>,</span>
-<span>                                 <span class="va">coverage_before_maxLike</span>, <span class="va">coverage_after_maxLike</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Value"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"RMSE before"</span>, <span class="st">"RMSE after"</span>, <span class="st">"Coverage probability before"</span>,</span>
+<span>    <span class="st">"Coverage probability after"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="st">"Lengths"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="va">normRMSE_before_lengths</span>, <span class="va">normRMSE_after_lengths</span>,</span>
+<span>    <span class="va">coverage_before_lengths</span>, <span class="va">coverage_after_lengths</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="st">"Max likelihood"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="va">normRMSE_before_maxLike</span>, <span class="va">normRMSE_after_maxLike</span>,</span>
+<span>    <span class="va">coverage_before_maxLike</span>, <span class="va">coverage_after_maxLike</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt;                         Value   Lengths Max.likelihood</span></span>
-<span><span class="co">#&gt; 1                 RMSE before 0.3831698      0.4381087</span></span>
-<span><span class="co">#&gt; 2                  RMSE after 0.1647921      0.1604110</span></span>
-<span><span class="co">#&gt; 3 Coverage probability before 0.8934000      0.8618000</span></span>
-<span><span class="co">#&gt; 4  Coverage probability after 0.9463185      0.9274908</span></span></code></pre></div>
+<span><span class="co">#&gt; 1                 RMSE before 0.3920462      0.4570803</span></span>
+<span><span class="co">#&gt; 2                  RMSE after 0.1629709      0.1587368</span></span>
+<span><span class="co">#&gt; 3 Coverage probability before 0.9021000      0.8696000</span></span>
+<span><span class="co">#&gt; 4  Coverage probability after 0.9507610      0.9301701</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -746,7 +809,7 @@ of:</p>
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/19631666/" class="external-link">Stadler, T.
 2009</a></li>
 </ul>
-<p>And here’s a final link to <a href="https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/" class="external-link">our
+<p>And here’s a final link to <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
 paper</a> for more of the details of the methods and data analysis.</p>
 <p>There aren’t too many colors in this article, but we tried to use
 colorblind friendly colors, specifically pulling colors from a palette
