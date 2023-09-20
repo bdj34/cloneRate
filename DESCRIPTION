@@ -16,8 +16,7 @@ Description: Quickly estimate the net growth rate of a
     population or clone whose growth can be approximated by a birth-death
     branching process.  Input should be phylogenetic tree(s) of clone(s) with
     edge lengths corresponding to either time or mutations. Based on
-    coalescent results in Johnson et al. 2023 (under review at Bioinformatics). 
-    bioRxiv preprint available at <doi:10.1101/2023.02.24.529817>. Simulation
+    coalescent results in Johnson et al. (2023) <https://doi.org/10.1093/bioinformatics/btad561>. Simulation
     techniques as well as growth rate methods build on prior work from
     Lambert A. (2018) <doi:10.1016/j.tpb.2018.04.005> and Stadler T. (2009)
     <doi:10.1016/j.jtbi.2009.07.018>.
