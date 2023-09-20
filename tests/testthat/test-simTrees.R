@@ -34,13 +34,13 @@ test_that("warning if expected population size is less than n", {
 
 test_that("convert ultrametric to mutation based trees", {
   nYears <- 20
-  ultraTrees <- simUltra(a = 1, b = 0, cloneAge = nYears, n = 20, nTrees = 5, addStem = F)
+  ultraTrees <- simUltra(a = 1, b = 0, cloneAge = nYears, n = 20, nTrees = 5, addStem = T)
   mutRate <- 100
   mutTrees <- ultra2mut(ultraTrees, nu = mutRate)
   for (i in c(1:length(mutTrees))) {
     expect_equal(mutTrees[[i]]$metadata$nu, mutRate)
-    expect_true(all(adephylo::distRoot(mutTrees[[i]]) < mutRate * 2 * nYears))
-    expect_true(all(adephylo::distRoot(mutTrees[[i]]) > mutRate * .5 * nYears))
+    expect_true(max(ape::branching.times(mutTrees[[i]])) < mutRate * 2 * nYears)
+    expect_true(max(ape::branching.times(mutTrees[[i]])) > mutRate * .5 * nYears)
   }
 })
 
@@ -48,7 +48,7 @@ test_that("utrametric tree has right cloneAge time if addStem = TRUE", {
   nYears <- 20
   ultraTrees <- simUltra(a = 1, b = 0, cloneAge = nYears, n = 20, nTrees = 5, addStem = T)
   for (i in c(1:length(ultraTrees))) {
-    expect_true(all(suppressWarnings(adephylo::distRoot(ultraTrees[[i]])) == nYears))
+    expect_true(max(suppressWarnings(ape::branching.times(ultraTrees[[i]]))) == nYears)
   }
 })
 

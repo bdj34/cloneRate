@@ -422,7 +422,6 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
                            verbose = TRUE, nChains = 4,
                            nCores = 1, chainLength = 2000) {
-
   # If we have a list of phylo objects instead of a single phylo object, call recursively
   if (inherits(tree, "list") & inherits(tree[[1]], "phylo")) {
     # Run birth-death MCMC model many times. Parallelize if possible

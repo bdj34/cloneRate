@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 The goal of cloneRate is to provide easily accessible methods for estimating the growth rate of clones. The input should either be an ultrametric phylogenetic tree with edge lengths corresponding to time, or a non-ultrametric phylogenetic tree with edge lengths corresponding to mutation counts. This package provides the internal lengths and maximum likelihood methods for ultrametric trees and the shared mutations method for mutation-based trees, all of which are from our recent paper [cloneRate: fast estimation of single-cell clonal dynamics using coalescent theory](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182). We also provide a birth-death Markov Chain Monte Carlo (MCMC) approach using the probability density derived in Eq. 5 of [Tanja Stadler's work](https://pubmed.ncbi.nlm.nih.gov/19631666/).
 
-To test our methods, we provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching process. A direct result of [Amaury Lambert's work](https://pubmed.ncbi.nlm.nih.gov/29704514/), we use this fast simulation technique to validate our growth rate estimates.
+To test our methods, we provide a fast way to simulate the coalescent (tree) of a sample from a birth-death branching process, which is a direct result of [Amaury Lambert's work](https://pubmed.ncbi.nlm.nih.gov/29704514/).
 
 ## Installation
 

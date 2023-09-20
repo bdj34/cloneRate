@@ -25,10 +25,9 @@ using the probability density derived in Eq. 5 of [Tanja Stadler’s
 work](https://pubmed.ncbi.nlm.nih.gov/19631666/).
 
 To test our methods, we provide a fast way to simulate the coalescent
-(tree) of a sample from a birth-death branching process. A direct result
-of [Amaury Lambert’s work](https://pubmed.ncbi.nlm.nih.gov/29704514/),
-we use this fast simulation technique to validate our growth rate
-estimates.
+(tree) of a sample from a birth-death branching process, which is a
+direct result of [Amaury Lambert’s
+work](https://pubmed.ncbi.nlm.nih.gov/29704514/).
 
 ## Installation
 
@@ -93,12 +92,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.508"
+#> [1] "Max. likelihood estimate = 0.457"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.506"
+#> [1] "Internal lengths estimate = 0.448"
 ```
 
 Because we’re simulating a new tree each time, the estimate will change
