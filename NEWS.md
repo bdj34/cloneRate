@@ -1,11 +1,14 @@
+# cloneRate 0.2.1
+
+* Change installation instructions in README
+
 # cloneRate 0.2.0
 
-## Update for CRAN submission
+## Update for CRAN compatibility
 
 * Make birth-death MCMC available to all users of package
 * Move rstan from suggests to imports
 * Update rstan methods to be consistent with rstantools recommendations
-* Change installation instructions in README
 
 # cloneRate 0.1.0
 
