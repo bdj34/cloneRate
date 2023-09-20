@@ -25,9 +25,7 @@ knitr::opts_chunk$set(
 NOTE: This is not included as a vignette with the package due to
 long-running scripts. Instead, it will only be available as an article
 on [this website](https://bdj34.github.io/cloneRate/). This is intended to reproduce simulations shown in
-our recent work ["Estimating single cell clonal dynamics in human blood
-using coalescent
-theory"](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
+our recent work ["cloneRate: fast estimation of single-cell clonal dynamics using coalescent theory"](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182).
 We'll skip over many of the basics, as those are detailed in our
 introductory simulation article/vignette which is available in
 `vignette("cloneRate-simulate")`. The simulation procedure for
@@ -37,7 +35,7 @@ paper](https://pubmed.ncbi.nlm.nih.gov/29704514/). These results allowed
 us to simulate thousands of trees to check our methods for growth rate
 estimation from phylogenetic tree reconstruction, which is detailed in
 [our recent
-preprint.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/)
+paper.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182)
 We'll reproduce this validation here.
 
 ## Setup {.unnumbered}
@@ -90,7 +88,7 @@ Mitchell's github:
 For reproducibility, we'll include the code from Emily Mithcell's github in a 
 slightly simplified form, as we don't want to apply the Aberrant Cell Fraction
 (ACF) implementation of Phylofit, for reasons detailed in [our
-paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
+paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182).
 They implement Phylofit in Rstan, in a similar manner to the
 birth-death MCMC. First, we compile the Stan code:
 
@@ -130,7 +128,7 @@ LN ~ uniform(minLN,maxLN);
 t ~ glogistic(S,tm,T,pow(10,LN));
 }
 "
-PHYLOFIT_STAN_MODEL <- stan_model(model_code=stan.code, model_name = "Phylofit")
+PHYLOFIT_STAN_MODEL <- stan_model(model_code = stan.code, model_name = "Phylofit")
 ```
 
 Now that the Stan code is compiled, it's ready to be run. We'll wrap it
@@ -140,32 +138,36 @@ Phylofit (no ACF) output for the estimated growth rate:
 
 ```{r phylofit, eval = FALSE}
 # Note that this will only work for binary trees
-phylofit <- function(ultratree, nChain = 3, nCores = 1, minLN=4, maxLN=7,
-                     chainLength = 20000, alpha = 0.05){
-  
+phylofit <- function(ultratree, nChain = 3, nCores = 1, minLN = 4, maxLN = 7,
+                     chainLength = 20000, alpha = 0.05) {
   ptm <- proc.time()
-  
+
   # Get data from the tree
   coal_times <- sort(ape::branching.times(ultratree), decreasing = T)
-  dat <- list("N" = ape::Ntip(ultratree), 
-              "t" = as.numeric(c(coal_times, 0)), 
-              "T" = max(coal_times), 
-              "maxT" = 2*max(coal_times),
-              "minLN" = minLN, "maxLN" = maxLN)
-  dat$minT=as.numeric(dat$T-dat$t[1])
-  
+  dat <- list(
+    "N" = ape::Ntip(ultratree),
+    "t" = as.numeric(c(coal_times, 0)),
+    "T" = max(coal_times),
+    "maxT" = 2 * max(coal_times),
+    "minLN" = minLN, "maxLN" = maxLN
+  )
+  dat$minT <- as.numeric(dat$T - dat$t[1])
+
   # Run the Stan code
-  stanr=sampling(PHYLOFIT_STAN_MODEL,
-                 data=dat,iter = chainLength,control=list(adapt_delta=0.95),
-                 chains = nChain, cores = nCores)
-  
+  stanr <- sampling(PHYLOFIT_STAN_MODEL,
+    data = dat, iter = chainLength, control = list(adapt_delta = 0.95),
+    chains = nChain, cores = nCores
+  )
+
   # Return the results
-  ptile <- c(alpha/2, .5, 1-alpha/2)
+  ptile <- c(alpha / 2, .5, 1 - alpha / 2)
   posterior <- quantile(rstan::extract(stanr)$S, ptile)
-  data.frame("lowerBound" = posterior[1], "estimate" = posterior[2],
-             "upperBound" = posterior[3], "runtime_s" = (proc.time() - ptm)["elapsed"],
-             "n" = ape::Ntip(ultratree), "alpha" = alpha, "method" = "Phylofit no ACF",
-             "nChains" = nChain, "nCores" = nCores, "chainLength" = chainLength)
+  data.frame(
+    "lowerBound" = posterior[1], "estimate" = posterior[2],
+    "upperBound" = posterior[3], "runtime_s" = (proc.time() - ptm)["elapsed"],
+    "n" = ape::Ntip(ultratree), "alpha" = alpha, "method" = "Phylofit no ACF",
+    "nChains" = nChain, "nCores" = nCores, "chainLength" = chainLength
+  )
 }
 ```
 
@@ -242,7 +244,7 @@ ggplot(vary_n_analytical) +
     values = c("black", colorPal[4])
   ) +
   facet_wrap(~ factor(paste0("n = ", n), levels = paste0("n = ", unique(n_vec))),
-             ncol = 1, strip.position = "bottom", scales = "free", dir = "v"
+    ncol = 1, strip.position = "bottom", scales = "free", dir = "v"
   )
 ```
 
@@ -286,8 +288,10 @@ a part of the `cloneRate` package, so it's a straightforward one-liner:
 
 ```{r runBDMCMC, eval = FALSE}
 # NOTE: depending on the number of cores, this will take hours to days
-vary_n_bdMCMC <- birthDeathMCMC(vary_n_trees, nCores = 3, nChains = 3,
-                                 chainLength = 15000, verbose = FALSE)
+vary_n_bdMCMC <- birthDeathMCMC(vary_n_trees,
+  nCores = 3, nChains = 3,
+  chainLength = 15000, verbose = FALSE
+)
 ```
 
 And for Phylofit, we use the `phylofit()` function we created at the
@@ -297,23 +301,29 @@ al.
 
 ```{r runPhylofit, eval = FALSE}
 # NOTE: depending on the number of cores, this will take hours to days
-vary_n_phylofit <- do.call(rbind, 
-                            mclapply(vary_n_trees, phylofit,
-                                     mc.cores = 5, mc.silent = TRUE)
-                            )
+vary_n_phylofit <- do.call(
+  rbind,
+  mclapply(vary_n_trees, phylofit,
+    mc.cores = 5, mc.silent = TRUE
+  )
+)
 ```
 
 Now we can make a list for each set of 500 trees, split by method and
 number of samples, `n`.
 
 ```{r split, eval = FALSE}
-# Make a list with each list element containing a data.frame of results for a 
+# Make a list with each list element containing a data.frame of results for a
 # given n and method
-vary_n_results <- unlist(list(split(vary_n_lengths, vary_n_lengths$n),
-                        split(vary_n_maxLike, vary_n_maxLike$n),
-                        split(vary_n_bdMCMC, vary_n_bdMCMC$n),
-                        split(vary_n_phylofit, vary_n_phylofit$n)), 
-                        recursive = FALSE)
+vary_n_results <- unlist(
+  list(
+    split(vary_n_lengths, vary_n_lengths$n),
+    split(vary_n_maxLike, vary_n_maxLike$n),
+    split(vary_n_bdMCMC, vary_n_bdMCMC$n),
+    split(vary_n_phylofit, vary_n_phylofit$n)
+  ),
+  recursive = FALSE
+)
 ```
 
 ### Summary statistics
@@ -324,30 +334,39 @@ all the same number of tips, true growth rate, method, etc. so that it
 should be combined.
 
 ```{r summaryStats}
-get_summary_stats <- function(df, growthRate, cloneAge){
+get_summary_stats <- function(df, growthRate, cloneAge) {
   meanEstimate <- mean(df$estimate)
   sdEstimate <- stats::sd(df$estimate)
   medianEstimate <- stats::median(df$estimate)
-  normalizedRMSE <- sqrt(sum(((growthRate - df$estimate)/growthRate)^2)/nrow(df))
-  coverageProb <- sum(df$lowerBound < growthRate & df$upperBound > growthRate)/nrow(df)
+  normalizedRMSE <- sqrt(sum(((growthRate - df$estimate) / growthRate)^2) / nrow(df))
+  coverageProb <- sum(df$lowerBound < growthRate & df$upperBound > growthRate) / nrow(df)
   runtimeMean <- mean(df$runtime_s)
   runtimeSD <- stats::sd(df$runtime_s)
   method <- unique(df$method)
-  nCores <- if(is.null(df$nCores[1])){1} else {df$nCores[1]}
-  nChains <- if(is.null(df$nChains[1])){NA} else {df$nChains[1]}
+  nCores <- if (is.null(df$nCores[1])) {
+    1
+  } else {
+    df$nCores[1]
+  }
+  nChains <- if (is.null(df$nChains[1])) {
+    NA
+  } else {
+    df$nChains[1]
+  }
   nTips <- unique(df$n)
-  
+
   # Combine everything into a data.frame to return
-  data.frame("Method" = method, "Number of samples, n" = nTips,
-             "Net growth rate, r" = growthRate, "Clone age, T" = cloneAge,
-             "Number of simulated trees" = nrow(df),
-             "Mean estimate" = meanEstimate, "SD estimate" = sdEstimate,
-             "Median Estimate" = medianEstimate, 
-             "Normalized RMSE" = normalizedRMSE,
-             "95% Coverage probability" = coverageProb, # Assuming 95% CI
-             "Runtime (s)" = paste0(round(runtimeMean, 3), " +/- ", round(runtimeSD, 3)),
-             "Number of cores" = nCores, "Number of chains" = nChains
-             )
+  data.frame(
+    "Method" = method, "Number of samples, n" = nTips,
+    "Net growth rate, r" = growthRate, "Clone age, T" = cloneAge,
+    "Number of simulated trees" = nrow(df),
+    "Mean estimate" = meanEstimate, "SD estimate" = sdEstimate,
+    "Median Estimate" = medianEstimate,
+    "Normalized RMSE" = normalizedRMSE,
+    "95% Coverage probability" = coverageProb, # Assuming 95% CI
+    "Runtime (s)" = paste0(round(runtimeMean, 3), " +/- ", round(runtimeSD, 3)),
+    "Number of cores" = nCores, "Number of chains" = nChains
+  )
 }
 ```
 
@@ -356,19 +375,20 @@ in `vary_n_results` to get a summary data.frame with statistics for each
 value of `n` and each method.
 
 ```{r summaryResults, eval = FALSE}
-summary_n.df <- do.call(rbind, lapply(vary_n_results, get_summary_stats, 
-                                    growthRate = 0.5, cloneAge = 40))
+summary_n.df <- do.call(rbind, lapply(vary_n_results, get_summary_stats,
+  growthRate = 0.5, cloneAge = 40
+))
 ```
 
 The information in `summary_n.df` is available in Supplementary table 6
-of our preprint, and is also available as ".csv" file. Note that the
+of our paper, and is also available as ".csv" file. Note that the
 stochastic nature of the tree generation and MCMCs will lead to slight
 differences in the results each time the analysis is performed.
 
 ## Varying r (and/or cloneAge) {#varying-r-andor-cloneage}
 
 Here, we'll recreate the analysis in Figures 3 and 4 of [our
-preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/),
+paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182),
 noting that our methods struggle with small growth rates.
 
 ### Varying r or cloneAge?
@@ -421,7 +441,7 @@ probabilities), but these differences are small enough to be negligible.
 
 Now we can arbitrarily choose whether to vary `r` or `cloneAge`. For
 consistency, we'll vary `r`, as we do in Figures 3 and 4 of [our
-preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
+paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182).
 Here, we have two analyses:
 
 1.  Simulate at fixed `r` values, showing which are good and which are
@@ -441,8 +461,10 @@ r_vec <- rep(c(0.15, 0.2, 0.25, 0.5, 0.75, 1), each = 500)
 a_vec <- stats::runif(n = length(r_vec), min = r_vec, max = r_vec + 1)
 b_vec <- a_vec - r_vec
 
-vary_r_trees <- simUltra(a = a_vec, b = b_vec, cloneAge = 40, n = 100, 
-                         nTrees = length(a_vec), nCores = 6)
+vary_r_trees <- simUltra(
+  a = a_vec, b = b_vec, cloneAge = 40, n = 100,
+  nTrees = length(a_vec), nCores = 6
+)
 ```
 
 Again, we keep the growth rate `a - b` equal to `r`, but let the actual
@@ -465,23 +487,33 @@ environment:
 
 ```{r vary_r_MCMC, eval = FALSE}
 # NOTE: depending on the number of cores, these will take hours to days
-vary_r_bdMCMC <- birthDeathMCMC(vary_r_trees, nCores = 3, nChains = 3,
-                                 chainLength = 15000, verbose = FALSE)
-vary_r_phylofit <- do.call(rbind, 
-                            mclapply(vary_r_trees, phylofit,
-                                     mc.cores = 5, mc.silent = TRUE))
+vary_r_bdMCMC <- birthDeathMCMC(vary_r_trees,
+  nCores = 3, nChains = 3,
+  chainLength = 15000, verbose = FALSE
+)
+vary_r_phylofit <- do.call(
+  rbind,
+  mclapply(vary_r_trees, phylofit,
+    mc.cores = 5, mc.silent = TRUE
+  )
+)
 
-# Make a list with each list element containing a data.frame of results for a 
+# Make a list with each list element containing a data.frame of results for a
 # given r and method
-vary_r_results <- unlist(list(split(vary_r_lengths, r_vec),
-                        split(vary_r_maxLike, r_vec),
-                        split(vary_r_bdMCMC, r_vec),
-                        split(vary_r_phylofit, r_vec)), 
-                        recursive = FALSE)
+vary_r_results <- unlist(
+  list(
+    split(vary_r_lengths, r_vec),
+    split(vary_r_maxLike, r_vec),
+    split(vary_r_bdMCMC, r_vec),
+    split(vary_r_phylofit, r_vec)
+  ),
+  recursive = FALSE
+)
 
 summary_r.df <- do.call(rbind, mapply(get_summary_stats, vary_r_results,
-                                    growthRate = as.numeric(names(vary_r_results)), 
-                                    cloneAge = 40, SIMPLIFY = FALSE))
+  growthRate = as.numeric(names(vary_r_results)),
+  cloneAge = 40, SIMPLIFY = FALSE
+))
 ```
 
 #### Random r (Fig. 4)
@@ -501,7 +533,7 @@ that an external to internal lengths ratio greater than 3 is good enough
 to apply our methods. Let's apply our methods and see how they look
 before and after applying this ratio cutoff. Note that this is what
 we're doing in Figure 4 of [our
-preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
+paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182).
 
 Let's simulate 10,000 trees with 50 samples each and various growth
 rates, ranging from 0.1 to 1 per year, run for 40 years. Then, we should
@@ -515,8 +547,10 @@ a_vec <- stats::runif(n = 10000, min = 1, max = 3)
 b_vec <- a_vec - r_vec
 
 # Input to simUltra()
-random_r_trees <- simUltra(a = a_vec, b = b_vec, cloneAge = 40, n = 50, 
-                           nTrees = length(a_vec), nCores = 6)
+random_r_trees <- simUltra(
+  a = a_vec, b = b_vec, cloneAge = 40, n = 50,
+  nTrees = length(a_vec), nCores = 6
+)
 ```
 
 Apply our `internalLengths()` and `maxLikelihood()` functions as usual,
@@ -550,13 +584,17 @@ results_random_r <- rbind(random_r_lengths, random_r_maxLike)
 # Plot, adding a vertical line at 0 because that's the error free estimate
 ggplot(results_random_r) +
   geom_density(aes(x = percent_error, color = method), linewidth = 1.5) +
-  geom_point(aes(x = percent_error, color = method, 
-                 y = runif(n = nrow(results_random_r), min = -.01, max = -.001)),
-             size = .1)+
+  geom_point(
+    aes(
+      x = percent_error, color = method,
+      y = runif(n = nrow(results_random_r), min = -.01, max = -.001)
+    ),
+    size = .1
+  ) +
   geom_vline(xintercept = 0) +
   theme_bw() +
   xlim(-100, 2000) +
-  coord_cartesian(xlim = c(-100, 150))+
+  coord_cartesian(xlim = c(-100, 150)) +
   theme(
     axis.text.y = element_blank(), axis.ticks.y = element_blank(),
     legend.title = element_blank()
@@ -566,7 +604,7 @@ ggplot(results_random_r) +
   scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), values = c("black", "#009E73"))
 ```
 
-Not bad, but we have some rogue estimates with \> 100% error! And we
+Not bad, but we have some rogue estimates with \> 150% error! And we
 have many with \> 50% error. 
 
 The external to internal lengths ratio should give a good estimate of how supercritical a tree is. But we need to figure out what ratio is good enough for our assumptions to be valid and our methods to work. For each method, let's split the results by the ratio of external to internal lengths, and see how accurate the 95% confidence intervals are:
@@ -575,49 +613,59 @@ The external to internal lengths ratio should give a good estimate of how superc
 # Split by the integer value of the ratio
 
 # Make a dataframe to store the coverage probabilities
-covProbs.df <- data.frame("intervalMin" = NA,
-                          "intervalMax" = NA,
-                          "coverageProb" = NA,
-                          "method" = NA,
-                          "count" = NA)
+covProbs.df <- data.frame(
+  "intervalMin" = NA,
+  "intervalMax" = NA,
+  "coverageProb" = NA,
+  "method" = NA,
+  "count" = NA
+)
 
 # Calculate coverage probability at each interval of ext. to int. lengths ratio
-for(i in c(0:20)){
+for (i in c(0:20)) {
   # Get the subset that has a ratio in the interval i to i+1
   lengths.tmp <- random_r_lengths[random_r_lengths$extIntRatio >= i &
-                                    random_r_lengths$extIntRatio < i+1,]
+    random_r_lengths$extIntRatio < i + 1, ]
   maxLike.tmp <- random_r_maxLike[random_r_maxLike$extIntRatio >= i &
-                                    random_r_maxLike$extIntRatio < i+1,]
-  
+    random_r_maxLike$extIntRatio < i + 1, ]
+
   coverageLengths <- sum(lengths.tmp$lowerBound < lengths.tmp$ground_truth &
-                           lengths.tmp$upperBound > lengths.tmp$ground_truth) / nrow(lengths.tmp)
+    lengths.tmp$upperBound > lengths.tmp$ground_truth) / nrow(lengths.tmp)
   coverageMaxLike <- sum(maxLike.tmp$lowerBound < maxLike.tmp$ground_truth &
-                           maxLike.tmp$upperBound > maxLike.tmp$ground_truth) / nrow(maxLike.tmp)
-  
-  covProbs.df <- rbind(covProbs.df, data.frame("intervalMin" = i,
-                                               "intervalMax" = i+1,
-                                               "coverageProb" = c(coverageLengths,
-                                                                  coverageMaxLike),
-                                               "method" = c("lengths", "maxLike"),
-                                               "count" = nrow(maxLike.tmp)))
+    maxLike.tmp$upperBound > maxLike.tmp$ground_truth) / nrow(maxLike.tmp)
+
+  covProbs.df <- rbind(covProbs.df, data.frame(
+    "intervalMin" = i,
+    "intervalMax" = i + 1,
+    "coverageProb" = c(
+      coverageLengths,
+      coverageMaxLike
+    ),
+    "method" = c("lengths", "maxLike"),
+    "count" = nrow(maxLike.tmp)
+  ))
 }
 
 # Remove NA row from initialization
-covProbs.df <- covProbs.df[! is.na(covProbs.df$intervalMin),]
+covProbs.df <- covProbs.df[!is.na(covProbs.df$intervalMin), ]
 ```
 
-Let's plot this as we do in Figure 4A of our preprint:
+Let's plot this as we do in Figure 4A of our paper:
 
 ```{r plotRatio, fig.asp = 0.8, fig.width = 7}
-ggplot(covProbs.df) + geom_segment(aes(x = intervalMin, y = coverageProb, 
-                                       xend = intervalMax, yend = coverageProb,
-                                       color = method)) + theme_bw()+
-  scale_color_manual(values = colorPal[c(1,4)]) +
-  ylab("Coverage Probability") + xlab("External to internal lengths ratio") +
-  theme(legend.title = element_blank()) + 
+ggplot(covProbs.df) +
+  geom_segment(aes(
+    x = intervalMin, y = coverageProb,
+    xend = intervalMax, yend = coverageProb,
+    color = method
+  )) +
+  theme_bw() +
+  scale_color_manual(values = colorPal[c(1, 4)]) +
+  ylab("Coverage Probability") +
+  xlab("External to internal lengths ratio") +
+  theme(legend.title = element_blank()) +
   geom_vline(xintercept = 3, linetype = "dashed") +
   geom_hline(yintercept = 0.95, linetype = "dotted", linewidth = .5)
-  
 ```
 
 Seeing that the confidence intervals aren't accurate until the ratio is at least 3, let's apply that cutoff ratio of 3 to exclude the trees which we don't think are good candidates for our
@@ -635,13 +683,17 @@ print((nrow(results_random_r) - nrow(results_random_r_cut)) / 2)
 # Plot the estimates after the diagnostic
 ggplot(results_random_r_cut) +
   geom_density(aes(x = percent_error, color = method), linewidth = 1.5) +
-  geom_point(aes(x = percent_error, color = method, 
-                 y = runif(n = nrow(results_random_r_cut), min = -.01, max = -.001)),
-             size = .1)+
+  geom_point(
+    aes(
+      x = percent_error, color = method,
+      y = runif(n = nrow(results_random_r_cut), min = -.01, max = -.001)
+    ),
+    size = .1
+  ) +
   geom_vline(xintercept = 0) +
   theme_bw() +
   xlim(-100, 200) +
-  coord_cartesian(xlim = c(-100, 150))+
+  coord_cartesian(xlim = c(-100, 150)) +
   theme(
     axis.text.y = element_blank(), axis.ticks.y = element_blank(),
     legend.title = element_blank()
@@ -651,7 +703,7 @@ ggplot(results_random_r_cut) +
   scale_color_manual(labels = c("Internal lengths", "Max. likelihood"), values = c("black", "#009E73"))
 ```
 
-I'd say that's much better. We cut 1065 of the 10,000 trees, eliminating
+I'd say that's much better. We cut about 1,000 of the 10,000 trees, eliminating
 many of the worst estimates. The exact number of trees removed will change each time the
 analysis is run. The real advantage here is that we can look at a tree
 and calculate this ratio which will tell us right away if our methods
@@ -661,53 +713,61 @@ Finally, let's quantify what we see with Root mean square error and coverage pro
 
 ```{r quantifyCutoff_lengths}
 # Get the lengths stats before the diagnostic
-normRMSE_before_lengths <- sqrt(sum(((random_r_lengths$estimate - random_r_lengths$ground_truth)/
-                                   random_r_lengths$ground_truth)^2)/nrow(random_r_lengths))
+normRMSE_before_lengths <- sqrt(sum(((random_r_lengths$estimate - random_r_lengths$ground_truth) /
+  random_r_lengths$ground_truth)^2) / nrow(random_r_lengths))
 coverage_before_lengths <- sum(random_r_lengths$upperBound > random_r_lengths$ground_truth &
-                                 random_r_lengths$lowerBound < random_r_lengths$ground_truth)/
-                          nrow(random_r_lengths)
-  
+  random_r_lengths$lowerBound < random_r_lengths$ground_truth) /
+  nrow(random_r_lengths)
+
 
 # Get the lengths stats for those passing the diagnostic
-lengths_passing <- random_r_lengths[random_r_lengths$extIntRatio > 3,]
-normRMSE_after_lengths <- sqrt(sum(((lengths_passing$estimate - lengths_passing$ground_truth)/
-                                  lengths_passing$ground_truth)^2)/nrow(lengths_passing))
+lengths_passing <- random_r_lengths[random_r_lengths$extIntRatio > 3, ]
+normRMSE_after_lengths <- sqrt(sum(((lengths_passing$estimate - lengths_passing$ground_truth) /
+  lengths_passing$ground_truth)^2) / nrow(lengths_passing))
 
 coverage_after_lengths <- sum(lengths_passing$upperBound > lengths_passing$ground_truth &
-                                 lengths_passing$lowerBound < lengths_passing$ground_truth)/
-                          nrow(lengths_passing)
+  lengths_passing$lowerBound < lengths_passing$ground_truth) /
+  nrow(lengths_passing)
 ```
 
 Do the same for the maximum likelihood estimates: 
 
 ```{r quantifyCutoff_maxLike}
 # Get the maxLike stats before the diagnostic
-normRMSE_before_maxLike <- sqrt(sum(((random_r_maxLike$estimate - random_r_maxLike$ground_truth)/
-                                   random_r_maxLike$ground_truth)^2/nrow(random_r_maxLike)))
+normRMSE_before_maxLike <- sqrt(sum(((random_r_maxLike$estimate - random_r_maxLike$ground_truth) /
+  random_r_maxLike$ground_truth)^2 / nrow(random_r_maxLike)))
 coverage_before_maxLike <- sum(random_r_maxLike$upperBound > random_r_maxLike$ground_truth &
-                                 random_r_maxLike$lowerBound < random_r_maxLike$ground_truth)/
-                          nrow(random_r_maxLike)
-  
+  random_r_maxLike$lowerBound < random_r_maxLike$ground_truth) /
+  nrow(random_r_maxLike)
+
 
 # Get the maxLike stats for those passing the diagnostic
-maxLike_passing <- random_r_maxLike[random_r_maxLike$extIntRatio > 3,]
-normRMSE_after_maxLike <- sqrt(sum(((maxLike_passing$estimate - maxLike_passing$ground_truth)/
-                                  maxLike_passing$ground_truth)^2)/nrow(maxLike_passing))
+maxLike_passing <- random_r_maxLike[random_r_maxLike$extIntRatio > 3, ]
+normRMSE_after_maxLike <- sqrt(sum(((maxLike_passing$estimate - maxLike_passing$ground_truth) /
+  maxLike_passing$ground_truth)^2) / nrow(maxLike_passing))
 
 coverage_after_maxLike <- sum(maxLike_passing$upperBound > maxLike_passing$ground_truth &
-                                 maxLike_passing$lowerBound < maxLike_passing$ground_truth)/
-                          nrow(maxLike_passing)
+  maxLike_passing$lowerBound < maxLike_passing$ground_truth) /
+  nrow(maxLike_passing)
 ```
 
 And then we can construct a table like in Figure 4D:
 
 ```{r fig4d}
-data.frame("Value" = c("RMSE before", "RMSE after", "Coverage probability before",
-                       "Coverage probability after"),
-           "Lengths" = c(normRMSE_before_lengths, normRMSE_after_lengths,
-                         coverage_before_lengths, coverage_after_lengths),
-           "Max likelihood" = c(normRMSE_before_maxLike, normRMSE_after_maxLike,
-                                 coverage_before_maxLike, coverage_after_maxLike))
+data.frame(
+  "Value" = c(
+    "RMSE before", "RMSE after", "Coverage probability before",
+    "Coverage probability after"
+  ),
+  "Lengths" = c(
+    normRMSE_before_lengths, normRMSE_after_lengths,
+    coverage_before_lengths, coverage_after_lengths
+  ),
+  "Max likelihood" = c(
+    normRMSE_before_maxLike, normRMSE_after_maxLike,
+    coverage_before_maxLike, coverage_after_maxLike
+  )
+)
 ```
 
 # References
@@ -732,7 +792,7 @@ of:
 -   [Stadler, T. 2009](https://pubmed.ncbi.nlm.nih.gov/19631666/)
 
 And here's a final link to [our
-paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/) for
+paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182) for
 more of the details of the methods and data analysis.
 
 There aren't too many colors in this article, but we tried to use
