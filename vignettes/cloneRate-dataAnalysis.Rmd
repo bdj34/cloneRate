@@ -210,7 +210,7 @@ resultsBDMCMC <- suppressWarnings(birthDeathMCMC(cloneTrees.list))
 
 # Print correlation coefficient of the estimates from the two methods
 print(stats::cor.test(resultsBDMCMC$estimate, resultsMaxLike$estimate)$estimate)
-# >  cor 
+# >  cor
 # > 0.9964975
 ```
 

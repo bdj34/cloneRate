@@ -1,5 +1,4 @@
 test_that("shared mutations method needs mutation rate", {
-
   mutTree <- simMut(a = 1, b = 0, cloneAge = 20, nu = 10, n = 50)
 
   # sharedMuts() will find mutation rate if nu is a col in metadata data.frame
