@@ -6,10 +6,10 @@ Authors@R: c(
     person("Brian", "Johnson", email = "brian.d.johnson97@gmail.com", 
            role = c("cre", "aut", "cph"),
            comment = c(ORCID = "0000-0002-9477-4677")),
-    person("Yubo", "Shuai", role = "aut"),
-    person("Jason", "Schweinsberg", role = "aut",
+    person("Yubo", "Shuai", role = c("aut", "cph")),
+    person("Jason", "Schweinsberg", role = c("aut", "cph"),
            comment = c(ORCID = "0000-0002-4152-0059")),
-    person("Kit", "Curtius", role = "aut",
+    person("Kit", "Curtius", role = c("aut", "cph"),
            comment = c(ORCID = "0000-0002-2678-0960"))
   )
 Description: Quickly estimate the net growth rate of a

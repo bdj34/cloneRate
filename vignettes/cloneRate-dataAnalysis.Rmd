@@ -12,7 +12,7 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  fig.align = 'center',
+  fig.align = "center",
   collapse = TRUE,
   comment = "#>",
   out.width = "80%",
@@ -20,9 +20,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this vignette, we'll walk through our data analysis corresponding to [our 
-recent preprint](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/) analyzing single-cell Whole Genome Sequencing 
-(scWGS) data from four different papers. As part of this package, we have 
+In this vignette, we'll walk through our data analysis corresponding to [our paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182) analyzing single-cell Whole Genome Sequencing 
+(scWGS) data from four previously published papers. As part of this package, we have 
 included everything needed to reproduce this analysis, which consists of 
 reconstructed phylogenetic trees and de-identified metadata about the donors 
 who were sequenced. We also include some longitudinal bulk Whole Genome Sequencing (bulk WGS)
@@ -72,7 +71,7 @@ library(car)
 ```
 
 We'll also set the colors which we'll use for most of the plotting. The palette is 
-taken from [here](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)
+available [here](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)
 ```{r setColors}
 colorPal <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
@@ -90,9 +89,8 @@ summary(cloneRate::realCloneData)
 There are two lists contained in this dataset, one which contains the full 
 reconstructed tree for each individual at each timepoint (named `fullTrees`), 
 and one which contains specific clones from the full trees (named `cloneTrees`).
-We require that a clone must have at least `n=10` tips (cells)  to be 
-included in `cloneTrees`. We discuss this requirement in our [simulation 
-vignette](cloneRate-simulate.html). For now, let's
+We require that a clone must have at least `n=10` tips (sampled cells)  to be 
+included in `cloneTrees`. We discuss this requirement in our [simulation vignette](cloneRate-simulate.html). For now, let's
 split these into two different variables for clarity. 
 
 ```{r dataSplit}
@@ -156,7 +154,7 @@ Now this tree of the clonal expansion looks a lot more like the trees we simulat
 
 # Estimating growth rates
 
-We see that the above tree is ultrametric and we know that it's time-based, in units of years, so we should apply our [internalLengths()] and [maxLikelihood()] functions.
+We see that the above tree is ultrametric and we know that it's time-based, in units of years, so we should apply our `internalLengths()` and `maxLikelihood()` functions.
 
 ```{r applyMethods}
 # Get maximum likelihood and internal lengths estimates
@@ -191,7 +189,7 @@ axisPhylo(side = 2, backward = FALSE, las = 1)
 title(main = "PD5847 clone 1 tree (multi-branching)", ylab = "Time (years)")
 ```
 
-We can see the three descendants from a single node (node 76), which is identified by the edges in orange. We see that there are a lot of places where there are multiple splits (coalescence events) in quick succession, but this is the only place where 1 node appears to split into 3. Well, it's okay, we know mutations are an imperfect way to keep track of time. If we saw more of these events where one node splits into 3, or cases where one node splits into 4+, we might be more concerned. In this case, we can move on. Our functions for growth rate estimation are equipped to handle trees like this, but they throw warnings so we know what's happening. Let's continue, applying our [maxLikelihood()] function to the trees.
+We can see the three descendants from a single node (node 76), which is identified by the edges in orange. We see that there are a lot of places where there are multiple splits (coalescence events) in quick succession, but this is the only place where 1 node appears to split into 3. It's okay; we know mutations are an imperfect way to keep track of time. If we saw more of these events where one node splits into 3, or cases where one node splits into 4+, we might be more concerned. In this case, we can move on. Our functions for growth rate estimation are equipped to handle trees like this, but they throw warnings so we know what's happening. Let's continue, applying our `maxLikelihood()` function to the trees.
 
 
 ```{r applyMaxLike}
@@ -204,11 +202,21 @@ print(head(resultsMaxLike[, c(1:3)]))
 print(stats::cor.test(resultsLengths$estimate, resultsMaxLike$estimate)$estimate)
 ```
 
-Not bad! With a correlation coefficient around 0.98, the estimates from each method agree very well.
+Not bad! With a correlation coefficient around 0.98, the estimates from each method agree very well. If you want to compare the estimates from the birth-death MCMC as well, we'll include an example of how to run this, but won't include the results here as this tends to take longer to run. We note the very high correlation ($R^2 > 0.99$) between the birth-death MCMC and the maximum likelihood estimate:
+
+```{r applyBDMCMC, eval=FALSE}
+# Longer running code. Not run as part of vignette.
+resultsBDMCMC <- suppressWarnings(birthDeathMCMC(cloneTrees.list))
+
+# Print correlation coefficient of the estimates from the two methods
+print(stats::cor.test(resultsBDMCMC$estimate, resultsMaxLike$estimate)$estimate)
+# >  cor 
+# > 0.9964975
+```
 
 ## Understanding the function outputs
 
-Each of the functions ([maxLikelihood()] and [internalLengths()]) returns a data.frame with
+Each of the functions (`maxLikelihood()`, `internalLengths()` and `birthDeathMCMC()`) returns a data.frame with
 the same columns, and we'll walk through what the columns mean here:
 
 ```{r columnsInfo}
@@ -244,7 +252,7 @@ print(cloneTrees.list$PD9478_1_clone1$metadata)
 For a biological and/or clinical analysis, the most important of these are:
 
 * `age` which tells us the individual's age at the time of sampling. We know that clonal hematopoiesis is associated with aging.
-* `cloneDriver` which tells us the clonal hematopoiesis driver which likely leads to the expansion.
+* `cloneDriver` which tells us the clonal hematopoiesis driver(s) which likely leads to the expansion.
 * `diagnosis.age` which tells us when the individual was diagnosed with Myeloproliferative Neoplasm (MPN). If the individual doesn't have MPN, `diagnosis.age` is `NA`. 
 * `malnorm` which tells us whether the individual has been diagnosed with a Myeloproliferative Neoplasm (MPN). This information is already conveyed in `diagnosis.age`, but it's sometimes easier to work with in this format.
 
@@ -258,7 +266,7 @@ metadataAll <- do.call(rbind, lapply(cloneTrees.list, function(x) {
 ```
 
 Let's join the data.frames containing the metadata and the results. We can use 
-`base::cbind()` because we know the order of the metadata is the same as the 
+`cbind()` because we know the order of the metadata is the same as the 
 order of the results data.frame. We can check this by comparing the 
 `cloneName_result` and `cloneName_meta` columns, which should be (and are) the same.
 
@@ -275,13 +283,13 @@ results <- resultsMaxLikeMeta
 ```
 
 We'll go forward with our analysis using the results data.frame, which contains 
-the estimates from the [maxLikelihood()] function and the metadata. In the 
+the estimates from the `maxLikelihood()` function and the metadata. In the 
 [simulation vignette](cloneRate-simulate.html), we show that the maximum likelihood
-estimate performs the best.
+estimate performs better than the `internalLengths()` estimate.
 
 ## Recreating figures
 
-Here, we recreate the analysis in [Figure 5E-G of our work](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
+Here, we recreate the analysis in [Figure 5E-G of our work](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182).
 These are just a few of many analyses that can be done with this data, so don't be limited by what we do.
 
 If we split the cohort by MPN and normal, we might expect differences in the growth rates. Because the number of sampled cells, on average, is higher in the healthy individuals due to study design differences, we're likely to pick up more clones from the healthy individuals. To avoid this bias as much as possible, we'll compare the mean growth rate between individuals with and without MPN.
@@ -320,7 +328,7 @@ For now, our `uniqueResults` dataframe contains the results with only one clone 
 
 ### MPN vs. Normal (Fig. 5E)
 
-Now, let's take the mean for each individual and re-create [Fig. 5E](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/).
+Now, let's take the mean for each individual and re-create [Fig. 5E](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182).
 
 ```{r meanInd, out.width = '50%'}
 # Get the unique individuals, and initialize vectors
@@ -393,9 +401,9 @@ ggplot(uniqueResults, aes(x = multiDriver, y = estimate)) +
   )
 ```
 
-### Time from clone initiation to diagnosis ([Fig. 5G](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/))
+### Time from clone initiation to diagnosis ([Fig. 5G](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182))
 
-We discussed before that our results data.frame (the output of [internalLengths()] or [maxLikelihood()]) came with a clone age estimate, which was $1/r$ + the time from sampling back to the first coalescence. If the birth rate of a clone is $a$  and the death rate is $b$, then the net growth rate is $r=a-b$. The first coalescence represents the first surviving division because, if neither of the offspring of a division die out, they'll account for, on average, half the cells in the clone. This means that even if we sample only 10 cells, we're very likely to sample at least one descendant from each of the two offspring, meaning that first surviving division should be the earliest coalescence, relative to the time of sampling. How do we know when the first surviving division occurs? Well, we know:
+We discussed before that our results data.frame (the output of `internalLengths()` or `maxLikelihood()`) came with a clone age estimate, which was $1/r$ + the time from sampling back to the first coalescence. If the birth rate of a clone is $a$  and the death rate is $b$, then the net growth rate is $r=a-b$. The first coalescence represents the first surviving division because, if neither of the offspring of a division die out, they'll account for, on average, half the cells in the clone. This means that even if we sample only 10 cells, we're very likely to sample at least one descendant from each of the two offspring, meaning that first surviving division should be the earliest coalescence, relative to the time of sampling. How do we know when the first surviving division occurs? Well, we know:
 
 * the birth rate is $a$
 * the probability of survival of a given individual is $(a-b)/a$ or $r/a$
@@ -422,7 +430,7 @@ cloneIDs_youngest <- sapply(unique(uniqueResults$patient), function(x) {
 table(cloneIDs_max == cloneIDs_youngest)
 ```
 
-We see that in 15/19 cases, the youngest clone (with >= 10 tips)  is also the most fit. First, let's use the most fit clones and stratify by the mean, reproducing [our result in Figure 5G.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/)
+We see that in 15/19 cases, the youngest clone (with >= 10 tips)  is also the most fit. First, let's use the most fit clones and stratify by the mean, reproducing [our result in Figure 5G.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182)
 
 ```{r maxStratify, out.width = '50%'}
 # Subset the results to only have the fittest clone for each patient
@@ -495,7 +503,7 @@ ggplot(repeatResults) +
 
 Not too bad! It's good to be consistent, but it's better to be consistent and accurate. For that, we need a completely orthogonal way to measure clonal growth rates, which comes from longitudinal data. One of the clones from the [Williams paper](https://pubmed.ncbi.nlm.nih.gov/35058638/) and two of the clones from the [Fabre paper](https://pubmed.ncbi.nlm.nih.gov/35650444/) have matching longitudinal data. We have formatted this nicely and it comes with the package!
 
-Let's now fit a logistic curve to the longitudinal data and estimate the growth rate for one of these clones, from individual PD9478, which is the tree we showed at the beginning of this vignette. Here, we are recreating some of the analysis from [our Figure 6.](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/)
+Let's now fit a logistic curve to the longitudinal data and estimate the growth rate for one of these clones, from individual PD9478, which is the tree we showed at the beginning of this vignette. Here, we are recreating some of the analysis from [our Figure 6.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182)
 
 ```{r loadLong, out.width = '50%'}
 # Get data from PD9478
@@ -566,11 +574,11 @@ ggplot(combine.df) +
   ylab("Net growth rate (r)")
 ```
 
-All in all, not too bad! For now, we'll leave the others for you to explore. This vignette has already been a bit long. But now you should have the tools to reproduce our analysis relating to the real data aspect of [our paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/). Hopefully you were able to do this in minutes and hours, which is much better than the months it took me!
+All in all, not too bad! This is the result shown in Figure 6 A&D. But now you have the tools to reproduce our analysis relating to the real data aspect of [our paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182). Hopefully you were able to do this in a matter of hours and minutes, which is much better than the months it took me!
 
 # References / Data sources:
 
-Any real world data we include is produced and annotated in these fascinating papers, which have advanced the capabilities of single-cell DNA sequencing. They also provide excellent analysis in addition to what we provide here and in our work.
+Any real world data we include is produced and annotated in these fascinating papers, which have advanced the capabilities of single-cell Whole Genome Sequencing. They also provide excellent analysis in addition to what we provide here and in our work.
 
 * [Williams et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35058638/)
 * [Mitchell et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650442/) 
@@ -581,6 +589,6 @@ The mathematical methods for estimating growth rates build in large part from th
 
 * [Lambert, 2018](https://pubmed.ncbi.nlm.nih.gov/29704514/)
 
-And here's a final link to [our paper](https://www.biorxiv.org/content/10.1101/2023.02.24.529817v2/) for more of the details of the methods and data analysis.
+And here's a final link to [our paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182) for more of the details of the methods and data analysis.
 
 If you enjoyed the color palette for the plotting, we tried to use colorblind friendly colors, specifically pulling colors from a palette designed by [Bang Wong](https://www.nature.com/articles/nmeth.1618) and available [here.](https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7)

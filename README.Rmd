@@ -162,7 +162,7 @@ Our package comes with 42 clones annotated from four distinct publications, whic
 * [Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/) 
 * [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 
-The birth-death MCMC (not shown in this vignette) is based on the probability density derived in Eq. 5 of Tanja Stadler's work:
+The birth-death MCMC (not shown here) is based on the probability density derived in Eq. 5 of Tanja Stadler's work:
 
 * [Stadler, 2009](https://pubmed.ncbi.nlm.nih.gov/19631666/)
 

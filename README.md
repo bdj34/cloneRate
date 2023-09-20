@@ -92,12 +92,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.457"
+#> [1] "Max. likelihood estimate = 0.596"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.448"
+#> [1] "Internal lengths estimate = 0.526"
 ```
 
 Because we’re simulating a new tree each time, the estimate will change
@@ -190,8 +190,8 @@ are three clones profiled at two different timepoints, meaning there are
 - [Fabre et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35650444/)
 - [Van Egeren et al. 2021](https://pubmed.ncbi.nlm.nih.gov/33621486/)
 
-The birth-death MCMC (not shown in this vignette) is based on the
-probability density derived in Eq. 5 of Tanja Stadler’s work:
+The birth-death MCMC (not shown here) is based on the probability
+density derived in Eq. 5 of Tanja Stadler’s work:
 
 - [Stadler, 2009](https://pubmed.ncbi.nlm.nih.gov/19631666/)
 
