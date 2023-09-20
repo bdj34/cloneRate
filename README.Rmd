@@ -27,7 +27,13 @@ To test our methods, we provide a fast way to simulate the coalescent (tree) of 
 
 ## Installation
 
-You can install the development version of cloneRate from [GitHub](https://github.com/). For this basic tutorial and our vignettes, we will also use a few other packages, which can all be installed from CRAN. Because these are listed as packages we 'suggest', running the following command (with `dependencies = TRUE`) will install them along with the vignettes:
+Install from CRAN with the following:
+
+```r
+install.packages("cloneRate")
+```
+
+Alternatively, you can install the development version of cloneRate from [GitHub](https://github.com/). For this basic tutorial and our vignettes, we will also use a few other packages, which can all be installed from CRAN. Because these are listed as packages we 'suggest', running the following command (with `dependencies = TRUE`) will install them along with the vignettes:
 
 ```r
 # Install devtools if you don't have it already
