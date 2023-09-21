@@ -1,12 +1,14 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Fixed doi formatting in DESCRIPTION.
+
+* Wrapped one long-running example in \donttest{}. Due to the nature of the 
+  example, it cannot be run in under 5s.
+
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 notes
 
 * This is a new release.
 
-
-* Examples with CPU (user + system) or elapsed time > 5s
-                   user system elapsed
-  birthDeathMCMC 47.155   0.11  47.503
-  
-  Running MCMC with suggested settings takes > 5 seconds
