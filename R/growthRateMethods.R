@@ -417,7 +417,9 @@ maxLikelihood <- function(tree, alpha = 0.05) {
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' df <- birthDeathMCMC(cloneRate::exampleUltraTrees[[1]])
+#' }
 #'
 birthDeathMCMC <- function(tree, maxGrowthRate = 4, alpha = 0.05,
                            verbose = TRUE, nChains = 4,
