@@ -1,3 +1,7 @@
+# cloneRate 0.2.2
+
+* Wrap long-running examples in \donttest{} for CRAN
+
 # cloneRate 0.2.1
 
 * Change to CRAN installation instructions in README
