@@ -1,6 +1,6 @@
 # cloneRate 0.2.1
 
-* Change installation instructions in README
+* Change to CRAN installation instructions in README
 
 # cloneRate 0.2.0
 
