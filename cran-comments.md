@@ -3,7 +3,7 @@ This is a resubmission. In this version I have:
 
 * Converted all T and F to TRUE and FALSE.
 
-* Removed package installations from running in vignettes, setting "eval = FALSE".
+* Removed package installations from running in README and vignettes, removing or setting "eval = FALSE".
 
 * Reset user's par() after changing it in a vignette.
 
