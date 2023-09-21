@@ -1,3 +1,7 @@
+# cloneRate 0.2.3
+
+* Minor changes for CRAN resubmission
+
 # cloneRate 0.2.2
 
 * Wrap long-running examples in \donttest{} for CRAN
