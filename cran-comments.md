@@ -1,10 +1,11 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Fixed doi formatting in DESCRIPTION.
+* Converted all T and F to TRUE and FALSE.
 
-* Wrapped one long-running example in \donttest{}. Due to the nature of the 
-  example, it cannot be run in under 5s.
+* Removed package installations from running in vignettes, setting "eval = FALSE".
+
+* Reset user's par() after changing it in a vignette.
 
 ## R CMD check results
 
