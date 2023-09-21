@@ -57,6 +57,6 @@ coalescent of a sample from a binary branching process. (2018)."
 tree <- simUltra(a = 1, b = 0.5, cloneAge = 20, n = 50)
 
 # Generate a list of trees
-tree_list <- simUltra(a = 1, b = 0.5, cloneAge = 20, n = 50, nTrees = 5)
+tree_list <- simUltra(a = 1, b = 0.5, cloneAge = 20, n = 50, nTrees = 3)
 
 }
