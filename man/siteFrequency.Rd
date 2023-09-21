@@ -4,7 +4,7 @@
 \alias{siteFrequency}
 \title{Get site frequency spectrum of a tree}
 \usage{
-siteFrequency(tree, includeStem = F)
+siteFrequency(tree, includeStem = FALSE)
 }
 \arguments{
 \item{tree}{An ultrametric or mutation-based tree subset to include only the

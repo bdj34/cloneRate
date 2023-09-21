@@ -9,5 +9,5 @@
 Quickly estimate the net growth rate of a population or clone whose growth can be approximated by a birth-death branching process.
 }
 \references{
-Johnson et al. 2023 (under review at Bioinformatics). bioRxiv preprint \url{doi:10.1101/2023.02.24.529817}
+Johnson et al. 2023 Bioinformatics. \url{doi:10.1093/bioinformatics/btad561}
 }

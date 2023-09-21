@@ -26,8 +26,8 @@ Additionally, for 13 clones with a driver gene matching a driver gene in the sin
 data, but without a match to a specific clone, we include this longitudinal data as well.
 }
 \examples{
-library(ggplot2)
 # Plot longitudinal data from PD9478
+library(ggplot2)
 ggplot(longitudinalData[longitudinalData$Sample.ID == "PD9478", ]) +
   geom_point(aes(x = Age, y = VAF))
 }
