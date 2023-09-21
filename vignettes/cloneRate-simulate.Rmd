@@ -29,7 +29,7 @@ First, we'll have to load the packages we want to use. We'll be plotting the tre
 using the [`ape`](https://rdrr.io/cran/ape/) package function [`ape::plot.phylo()`](https://rdrr.io/cran/ape/man/plot.phylo.html)
 along with some other `ape` functions.
 If you have `cloneRate` installed, you already have the [`ape package`](https://rdrr.io/cran/ape/). We'll also be using
-[`ggplot2`](https://ggplot2.tidyverse.org/) to make our plots, which can be installed from CRAN as shown below:
+[`ggplot2`](https://ggplot2.tidyverse.org/) to make our plots, which can be installed from CRAN.
 
 ```{r setup, results=FALSE, message = FALSE}
 # Load and attach our package cloneRate
@@ -38,10 +38,7 @@ library(cloneRate)
 # Load and attach ape, which will be installed if you've installed cloneRate
 library(ape)
 
-# Install ggplot2 if necessary, then load and attach it with library()
-if (!requireNamespace("ggplot2")) {
-  install.packages("ggplot2")
-}
+# Install ggplot2 from CRAN if necessary, then load and attach it with library()
 library(ggplot2)
 ```
 
@@ -380,10 +377,12 @@ tree3 <- simUltra(a = 1, b = .5, cloneAge = 120, n = 50)
 Now, let's plot using `par()` to show all three in one plot
 
 ```{r plot_vary_r, fig.asp = 0.4, fig.width = 5.5}
-par(mfrow = c(1, 3))
+oldpar <- graphics::par(mfrow = c(1, 3))
 ape::plot.phylo(tree1, direction = "downwards", show.tip.label = F, main = "r = 2, cloneAge = 30")
 ape::plot.phylo(tree2, direction = "downwards", show.tip.label = F, main = "r = 0.5, cloneAge = 30")
 ape::plot.phylo(tree3, direction = "downwards", show.tip.label = F, main = "r = 0.5, cloneAge = 120")
+# reset par settings
+graphics::par(oldpar)
 ```
 
 While the trees on the left and the right aren't identical due to the stochastic nature of the birth-death process, they are similar, and certainly different from the tree in the middle.

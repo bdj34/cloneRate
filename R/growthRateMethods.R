@@ -33,10 +33,10 @@ internalLengths <- function(tree, alpha = 0.05) {
   # Check if tree has stem
   nodes <- tree$edge[tree$edge > n]
   if (1 %in% table(nodes)) {
-    hasStem <- T
+    hasStem <- TRUE
     stemNode <- as.numeric(names(which(table(nodes) == 1)))
   } else {
-    hasStem <- F
+    hasStem <- FALSE
   }
 
   # Get the number of direct descendants from a node, identifying the nodes with > 2
@@ -177,10 +177,10 @@ sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
   # Check if tree has stem
   nodes <- tree$edge[tree$edge > n]
   if (1 %in% table(nodes)) {
-    hasStem <- T
+    hasStem <- TRUE
     stemNode <- as.numeric(names(which(table(nodes) == 1)))
   } else {
-    hasStem <- F
+    hasStem <- FALSE
   }
 
   # Get the number of direct descendants from a node, identifying the nodes with > 2
@@ -353,9 +353,9 @@ maxLikelihood <- function(tree, alpha = 0.05) {
   intLen <- suppressWarnings(cloneRate::internalLengths(tree)$sumInternalLengths)
   nodes <- tree$edge[tree$edge > n]
   if (1 %in% table(nodes)) {
-    hasStem <- T
+    hasStem <- TRUE
   } else {
-    hasStem <- F
+    hasStem <- FALSE
   }
 
   # Check ratio of external to internal lengths
@@ -707,9 +707,9 @@ moments <- function(tree, alpha = 0.05) {
   intLen <- suppressWarnings(cloneRate::internalLengths(tree)$sumInternalLengths)
   nodes <- tree$edge[tree$edge > n]
   if (1 %in% table(nodes)) {
-    hasStem <- T
+    hasStem <- TRUE
   } else {
-    hasStem <- F
+    hasStem <- FALSE
   }
 
   # Check ratio of external to internal lengths

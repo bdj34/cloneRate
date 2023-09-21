@@ -11,6 +11,6 @@
 #' @import rstantools
 #' @importFrom rstan sampling
 #'
-#' @references Johnson et al. 2023 (under review at Bioinformatics). bioRxiv preprint <doi:10.1101/2023.02.24.529817>
+#' @references Johnson et al. 2023 Bioinformatics. <doi:10.1093/bioinformatics/btad561>
 #'
 NULL

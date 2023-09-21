@@ -36,7 +36,7 @@ If you have `cloneRate` installed, you already have the [`ape package`](https://
 [`survival`](https://rdrr.io/cran/survival/), [`ggsurvfit`](https://rdrr.io/cran/ggsurvfit/src/R/ggsurvfit.R),
 and [`car`](https://rdrr.io/cran/car/)
 for some downstream analysis.
-All of these can be installed from CRAN as shown below:
+All of these can be installed from CRAN.
 
 ```{r setup, results=FALSE, message = FALSE}
 # Load and attach our package cloneRate
@@ -45,28 +45,10 @@ library(cloneRate)
 # Load and attach ape
 library(ape)
 
-# Install ggplot2 if necessary, then load and attach it with library()
-if (!requireNamespace("ggplot2")) {
-  install.packages("ggplot2")
-}
+# Install from CRAN if necessary, then load and attach with library()
 library(ggplot2)
-
-# Install survival if necessary, then load and attach it with library()
-if (!requireNamespace("survival")) {
-  install.packages("survival")
-}
 library(survival)
-
-# Install ggsurvfit if necessary, then load and attach it with library()
-if (!requireNamespace("ggsurvfit")) {
-  install.packages("ggsurvfit")
-}
 library(ggsurvfit)
-
-# Install car if necessary, then load and attach it with library()
-if (!requireNamespace("car")) {
-  install.packages("car")
-}
 library(car)
 ```
 

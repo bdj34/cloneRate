@@ -22,7 +22,7 @@
 #' # Get site frequency of a list of trees
 #' example.list <- siteFrequency(exampleMutTrees)
 #'
-siteFrequency <- function(tree, includeStem = F) {
+siteFrequency <- function(tree, includeStem = FALSE) {
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
   if (inherits(tree, "list") & !inherits(tree, "phylo")) {
     # Call function recursively on all trees in list
@@ -42,7 +42,7 @@ siteFrequency <- function(tree, includeStem = F) {
   }
 
   if (includeStem) {
-    message("You have set includeStem = T. Note that we do not include the stem
+    message("You have set includeStem = TRUE. Note that we do not include the stem
             as part of the site frequency calculation in our work (Johnson et
             al. 2022), due to the fact that we don't know when clone initiation
             actually occurs.")
@@ -52,10 +52,10 @@ siteFrequency <- function(tree, includeStem = F) {
   n <- length(tree$tip.label)
   nodes <- tree$edge[tree$edge > n]
   if (1 %in% table(nodes)) {
-    hasStem <- T
+    hasStem <- TRUE
     stemNode <- as.numeric(names(which(table(nodes) == 1)))
   } else {
-    hasStem <- F
+    hasStem <- FALSE
   }
 
   # If includeStem is TRUE, make sure tree has stem

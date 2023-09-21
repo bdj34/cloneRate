@@ -47,8 +47,8 @@ them along with the vignettes:
 ``` r
 # Install devtools if you don't have it already
 install.packages(setdiff("devtools", rownames(installed.packages())))
- 
-# Install 
+
+# Install
 devtools::install_github("bdj34/cloneRate", build_vignettes = TRUE, dependencies = TRUE)
 ```
 
@@ -98,12 +98,12 @@ We can use this tree as input to our methods for growth rate estimation:
 # Estimate the growth rate r=a-b=0.5 using maximum likelihood
 maxLike.df <- maxLikelihood(tree)
 print(paste0("Max. likelihood estimate = ", round(maxLike.df$estimate, 3)))
-#> [1] "Max. likelihood estimate = 0.508"
+#> [1] "Max. likelihood estimate = 0.537"
 
 # Estimate the growth rate r=a-b=0.5 using internal lengths
 intLengths.df <- internalLengths(tree)
 print(paste0("Internal lengths estimate = ", round(intLengths.df$estimate, 3)))
-#> [1] "Internal lengths estimate = 0.48"
+#> [1] "Internal lengths estimate = 0.527"
 ```
 
 Because we’re simulating a new tree each time, the estimate will change

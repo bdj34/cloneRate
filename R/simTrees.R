@@ -74,14 +74,14 @@ simUltra <- function(a, b, cloneAge, n, nTrees = 1,
         b = b,
         cloneAge = cloneAge, n = n, precBits = precBits,
         addStem = addStem, nTrees = "SKIP_TESTS", nCores = 1,
-        mc.cores = nCores, SIMPLIFY = F
+        mc.cores = nCores, SIMPLIFY = FALSE
       )
     } else {
       return.list <- mapply(
         FUN = simUltra, a = a,
         b = b, cloneAge = cloneAge,
         n = n, precBits = precBits, addStem = addStem,
-        nTrees = "SKIP_TESTS", SIMPLIFY = F
+        nTrees = "SKIP_TESTS", SIMPLIFY = FALSE
       )
     }
     return(return.list)
@@ -242,7 +242,7 @@ ultra2mut <- function(tree, nu) {
       stop("Length of nu must be 1 or equal to the number of input trees")
     }
     # Call function recursively on all trees in list, then combine results into one data.frame
-    return.df <- mapply(ultra2mut, tree, nu = nu, SIMPLIFY = F)
+    return.df <- mapply(ultra2mut, tree, nu = nu, SIMPLIFY = FALSE)
     return(return.df)
   }
 
@@ -428,7 +428,7 @@ inputCheck_simTree <- function(a, b, cloneAge, n, precBits, addStem, nTrees,
     stop("Number of cores must be a positive whole number greater than 0.
          nCores=1 indicates no parallelization.")
   }
-  if (any(nCores > 1) & !all(requireNamespace("parallel", quietly = T))) {
+  if (any(nCores > 1) & !all(requireNamespace("parallel", quietly = TRUE))) {
     warning(paste0("nCores set to ", nCores, " but 'parallel' package is not
                    installed, and simUltra() will run without parallelization."))
   }
