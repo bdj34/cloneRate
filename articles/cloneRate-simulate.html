@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">cloneRate</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -116,7 +116,7 @@ plotting the trees using the <a href="https://rdrr.io/cran/ape/" class="external
 along with some other <code>ape</code> functions. If you have
 <code>cloneRate</code> installed, you already have the <a href="https://rdrr.io/cran/ape/" class="external-link"><code>ape package</code></a>. We’ll
 also be using <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot2</code></a> to make
-our plots, which can be installed from CRAN as shown below:</p>
+our plots, which can be installed from CRAN.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load and attach our package cloneRate</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bdj34/cloneRate" class="external-link">cloneRate</a></span><span class="op">)</span></span>
@@ -124,10 +124,7 @@ our plots, which can be installed from CRAN as shown below:</p>
 <span><span class="co"># Load and attach ape, which will be installed if you've installed cloneRate</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://ape-package.ird.fr/" class="external-link">ape</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Install ggplot2 if necessary, then load and attach it with library()</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
+<span><span class="co"># Install ggplot2 from CRAN if necessary, then load and attach it with library()</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <p>We’ll also set the color palette which we’ll use for most of the
 plotting. The palette is avilable <a href="https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7" class="external-link">here</a>.</p>
@@ -173,7 +170,7 @@ for the time because <code>T</code> in R means <code>TRUE</code>.</p>
 <span><span class="co">#&gt; Phylogenetic tree with 100 tips and 100 internal nodes.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Tip labels:</span></span>
-<span><span class="co">#&gt;   t64, t73, t25, t55, t94, t80, ...</span></span>
+<span><span class="co">#&gt;   t95, t66, t83, t98, t94, t35, ...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Rooted; includes branch lengths.</span></span></code></pre></div>
 <p>Again, the best place to get more info about the class
@@ -183,7 +180,7 @@ look at the metadata included in the tree.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tree</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   r a b cloneAge   n runtime_seconds addStem</span></span>
-<span><span class="co">#&gt; 1 1 1 0       20 100           1.325    TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 1 1 0       20 100           0.796    TRUE</span></span></code></pre></div>
 <p>We see that the columns are:</p>
 <ul>
 <li>
@@ -242,10 +239,10 @@ likelihood of the observed coalescence times for the <span class="math inline">\
 paper.</a></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span></span>
-<span><span class="co">#&gt; [1] 1.045386</span></span>
+<span><span class="co">#&gt; [1] 1.115076</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span><span class="op">$</span><span class="va">estimate</span></span>
-<span><span class="co">#&gt; [1] 0.9908379</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1.024438</span></span></code></pre></div>
 <p>We know that our actual growth rate is 1, so we can evaluate how our
 estimates are doing. One estimate doesn’t really tell us much though.
 Let’s try 100. To do this, we just set the <code>nTrees</code> param
@@ -258,7 +255,7 @@ it takes about a minute.</p>
 <code class="sourceCode R"><span><span class="va">ptm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">tree.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">0</span>, cloneAge <span class="op">=</span> <span class="fl">20</span>, n <span class="op">=</span> <span class="fl">100</span>, nTrees <span class="op">=</span> <span class="fl">100</span>, nCores <span class="op">=</span> <span class="fl">1</span>, addStem <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">ptm</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 122.601</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 73.642</span></span></code></pre></div>
 <p>Let’s apply our methods to these trees. We can input either a single
 <code>phylo</code> object, or a list of <code>phylo</code> objects to
 our growth rate functions. Either way, it’ll return a
@@ -399,7 +396,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rmse</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt;  0.1158181  0.1090120  0.1145366</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.09268768 0.09135614 0.10129213</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="mean">Mean<a class="anchor" aria-label="anchor" href="#mean"></a>
@@ -415,7 +412,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simMean</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt;   1.034232   1.058002   1.034869</span></span></code></pre></div>
+<span><span class="co">#&gt;   1.012182   1.037039   1.012361</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="standard-deviation">Standard deviation<a class="anchor" aria-label="anchor" href="#standard-deviation"></a>
@@ -431,7 +428,7 @@ well, we have to stop somewhere.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simSD</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt; 0.11120109 0.09276524 0.10964962</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.09234647 0.08393138 0.10104152</span></span></code></pre></div>
 <p>What we saw in the density plot is quantified in the mean, sd, and
 rmse. Maximum likelihood usually performs best by Root Mean Square Error
 (RMSE) even though it’s mean is a bit higher (usually around 1.04). With
@@ -468,7 +465,7 @@ of the time. Let’s check:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">simCoverage</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    lengths    maxLike sharedMuts </span></span>
-<span><span class="co">#&gt;       0.95       0.93       0.99</span></span></code></pre></div>
+<span><span class="co">#&gt;       0.98       0.94       0.96</span></span></code></pre></div>
 <p>We’re right around 95%, which is great! But you might expect that
 <code><a href="../reference/maxLikelihood.html">maxLikelihood()</a></code>, which typically has the lowest RMSE, might
 have the best coverage probability. In fact, the confidence interval for
@@ -555,7 +552,8 @@ normalize this.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"n = "</span>, <span class="va">n</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n = 10"</span>, <span class="st">"n = 30"</span>, <span class="st">"n = 100"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    ncol <span class="op">=</span> <span class="fl">1</span>, strip.position <span class="op">=</span> <span class="st">"bottom"</span>, scales <span class="op">=</span> <span class="st">"free"</span>, dir <span class="op">=</span> <span class="st">"v"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 2 rows containing non-finite values (`stat_density()`).</span></span></code></pre></div>
 <p><img src="cloneRate-simulate_files/figure-html/plot_vary_n-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>As you can see, both estimates are highly dependent on the number of
 samples. If you’d like to see the same density values on the y-axis for
@@ -607,11 +605,14 @@ be the same as 2 for 30. Let’s find out:</p>
 <p>Now, let’s plot using <code><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par()</a></code> to show all three in one
 plot</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">tree1</span>, direction <span class="op">=</span> <span class="st">"downwards"</span>, show.tip.label <span class="op">=</span> <span class="cn">F</span>, main <span class="op">=</span> <span class="st">"r = 2, cloneAge = 30"</span><span class="op">)</span></span>
 <span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">tree2</span>, direction <span class="op">=</span> <span class="st">"downwards"</span>, show.tip.label <span class="op">=</span> <span class="cn">F</span>, main <span class="op">=</span> <span class="st">"r = 0.5, cloneAge = 30"</span><span class="op">)</span></span>
 <span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">tree3</span>, direction <span class="op">=</span> <span class="st">"downwards"</span>, show.tip.label <span class="op">=</span> <span class="cn">F</span>, main <span class="op">=</span> <span class="st">"r = 0.5, cloneAge = 120"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="cloneRate-simulate_files/figure-html/plot_vary_r-1.png" width="80%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># reset par settings</span></span>
+<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>While the trees on the left and the right aren’t identical due to the
 stochastic nature of the birth-death process, they are similar, and
 certainly different from the tree in the middle.</p>
@@ -641,7 +642,7 @@ part of this vignette. However, we do a full reproduction of our work
 from <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btad561/7271182" class="external-link">our
 recent paper</a> in <a href="https://bdj34.github.io/cloneRate/articles/reproduce-simResults.html">an
 article, “Reproduce simulation results”</a> which can be found on <a href="https://bdj34.github.io/cloneRate/">our package website</a>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Uniform ditribution of r used to generate b_vec</span></span>
 <span><span class="va">r_vec</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000</span>, min <span class="op">=</span> <span class="fl">0.1</span>, max <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">a_vec</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000</span>, min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
@@ -656,7 +657,7 @@ our diagnostic, which tells us which clones are good candidates for our
 method, and which are not. If we run a clone that’s not a good
 candidate, we’ll get a warning. Let’s generate a tree with a very low
 growth rate and plot it.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Let's call it slowClone</span></span>
 <span><span class="va">slowClone</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simUltra.html">simUltra</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">.15</span>, b <span class="op">=</span> <span class="fl">.05</span>, n <span class="op">=</span> <span class="fl">50</span>, cloneAge <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span>
 <span></span>
@@ -668,24 +669,24 @@ branches. This indicates that the process has not been “supercritical”
 enough (i.e. the growth rate and time are too low). Quantitatively, this
 means the ratio of external to internal edge lengths is low. Let’s try
 to apply our methods:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Apply our estimates</span></span>
 <span><span class="fu"><a href="../reference/maxLikelihood.html">maxLikelihood</a></span><span class="op">(</span><span class="va">slowClone</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in maxLikelihood(slowClone): External to internal lengths ratio is less than or equal to 3,</span></span>
 <span><span class="co">#&gt;             which means max. likelihood method may not be applicable. Consider</span></span>
 <span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
-<span><span class="co">#&gt;   lowerBound estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1  0.1910775 0.248732  0.3063866         33.85305           196.9856</span></span>
+<span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
+<span><span class="co">#&gt; 1  0.1379179 0.1795324  0.2211469         44.54231           249.6875</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio  n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           401.1982    2.036688 50  0.05     0.008 maxLike</span></span>
+<span><span class="co">#&gt; 1           476.1876    1.907134 50  0.05     0.006 maxLike</span></span>
 <span><span class="fu"><a href="../reference/internalLengths.html">internalLengths</a></span><span class="op">(</span><span class="va">slowClone</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in internalLengths(slowClone): External to internal lengths ratio is less than or equal to 3,</span></span>
 <span><span class="co">#&gt;             which means internal lengths method may not be applicable. Consider</span></span>
 <span><span class="co">#&gt;             using birthDeathMCMC() function, which avoids this issue.</span></span>
 <span><span class="co">#&gt;   lowerBound  estimate upperBound cloneAgeEstimate sumInternalLengths</span></span>
-<span><span class="co">#&gt; 1    0.18347 0.2538256  0.3241812         33.77237           196.9856</span></span>
+<span><span class="co">#&gt; 1  0.1447448 0.2002503  0.2557558         43.96604           249.6875</span></span>
 <span><span class="co">#&gt;   sumExternalLengths extIntRatio  n alpha runtime_s  method</span></span>
-<span><span class="co">#&gt; 1           401.1982    2.036688 50  0.05     0.005 lengths</span></span></code></pre></div>
+<span><span class="co">#&gt; 1           476.1876    1.907134 50  0.05     0.002 lengths</span></span></code></pre></div>
 <p>Our estimates are off by quite a bit (the ground truth estimate is
 0.1), and we see a warning. The warning tells us that the external to
 internal edge length ratio is below 3, so this clone is likely not a
