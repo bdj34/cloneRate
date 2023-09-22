@@ -1,3 +1,5 @@
+# cloneRate (development version)
+
 # cloneRate 0.2.3
 
 * Minor changes for CRAN resubmission
