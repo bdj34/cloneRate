@@ -14,6 +14,7 @@
 #' internalLengths(cloneRate::exampleUltraTrees[[1]])
 #'
 internalLengths <- function(tree, alpha = 0.05) {
+  # time function
   ptm <- proc.time()
 
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
