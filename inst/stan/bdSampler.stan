@@ -1,5 +1,5 @@
 functions{
-  real logLikeBDcoalTimes_lpdf(real[] t, real lambda, real mu, real lgRho){
+  real logLikeBDcoalTimes_lpdf(array[] real t, real lambda, real mu, real lgRho){
     int numCoal;
     real ll;
     numCoal=size(t);
@@ -21,7 +21,7 @@ functions{
 
 data{
   int<lower=1> nCoal; // Number of coalescence times
-  real t[nCoal];  // Coalescence times
+  array[nCoal] real t;  // Coalescence times
   real upperLambda; // Max growth rate allowed
 }
 
