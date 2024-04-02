@@ -58,7 +58,7 @@ for (i in 1:length(fabre)) {
   ID <- names(fabre)[i]
   fabre[[i]]$metadata <- data.frame(
     "ID" = ID, "age" = fabre[[ID]]$age,
-    "diagnosis.age" = NA, "malnorm" = "Normal", "sourcePaper" = "mitchell"
+    "diagnosis.age" = NA, "malnorm" = "Normal", "sourcePaper" = "fabre"
   )
 }
 
