@@ -135,13 +135,13 @@ internalLengths <- function(tree, alpha = 0.05) {
 #' @examples
 #' sharedMuts(cloneRate::exampleMutTrees[[1]])
 #'
-sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
+sharedMuts <- function(tree, nu = NULL, alpha = 0.05, allow.ultrametric = F) {
   ptm <- proc.time()
 
   # If we have a list of phylo objects instead of a single phylo objects, call recursively
   if (inherits(tree, "list") & !inherits(tree, "phylo")) {
     # Call function recursively on all trees in list, then combine results into one data.frame
-    return.df <- do.call(rbind, lapply(tree, sharedMuts))
+    return.df <- do.call(rbind, lapply(tree, sharedMuts, nu = nu, allow.ultrametric = allow.ultrametric))
     return.df$cloneName_result <- names(tree)
     return(return.df)
   }
@@ -158,7 +158,7 @@ sharedMuts <- function(tree, nu = NULL, alpha = 0.05) {
   }
 
   # Make sure tree is NOT ultrametric
-  if (ape::is.ultrametric(tree)) {
+  if (ape::is.ultrametric(tree) & !allow.ultrametric) {
     stop("Tree should be mutation-based, not time-based. Tree should not be ultrametric.")
   }
 

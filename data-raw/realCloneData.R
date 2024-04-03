@@ -287,7 +287,7 @@ mitchell_trees <- lapply(mitchell_tree_files, ape::read.tree)
 names(mitchell_trees) <- mitchell_tree_names
 
 # age vec must be in order of mitchell_trees
-age_vec <- c(63, 1, 1, 29, 38, 81, 78, 75, 76, 48)
+age_vec <- c(63, 40/52, 40/52, 29, 38, 81, 78, 75, 76, 48)
 
 ## Now import the sensitivity and adjust for that as Mitchell did
 # Use Mitchell functions from github (https://github.com/emily-mitchell/normal_haematopoiesis)
