@@ -128,6 +128,7 @@ internalLengths <- function(tree, alpha = 0.05) {
 #' @param tree A non-ultrametric ape tree subset to include only the clone of interest
 #' @param nu The mutation rate. If none given, sharedMuts() will first look for a `nu` column in a `metadata` data.frame of the tree, and then look for a `nu` in the tree itself. Will throw error if no `nu` given or found.
 #' @param alpha Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)
+#' @param allow.ultrametric Bool. By default, returns an error for ultrametric tree, but can override by setting this to TRUE.
 #'
 #' @returns A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (clone age estimate, runtime, n, etc.)
 #' @seealso [cloneRate::internalLengths()] which is the ultrametric/time-based analogue

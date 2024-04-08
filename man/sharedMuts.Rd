@@ -4,7 +4,7 @@
 \alias{sharedMuts}
 \title{Growth rate estimate using the sum of shared mutations assuming a mutation tree}
 \usage{
-sharedMuts(tree, nu = NULL, alpha = 0.05)
+sharedMuts(tree, nu = NULL, alpha = 0.05, allow.ultrametric = F)
 }
 \arguments{
 \item{tree}{A non-ultrametric ape tree subset to include only the clone of interest}
@@ -12,6 +12,8 @@ sharedMuts(tree, nu = NULL, alpha = 0.05)
 \item{nu}{The mutation rate. If none given, sharedMuts() will first look for a \code{nu} column in a \code{metadata} data.frame of the tree, and then look for a \code{nu} in the tree itself. Will throw error if no \code{nu} given or found.}
 
 \item{alpha}{Used for calculation of confidence intervals. 1-alpha confidence intervals used with default of alpha = 0.05 (95 percent confidence intervals)}
+
+\item{allow.ultrametric}{Bool. By default, returns an error for ultrametric tree, but can override by setting this to TRUE.}
 }
 \value{
 A dataframe including the net growth rate estimate, the sum of internal lengths and other important details (clone age estimate, runtime, n, etc.)

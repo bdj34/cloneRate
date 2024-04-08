@@ -84,10 +84,10 @@ williams_truncated[[1]]$metadata <- data.frame("sourcePaper" = "williams", "ID" 
 names(williams_truncated) <- "PD5163"
 
 
-##### Combined and include ultrametric by scaling ##############################
+##### Combined and include time-based trees by scaling ##############################
 embryonic_mutation_trees <- c(mitchell_truncated, fabre_truncated, williams_truncated)
 
-embryonic_ultrametric_trees <- list()
+embryonic_time_trees <- list()
 for(i in 1:length(embryonic_mutation_trees)){
   ultra <- embryonic_mutation_trees[[i]]
   if(names(embryonic_mutation_trees)[i] %in% c("CB001", "CB002")){
@@ -97,10 +97,10 @@ for(i in 1:length(embryonic_mutation_trees)){
     ultra <- embryonic_mutation_trees[[i]]
     ultra$edge.length <- ultra$edge.length/embryonicMutRate
   }
-  embryonic_ultrametric_trees <- c(embryonic_ultrametric_trees, list(ultra))
+  embryonic_time_trees <- c(embryonic_time_trees, list(ultra))
 }
-names(embryonic_ultrametric_trees) <- names(embryonic_mutation_trees)
+names(embryonic_time_trees) <- names(embryonic_mutation_trees)
 
 # Save as loadable data object for package users
 usethis::use_data(embryonic_mutation_trees, overwrite = TRUE, compress = "bzip2")
-usethis::use_data(embryonic_ultrametric_trees, overwrite = TRUE, compress = "bzip2")
+usethis::use_data(embryonic_time_trees, overwrite = TRUE, compress = "bzip2")
