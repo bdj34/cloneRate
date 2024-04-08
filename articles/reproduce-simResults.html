@@ -692,7 +692,7 @@ this will get rid of the very poor estimates.</p>
 <span></span>
 <span><span class="co"># How many did we cut</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1111</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1058</span></span></code></pre></div>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot the estimates after the diagnostic</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_random_r_cut</span><span class="op">)</span> <span class="op">+</span></span>
@@ -776,10 +776,10 @@ lengths method:</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;                         Value   Lengths Max.likelihood</span></span>
-<span><span class="co">#&gt; 1                 RMSE before 0.4490996      0.5144492</span></span>
-<span><span class="co">#&gt; 2                  RMSE after 0.1649873      0.1609500</span></span>
-<span><span class="co">#&gt; 3 Coverage probability before 0.8963000      0.8615000</span></span>
-<span><span class="co">#&gt; 4  Coverage probability after 0.9509506      0.9272134</span></span></code></pre></div>
+<span><span class="co">#&gt; 1                 RMSE before 0.3712494      0.4328754</span></span>
+<span><span class="co">#&gt; 2                  RMSE after 0.1629349      0.1611882</span></span>
+<span><span class="co">#&gt; 3 Coverage probability before 0.8996000      0.8635000</span></span>
+<span><span class="co">#&gt; 4  Coverage probability after 0.9496757      0.9265265</span></span></code></pre></div>
 </div>
 </div>
 </div>
