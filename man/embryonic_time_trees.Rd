@@ -28,7 +28,7 @@ ape::plot.phylo(cloneRate::embryonic_time_trees[["CB002"]],
 )
 
 # Calculate the growth rate using the max likelihood method.
-out <- maxLikelihood(cloneRate::embryonic_time_trees,  allow.ultrametric = TRUE)
+out <- maxLikelihood(cloneRate::embryonic_time_trees)
 
 }
 \references{

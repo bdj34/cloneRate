@@ -97,7 +97,7 @@
 #' )
 #'
 #' # Calculate the growth rate using the max likelihood method.
-#' out <- maxLikelihood(cloneRate::embryonic_time_trees,  allow.ultrametric = TRUE)
+#' out <- maxLikelihood(cloneRate::embryonic_time_trees)
 #'
 "embryonic_time_trees"
 
