@@ -2,7 +2,7 @@
 #'
 #' @description Quickly estimate the net growth rate of a population or clone whose growth can be approximated by a birth-death branching process.
 #'
-#' @docType _PACKAGE
+#' @docType package
 #' @name cloneRate-package
 #' @aliases cloneRate
 #' @useDynLib cloneRate, .registration = TRUE
