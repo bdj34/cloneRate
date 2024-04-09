@@ -61,7 +61,8 @@
 #'   direction = "downwards", show.tip.label = FALSE
 #' )
 #'
-#' # Calculate the growth rate using the shared mutations method, assuming 55 mutations per 40/52 weeks (avg. embryonic time of 40 weeks)
+#' # Calculate the growth rate using the shared mutations method, assuming 55
+#' # mutations per 40/52 weeks (avg. embryonic time of 40 weeks)
 #' out <- sharedMuts(cloneRate::embryonic_mutation_trees, nu = 55/(40/52), allow.ultrametric = TRUE)
 #'
 "embryonic_mutation_trees"
