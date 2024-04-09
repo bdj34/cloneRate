@@ -91,7 +91,8 @@ in the sources. Source paper is indicated in the metadata dataframe for each tre
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="embryonic_mutation_trees-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Calculate the growth rate using the shared mutations method, assuming 55 mutations per 40/52 weeks (avg. embryonic time of 40 weeks)</span></span></span>
+<span class="r-in"><span><span class="co"># Calculate the growth rate using the shared mutations method, assuming 55</span></span></span>
+<span class="r-in"><span><span class="co"># mutations per 40/52 weeks (avg. embryonic time of 40 weeks)</span></span></span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="sharedMuts.html">sharedMuts</a></span><span class="op">(</span><span class="fu">cloneRate</span><span class="fu">::</span><span class="va">embryonic_mutation_trees</span>, nu <span class="op">=</span> <span class="fl">55</span><span class="op">/</span><span class="op">(</span><span class="fl">40</span><span class="op">/</span><span class="fl">52</span><span class="op">)</span>, allow.ultrametric <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Private to shared mutations ratio is less than or equal to 3,</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>             which means shared mutations method may not be applicable. If you</span>
