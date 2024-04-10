@@ -23,7 +23,7 @@ and especially for embryonic development rate estimation. Imagine taking a tree,
 at a time dist, and only evaluating the tree from above that line.
 }
 \examples{
-tree <- cloneRate::embryonic_mutation_trees[["KX001"]]
-dist=55
+tree <- cloneRate::realCloneData$fullTrees[["KX001"]]
+dist=5
 truncated_tree <- truncate_tree(tree, dist)
 }
