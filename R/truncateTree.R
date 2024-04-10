@@ -10,8 +10,8 @@
 #' @export
 #'
 #' @examples
-#' tree <- cloneRate::embryonic_mutation_trees[["KX001"]]
-#' dist=55
+#' tree <- cloneRate::realCloneData$fullTrees[["KX001"]]
+#' dist=5
 #' truncated_tree <- truncate_tree(tree, dist)
 truncate_tree <- function(tree, dist) {
 

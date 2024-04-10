@@ -10,15 +10,15 @@ test_that("getTipDescendants agrees with phangorn::Descendants", {
   node <- sample((ape::Ntip(realCloneTree) + 1):ape::Nnode(realCloneTree, internal.only = FALSE), size = 1)
   expect_setequal(getTipDescendants(realCloneTree, node), phangorn::Descendants(realCloneTree, node, type = "tips")[[1]])
 
-  # Test with the embryonic mutation-based tree
-  embryonicMutTree <- cloneRate::embryonic_mutation_trees[[sample(1:length(cloneRate::embryonic_mutation_trees), size = 1)]]
-  node <- sample((ape::Ntip(embryonicMutTree) + 1):ape::Nnode(embryonicMutTree, internal.only = FALSE), size = 1)
-  expect_setequal(getTipDescendants(embryonicMutTree, node), phangorn::Descendants(embryonicMutTree, node, type = "tips")[[1]])
-
-  # Test with the embryonic ultrametric tree
-  embryonicUltraTree <- cloneRate::embryonic_time_trees[[sample(1:length(cloneRate::embryonic_time_trees), size = 1)]]
-  node <- sample((ape::Ntip(embryonicUltraTree) + 1):ape::Nnode(embryonicUltraTree, internal.only = FALSE), size = 1)
-  expect_setequal(getTipDescendants(embryonicUltraTree, node), phangorn::Descendants(embryonicUltraTree, node, type = "tips")[[1]])
+  # # Test with the embryonic mutation-based tree
+  # embryonicMutTree <- cloneRate::embryonic_mutation_trees[[sample(1:length(cloneRate::embryonic_mutation_trees), size = 1)]]
+  # node <- sample((ape::Ntip(embryonicMutTree) + 1):ape::Nnode(embryonicMutTree, internal.only = FALSE), size = 1)
+  # expect_setequal(getTipDescendants(embryonicMutTree, node), phangorn::Descendants(embryonicMutTree, node, type = "tips")[[1]])
+  #
+  # # Test with the embryonic ultrametric tree
+  # embryonicUltraTree <- cloneRate::embryonic_time_trees[[sample(1:length(cloneRate::embryonic_time_trees), size = 1)]]
+  # node <- sample((ape::Ntip(embryonicUltraTree) + 1):ape::Nnode(embryonicUltraTree, internal.only = FALSE), size = 1)
+  # expect_setequal(getTipDescendants(embryonicUltraTree, node), phangorn::Descendants(embryonicUltraTree, node, type = "tips")[[1]])
 
   # Test with mutation tree from simulated data
   exampleMutTree <- cloneRate::exampleMutTrees[[sample(1:length(cloneRate::exampleMutTrees), size = 1)]]
@@ -45,15 +45,15 @@ test_that("getImmediateParent agrees with phangorn::Ancestors", {
   node <- sample(1:ape::Nnode(realCloneTree, internal.only = FALSE), size = 1)
   expect_setequal(getImmediateParent(realCloneTree, node), phangorn::Ancestors(realCloneTree, node, type = "parent")[[1]])
 
-  # Test with the embryonic mutation-based tree
-  embryonicMutTree <- cloneRate::embryonic_mutation_trees[[sample(1:length(cloneRate::embryonic_mutation_trees), size = 1)]]
-  node <- sample(1:ape::Nnode(embryonicMutTree, internal.only = FALSE), size = 1)
-  expect_setequal(getImmediateParent(embryonicMutTree, node), phangorn::Ancestors(embryonicMutTree, node, type = "parent")[[1]])
-
-  # Test with the embryonic ultrametric tree
-  embryonicUltraTree <- cloneRate::embryonic_time_trees[[sample(1:length(cloneRate::embryonic_time_trees), size = 1)]]
-  node <- sample(1:ape::Nnode(embryonicUltraTree, internal.only = FALSE), size = 1)
-  expect_setequal(getImmediateParent(embryonicUltraTree, node), phangorn::Ancestors(embryonicUltraTree, node, type = "parent")[[1]])
+  # # Test with the embryonic mutation-based tree
+  # embryonicMutTree <- cloneRate::embryonic_mutation_trees[[sample(1:length(cloneRate::embryonic_mutation_trees), size = 1)]]
+  # node <- sample(1:ape::Nnode(embryonicMutTree, internal.only = FALSE), size = 1)
+  # expect_setequal(getImmediateParent(embryonicMutTree, node), phangorn::Ancestors(embryonicMutTree, node, type = "parent")[[1]])
+  #
+  # # Test with the embryonic ultrametric tree
+  # embryonicUltraTree <- cloneRate::embryonic_time_trees[[sample(1:length(cloneRate::embryonic_time_trees), size = 1)]]
+  # node <- sample(1:ape::Nnode(embryonicUltraTree, internal.only = FALSE), size = 1)
+  # expect_setequal(getImmediateParent(embryonicUltraTree, node), phangorn::Ancestors(embryonicUltraTree, node, type = "parent")[[1]])
 
   # Test with mutation tree from simulated data
   exampleMutTree <- cloneRate::exampleMutTrees[[sample(1:length(cloneRate::exampleMutTrees), size = 1)]]
@@ -84,9 +84,9 @@ test_that("Truncate tree always returns ultrametric tree (mutation or time-based
   truncated <- truncate_tree(cloneRate::exampleUltraTrees, dist = 55)
   expect_true(all(ape::is.ultrametric.multiPhylo(truncated)))
 
-  truncated <- truncate_tree(cloneRate::embryonic_mutation_trees, dist = 55)
-  expect_true(all(ape::is.ultrametric.multiPhylo(truncated)))
-
-  truncated <- truncate_tree(cloneRate::embryonic_time_trees, dist = .5)
-  expect_true(all(ape::is.ultrametric.multiPhylo(truncated)))
+  # truncated <- truncate_tree(cloneRate::embryonic_mutation_trees, dist = 55)
+  # expect_true(all(ape::is.ultrametric.multiPhylo(truncated)))
+  #
+  # truncated <- truncate_tree(cloneRate::embryonic_time_trees, dist = .5)
+  # expect_true(all(ape::is.ultrametric.multiPhylo(truncated)))
 })
